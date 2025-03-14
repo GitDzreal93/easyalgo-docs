@@ -93,31 +93,55 @@ export default function Home() {
                 <div className="relative hidden lg:block lg:col-span-5">
                   <div className="absolute -left-3 -top-3 w-16 h-16 bg-[#8ECAE6] rounded-lg opacity-20 animate-pulse"></div>
                   <div className="absolute -right-3 -bottom-3 w-16 h-16 bg-[#8ECAE6] rounded-lg opacity-20 animate-pulse"></div>
-                  <div className="bg-white rounded-lg shadow-lg p-4 relative z-10 transform rotate-1 border border-gray-100 hover:rotate-0 transition-all duration-300 hover:shadow-xl hover:border-[#8ECAE6]/20">
-                    <div className="border-b border-gray-200 pb-2 mb-3">
+                  <div className="bg-white rounded-lg shadow-lg p-5 relative z-10 transform rotate-1 border border-gray-100 hover:rotate-0 transition-all duration-300 hover:shadow-xl hover:border-[#8ECAE6]/20">
+                    <div className="border-b border-gray-200 pb-2 mb-4">
                       <div className="flex space-x-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
-                        <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
                       </div>
                     </div>
-                    <pre className="text-xs leading-5 sm:text-sm sm:leading-6 text-[#023047] font-mono overflow-x-auto group"><code><span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#FFB703]"># Two Sum - LeetCode #1
-# Time: O(n), Space: O(n)</span>
-
-class Solution:
-    def twoSum(self, nums: List[int], 
-               target: int) -&gt; List[int]:
-        <span className="text-[#8ECAE6]"># 使用哈希表优化</span>
-        hash_map = {}
-        
-        <span className="text-[#8ECAE6]"># 一次遍历</span>
-        for i, num in enumerate(nums):
-            complement = target - num
-            if complement in hash_map:
-                return [hash_map[complement], i]
-            hash_map[num] = i
-        
-        return []</code></pre>
+                    <div className="w-full">
+                      <pre className="text-[13px] leading-6 sm:text-sm sm:leading-7 text-[#023047] font-mono whitespace-pre-wrap break-words p-6 bg-gray-50/50 rounded-md">
+                        <span className="block text-[#FFB703] font-medium"># Two Sum - LeetCode #1</span>
+                        <span className="block mb-4 text-[#FFB703] font-medium"># Time: O(n), Space: O(n)</span>
+                        <div className="block">
+                          <span className="text-[#023047]">class</span> <span className="text-[#8ECAE6] font-semibold">Solution</span>:
+                        </div>
+                        <div className="block">
+                          <span className="pl-8" />
+                          <span className="text-[#023047]">def</span> <span className="text-[#FFB703] font-semibold">twoSum</span>(<span className="text-[#023047]">self</span>, nums: <span className="text-[#8ECAE6]">List[int]</span>, target: <span className="text-[#8ECAE6]">int</span>) -> <span className="text-[#8ECAE6]">List[int]</span>:
+                        </div>
+                        <div className="block">
+                          <span className="pl-16" />
+                          <span>hash_map = {'{'}{'}'};</span>
+                        </div>
+                        <div className="block">
+                          <span className="pl-16" />
+                          <span className="text-[#023047]">for</span> i, num <span className="text-[#023047]">in</span> enumerate(nums):
+                        </div>
+                        <div className="block">
+                          <span className="pl-24" />
+                          <span>complement = target - num</span>
+                        </div>
+                        <div className="block">
+                          <span className="pl-24" />
+                          <span className="text-[#023047]">if</span> complement <span className="text-[#023047]">in</span> hash_map:
+                        </div>
+                        <div className="block">
+                          <span className="pl-32" />
+                          <span className="text-[#023047]">return</span> [hash_map[complement], i]
+                        </div>
+                        <div className="block">
+                          <span className="pl-24" />
+                          <span className="text-[#023047]">hash_map[num] = i</span>
+                        </div>
+                        <div className="block">
+                          <span className="pl-16" />
+                          <span className="text-[#023047]">return []</span>
+                        </div>
+                      </pre>
+                    </div>
                     <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#8ECAE6] rounded-full animate-ping opacity-75"></div>
                   </div>
                 </div>
