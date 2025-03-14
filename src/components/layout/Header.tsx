@@ -61,7 +61,7 @@ export default function Header() {
                     : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
-                文档
+                课程
               </Link>
               <Link 
                 href="/pricing" 
@@ -72,7 +72,7 @@ export default function Header() {
                     : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
-                定价
+                会员
               </Link>
             </div>
           </div>
