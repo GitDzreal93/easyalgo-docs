@@ -8,6 +8,15 @@ export default function AuthError({
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <Link href="/" className="flex justify-center">
+          <span className="sr-only">Easy Algo</span>
+          <div className="relative w-12 h-12">
+            <div className="absolute -inset-0.5 bg-[var(--color-orange)] rounded-lg blur opacity-30"></div>
+            <div className="relative flex items-center justify-center w-full h-full bg-white rounded-lg">
+              <img src="/app_logo.png" alt="Easy Algo" className="w-8 h-8" />
+            </div>
+          </div>
+        </Link>
         <div className="text-center">
           <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
             认证错误

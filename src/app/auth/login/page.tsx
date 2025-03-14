@@ -25,23 +25,14 @@ export default function LoginPage() {
           <span className="sr-only">Easy Algo</span>
           <div className="relative w-12 h-12">
             <div className="absolute -inset-0.5 bg-[var(--color-orange)] rounded-lg blur opacity-30"></div>
-            <div className="relative flex items-center justify-center w-full h-full bg-[var(--color-sky)] text-white rounded-lg">
-              <span className="text-xl font-bold">EA</span>
+            <div className="relative flex items-center justify-center w-full h-full bg-white rounded-lg">
+              <img src="/app_logo.png" alt="Easy Algo" className="w-8 h-8" />
             </div>
           </div>
         </Link>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--color-navy)]">
           登录账号
         </h2>
-        <p className="mt-2 text-center text-sm text-[var(--color-teal)]">
-          或者{' '}
-          <Link
-            href="/auth/register"
-            className="font-medium text-[var(--color-orange)] hover:text-[var(--color-orange)]/80 transition-colors duration-200"
-          >
-            注册新账号
-          </Link>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

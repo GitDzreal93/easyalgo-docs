@@ -40,8 +40,8 @@ export default function ResetPassword() {
           <span className="sr-only">Easy Algo</span>
           <div className="relative w-12 h-12">
             <div className="absolute -inset-0.5 bg-[var(--color-orange)] rounded-lg blur opacity-30"></div>
-            <div className="relative flex items-center justify-center w-full h-full bg-[var(--color-sky)] text-white rounded-lg">
-              <span className="text-xl font-bold">EA</span>
+            <div className="relative flex items-center justify-center w-full h-full bg-white rounded-lg">
+              <img src="/app_logo.png" alt="Easy Algo" className="w-8 h-8" />
             </div>
           </div>
         </Link>
