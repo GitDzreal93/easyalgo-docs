@@ -10,8 +10,8 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Jade Note - 专业的 Markdown 文档平台",
-  description: "高质量的技术文档分享平台，让知识传播更加简单。支持 Markdown 格式，提供会员订阅服务。",
+  title: "Easy Algo - 通俗易懂的算法学习平台",
+  description: "专业的算法教程网站，提供数据结构与算法详解、LeetCode 题解、面试算法指南。通过清晰的图解和实例，让算法学习变得简单有趣。",
 };
 
 export default function RootLayout({
