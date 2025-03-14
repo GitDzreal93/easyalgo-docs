@@ -49,18 +49,22 @@ export function SearchPopover({
 
   return (
     <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/50"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div className="flex min-h-full items-center justify-center p-4">
         <div 
-          className="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white shadow-xl transition-all"
+          className="relative w-full max-w-2xl transform overflow-hidden rounded-xl 
+            bg-[var(--background)]/90 backdrop-blur-md
+            border border-[var(--primary)]/20
+            shadow-[0_0_25px_rgba(var(--primary-rgb),0.2)]
+            transition-all duration-200"
           onClick={(e) => e.stopPropagation()}
         >
           {/* 搜索输入框 */}
-          <div className="p-4 border-b border-gray-100">
+          <div className="p-5 border-b border-[var(--primary)]/10">
             <div className="relative">
               <input
                 ref={inputRef}
@@ -68,9 +72,20 @@ export function SearchPopover({
                 value={query}
                 onChange={(e) => onQueryChange(e.target.value)}
                 placeholder="输入关键词搜索..."
-                className="w-full pl-8 pr-3 py-2 text-sm bg-white border border-gray-200 rounded-md focus:outline-none focus:border-emerald-500"
+                className="w-full pl-10 pr-4 py-3 text-sm
+                  bg-[var(--background)]/50 
+                  text-[var(--text)]
+                  placeholder-[var(--text)]/50
+                  border border-[var(--primary)]/30
+                  rounded-lg
+                  backdrop-blur-sm
+                  focus:outline-none 
+                  focus:border-[var(--accent)]
+                  focus:ring-2 
+                  focus:ring-[var(--accent)]/20
+                  transition-all duration-200"
               />
-              <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-3.5 w-4 h-4 text-[var(--primary)]" />
             </div>
           </div>
 
@@ -78,35 +93,44 @@ export function SearchPopover({
           <div className="max-h-[60vh] overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--accent)]"></div>
               </div>
             ) : results.length > 0 ? (
-              <ul className="divide-y divide-gray-100">
+              <ul className="divide-y divide-[var(--primary)]/10">
                 {results.map((result, index) => (
                   <li key={result.slug + index}>
                     <button
                       onClick={() => onSelect(result)}
-                      className="w-full px-4 py-3 text-left hover:bg-gray-50 focus:outline-none focus:bg-gray-50"
+                      className="w-full px-5 py-4 text-left 
+                        hover:bg-[var(--primary)]/5
+                        focus:outline-none 
+                        focus:bg-[var(--primary)]/5
+                        transition-all duration-200
+                        group"
                     >
-                      <div className="flex flex-col space-y-1">
+                      <div className="flex flex-col space-y-2">
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-900">
+                          <span className="text-sm font-medium text-[var(--text)]
+                            group-hover:text-[var(--accent)]
+                            transition-colors duration-200">
                             {result.title}
                           </span>
-                          {result.isParent ? (
-                            <span className="px-2 py-0.5 text-xs font-medium text-emerald-700 bg-emerald-50 rounded">
+                          {result.isParent && (
+                            <span className="px-2 py-0.5 text-xs font-medium 
+                              text-[var(--accent)] bg-[var(--accent)]/10 
+                              rounded-full border border-[var(--accent)]/20">
                               主文档
                             </span>
-                          ) : null}
+                          )}
                         </div>
                         {result.parentTitle && (
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-[var(--text)]/60">
                             {result.parentTitle}
                           </div>
                         )}
                         {result.preview && (
-                          <div className="text-sm text-gray-600 line-clamp-2">
-                            <span className="text-emerald-600 font-medium">找到：</span>
+                          <div className="text-sm text-[var(--text)]/80 line-clamp-2">
+                            <span className="text-[var(--primary)] font-medium">找到：</span>
                             {result.preview}
                           </div>
                         )}
@@ -117,7 +141,7 @@ export function SearchPopover({
               </ul>
             ) : (
               query && (
-                <div className="px-4 py-6 text-center text-sm text-gray-500">
+                <div className="px-5 py-8 text-center text-sm text-[var(--text)]/60">
                   未找到相关文档
                 </div>
               )
