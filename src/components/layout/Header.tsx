@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BookOpenIcon } from '@heroicons/react/24/solid';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import UserMenu from '../auth/UserMenu';
 import clsx from 'clsx';
@@ -24,24 +24,30 @@ export default function Header() {
 
   return (
     <nav className={clsx(
-      'bg-white sticky top-0 z-50 transition-shadow duration-200',
-      scrolled ? 'shadow-md' : 'shadow-sm'
+      'bg-white sticky top-0 z-50 transition-all duration-200 border-b border-[#8ECAE6]/10',
+      scrolled ? 'shadow-md' : ''
     )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <BookOpenIcon className="h-8 w-8 text-emerald-600" />
-              <span className="text-xl font-bold text-gray-900 ml-2">Jade Note</span>
+              <Image
+                src="/app_logo.png"
+                alt="Easy Algo Logo"
+                width={28}
+                height={28}
+                className="h-10 w-10"
+              />
+              <span className="text-xl font-bold text-[#023047] ml-2">Easy Algo</span>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link 
                 href="/" 
                 className={clsx(
-                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200',
                   pathname === '/' 
-                    ? 'border-emerald-500 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    ? 'border-[#FFB703] text-[#023047] font-semibold'
+                    : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
                 首页
@@ -49,10 +55,10 @@ export default function Header() {
               <Link 
                 href="/docs" 
                 className={clsx(
-                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200',
                   pathname.startsWith('/docs')
-                    ? 'border-emerald-500 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    ? 'border-[#FFB703] text-[#023047] font-semibold'
+                    : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
                 文档
@@ -60,10 +66,10 @@ export default function Header() {
               <Link 
                 href="/pricing" 
                 className={clsx(
-                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium',
+                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200',
                   pathname === '/pricing'
-                    ? 'border-emerald-500 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                    ? 'border-[#FFB703] text-[#023047] font-semibold'
+                    : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
                 定价
@@ -75,10 +81,10 @@ export default function Header() {
               <UserMenu user={user} />
             ) : (
               <>
-                <Link href="/auth/login" className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium">
+                <Link href="/auth/login" className="text-[#023047]/70 hover:text-[#023047] px-3 py-2 text-sm font-medium transition-colors duration-200">
                   登录
                 </Link>
-                <Link href="/auth/register" className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700">
+                <Link href="/auth/register" className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[#023047] bg-[#FFB703] hover:bg-[#FFB703]/90 transition-colors duration-200">
                   注册
                 </Link>
               </>

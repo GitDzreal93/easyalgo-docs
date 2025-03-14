@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh">
-      <body className={`${geist.className} min-h-screen bg-gray-50 flex flex-col`}>
+      <body className={`${geist.className} min-h-screen bg-white flex flex-col`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
