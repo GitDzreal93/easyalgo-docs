@@ -172,19 +172,23 @@ export default function DocsTableOfContents() {
                 className={clsx(
                   'relative flex items-center w-full text-left',
                   'py-1.5 pl-4 pr-3 rounded-lg transition-all duration-200',
-                  'hover:bg-[#8ECAE6]/5 dark:hover:bg-[#8ECAE6]/10',
                   'before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2',
-                  'before:w-[3px] before:h-[18px] before:rounded-full before:transition-all before:duration-200',
-                  activeId === heading.id
-                    ? [
-                        'bg-[#8ECAE6]/5 dark:bg-[#8ECAE6]/10',
-                        'before:bg-[#FFB703] before:shadow-[0_0_8px_rgba(255,183,3,0.5)]',
-                        'text-[#023047] dark:text-[#FFB703] font-medium'
-                      ]
-                    : [
-                        'before:bg-transparent group-hover:before:bg-[#8ECAE6]/30',
-                        'text-[#023047]/70 dark:text-[#8ECAE6]/70'
-                      ]
+                  'before:w-[3px] before:h-[18px] before:rounded-full',
+                  'before:transition-all before:duration-200',
+                  // 默认状态：指示器为灰色
+                  'before:bg-gray-200 dark:before:bg-gray-700',
+                  // 悬浮状态：指示器和背景
+                  'hover:before:bg-[#8ECAE6] hover:bg-[#8ECAE6]/5',
+                  'dark:hover:before:bg-[#8ECAE6] dark:hover:bg-[#8ECAE6]/10',
+                  // 激活状态
+                  activeId === heading.id && [
+                    'before:bg-[#FFB703]',
+                    'before:shadow-[0_0_8px_rgba(255,183,3,0.5)]',
+                    'bg-[#FFB703]/5 dark:bg-[#FFB703]/10',
+                    'text-[#023047] dark:text-[#FFB703] font-medium'
+                  ],
+                  // 未激活状态的文字颜色
+                  activeId !== heading.id && 'text-[#023047]/70 dark:text-[#8ECAE6]/70'
                 )}
               >
                 <span
@@ -192,7 +196,11 @@ export default function DocsTableOfContents() {
                     'transition-all duration-200',
                     heading.level === 1 && 'text-[15px] font-medium',
                     heading.level === 2 && 'text-[14px]',
-                    heading.level === 3 && 'text-[13px] font-light',
+                    heading.level === 3 && 'text-[13px]',
+                    // 悬浮状态文字颜色
+                    'group-hover:text-[#8ECAE6] dark:group-hover:text-[#8ECAE6]',
+                    // 激活状态覆盖悬浮状态
+                    activeId === heading.id && 'text-[#023047] dark:text-[#FFB703]'
                   )}
                 >
                   {heading.text}
