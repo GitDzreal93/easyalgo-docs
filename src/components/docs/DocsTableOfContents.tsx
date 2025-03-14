@@ -154,32 +154,49 @@ export default function DocsTableOfContents() {
 
   return (
     <nav className="h-full">
-      <div className="bg-white rounded-lg border border-[#8ECAE6]/30 shadow-[0_2px_4px_rgba(0,0,0,0.02)] p-4 dark:bg-[#023047] dark:border-[#8ECAE6]/20">
-        <h3 className="text-sm font-medium text-[#023047] dark:text-white mb-4 pb-3 border-b border-[#8ECAE6]/20">本页目录</h3>
-        <ul className="space-y-2">
-          {headings.map((heading) => (
+      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-[#8ECAE6]/20 shadow-lg shadow-[#8ECAE6]/5 p-5 dark:bg-[#023047]/50 dark:border-[#8ECAE6]/10">
+        <h3 className="text-base font-semibold text-[#023047] dark:text-white mb-6 pb-3 border-b border-[#8ECAE6]/10">
+          本页目录
+        </h3>
+        <ul className="relative space-y-2.5">
+          {headings.map((heading, index) => (
             <li
               key={heading.id}
-              style={{
-                paddingLeft: `${(heading.level - 1) * 12}px`
-              }}
+              className={clsx(
+                "relative group transition-all duration-200",
+                heading.level > 1 && "ml-4"
+              )}
             >
               <button
                 onClick={() => scrollToHeading(heading.id)}
                 className={clsx(
-                  'text-sm transition-all duration-200 relative',
-                  'block w-full text-left py-1.5 px-2 rounded-md',
-                  'hover:bg-[#8ECAE6]/10 hover:text-[#023047] dark:hover:text-[#8ECAE6]',
-                  activeId === heading.id ? [
-                    'text-[#023047] dark:text-[#FFB703] font-medium',
-                    'bg-[#8ECAE6]/10 dark:bg-[#8ECAE6]/5',
-                    'before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2',
-                    'before:w-1 before:h-4 before:bg-[#FFB703]',
-                    'before:rounded-r-full'
-                  ] : 'text-[#023047]/70 dark:text-[#8ECAE6]/70'
+                  'relative flex items-center w-full text-left',
+                  'py-1.5 pl-4 pr-3 rounded-lg transition-all duration-200',
+                  'hover:bg-[#8ECAE6]/5 dark:hover:bg-[#8ECAE6]/10',
+                  'before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2',
+                  'before:w-[3px] before:h-[18px] before:rounded-full before:transition-all before:duration-200',
+                  activeId === heading.id
+                    ? [
+                        'bg-[#8ECAE6]/5 dark:bg-[#8ECAE6]/10',
+                        'before:bg-[#FFB703] before:shadow-[0_0_8px_rgba(255,183,3,0.5)]',
+                        'text-[#023047] dark:text-[#FFB703] font-medium'
+                      ]
+                    : [
+                        'before:bg-transparent group-hover:before:bg-[#8ECAE6]/30',
+                        'text-[#023047]/70 dark:text-[#8ECAE6]/70'
+                      ]
                 )}
               >
-                {heading.text}
+                <span
+                  className={clsx(
+                    'transition-all duration-200',
+                    heading.level === 1 && 'text-[15px] font-medium',
+                    heading.level === 2 && 'text-[14px]',
+                    heading.level === 3 && 'text-[13px] font-light',
+                  )}
+                >
+                  {heading.text}
+                </span>
               </button>
             </li>
           ))}
