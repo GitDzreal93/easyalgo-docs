@@ -17,76 +17,108 @@ export default function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <div className="relative z-10 pb-8 bg-white/80 backdrop-blur-sm sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+          <div className="relative z-10 pb-8 bg-white/80 backdrop-blur-sm sm:pb-16 md:pb-20 lg:max-w-none lg:w-full lg:pb-28 xl:pb-32">
             <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 lg:mt-16 lg:px-8 xl:mt-20">
-              <div className="sm:text-center lg:text-left">
-                <h1 className="text-4xl tracking-tight font-extrabold text-[#023047] sm:text-5xl md:text-6xl">
-                  <div className="flex flex-col items-start lg:items-start sm:items-center">
-                    <div className="flex items-baseline gap-3 mb-2">
-                      <span className="inline-flex items-center">
-                        <span className="glitch-text text-3xl sm:text-4xl md:text-5xl" data-text="Easy Algo">Easy Algo</span>
-                        <span className="ml-1 w-2 h-2 bg-[#FFB703] rounded-full animate-pulse"></span>
-                      </span>
-                    </div>
-                    <div className="h-16 sm:h-20 flex items-center whitespace-nowrap overflow-hidden max-w-[90vw] sm:max-w-[600px] md:max-w-[720px]">
-                      <div className="relative inline-block">
-                        <TypeAnimation
-                          sequence={[
-                            '算_',
-                            80,
-                            '算法_',
-                            80,
-                            '算法学_',
-                            80,
-                            '算法学习_',
-                            80,
-                            '算法学习，_',
-                            80,
-                            '算法学习，从_',
-                            80,
-                            '算法学习，从未_',
-                            80,
-                            '算法学习，从未如_',
-                            80,
-                            '算法学习，从未如此_',
-                            80,
-                            '算法学习，从未如此简_',
-                            80,
-                            '算法学习，从未如此简单_',
-                            80,
-                            '算法学习，从未如此简单！_',
-                            80,
-                            '算法学习，从未如此简单！',
-                            3000,
-                          ]}
-                          wrapper="span"
-                          speed={40}
-                          className="inline-block text-lg sm:text-2xl md:text-3xl text-[#8ECAE6] border-r-4 border-[#8ECAE6] pr-2 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-[2px] after:bg-[#8ECAE6]/20"
-                          repeat={Infinity}
-                          cursor={false}
-                          deletionSpeed={80}
-                        />
-                        <span className="absolute -bottom-1 right-0 w-2 h-2 bg-[#8ECAE6] rounded-full animate-ping opacity-75"></span>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
+                <div className="sm:text-center lg:text-left lg:col-span-7">
+                  <h1 className="text-4xl tracking-tight font-extrabold text-[#023047] sm:text-5xl md:text-6xl">
+                    <div className="flex flex-col items-start lg:items-start sm:items-center">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="inline-flex items-center">
+                          <span className="glitch-text text-3xl sm:text-4xl md:text-5xl" data-text="Easy Algo">Easy Algo</span>
+                          <span className="ml-1 w-2 h-2 bg-[#FFB703] rounded-full animate-pulse"></span>
+                        </span>
+                      </div>
+                      <div className="h-16 sm:h-20 flex items-center whitespace-nowrap overflow-hidden max-w-[90vw] sm:max-w-[600px] md:max-w-[720px]">
+                        <div className="relative inline-block">
+                          <TypeAnimation
+                            sequence={[
+                              '算_',
+                              80,
+                              '算法_',
+                              80,
+                              '算法学_',
+                              80,
+                              '算法学习_',
+                              80,
+                              '算法学习，_',
+                              80,
+                              '算法学习，从_',
+                              80,
+                              '算法学习，从未_',
+                              80,
+                              '算法学习，从未如_',
+                              80,
+                              '算法学习，从未如此_',
+                              80,
+                              '算法学习，从未如此简_',
+                              80,
+                              '算法学习，从未如此简单！_',
+                              80,
+                              '算法学习，从未如此简单！',
+                              3000,
+                            ]}
+                            wrapper="span"
+                            speed={40}
+                            className="inline-block text-lg sm:text-2xl md:text-3xl text-[#8ECAE6] border-r-4 border-[#8ECAE6] pr-2 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-[2px] after:bg-[#8ECAE6]/20"
+                            repeat={Infinity}
+                            cursor={false}
+                            deletionSpeed={80}
+                          />
+                          <span className="absolute -bottom-1 right-0 w-2 h-2 bg-[#8ECAE6] rounded-full animate-ping opacity-75"></span>
+                        </div>
                       </div>
                     </div>
+                  </h1>
+                  <p className="mt-6 text-base text-[#023047]/70 sm:mt-8 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-10 md:text-xl lg:mx-0 relative z-10">
+                    通过清晰的图解和实例，让数据结构与算法变得简单有趣。从基础到进阶，助你轻松掌握算法精髓，提升编程能力。
+                  </p>
+                  <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                    <div className="rounded-md shadow">
+                      <Link href="/docs" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-[#023047] bg-[#FFB703] hover:bg-[#FFB703]/90 transition-all duration-200 md:py-4 md:text-lg md:px-10 group relative overflow-hidden">
+                        <span className="relative z-10">开始学习</span>
+                        <span className="absolute inset-0 bg-gradient-to-r from-[#FFB703]/0 via-white/20 to-[#FFB703]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></span>
+                        <span className="ml-2 w-1.5 h-1.5 bg-[#023047] rounded-full group-hover:animate-ping relative z-10"></span>
+                      </Link>
+                    </div>
+                    <div className="mt-3 sm:mt-0 sm:ml-3">
+                      <Link href="/pricing" className="w-full flex items-center justify-center px-8 py-3 border border-[#8ECAE6] text-base font-medium rounded-md text-[#023047] bg-white hover:bg-[#8ECAE6]/10 transition-colors duration-200 md:py-4 md:text-lg md:px-10 group">
+                        查看课程
+                        <span className="ml-2 w-1.5 h-1.5 border border-[#8ECAE6] rounded-full group-hover:bg-[#8ECAE6] transition-colors duration-200"></span>
+                      </Link>
+                    </div>
                   </div>
-                </h1>
-                <p className="mt-6 text-base text-[#023047]/70 sm:mt-8 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-10 md:text-xl lg:mx-0 relative z-10">
-                  通过清晰的图解和实例，让数据结构与算法变得简单有趣。从基础到进阶，助你轻松掌握算法精髓，提升编程能力。
-                </p>
-                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                  <div className="rounded-md shadow">
-                    <Link href="/docs" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-[#023047] bg-[#FFB703] hover:bg-[#FFB703]/90 transition-all duration-200 md:py-4 md:text-lg md:px-10 group relative overflow-hidden">
-                      <span className="relative z-10">开始学习</span>
-                      <span className="absolute inset-0 bg-gradient-to-r from-[#FFB703]/0 via-white/20 to-[#FFB703]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></span>
-                      <span className="ml-2 w-1.5 h-1.5 bg-[#023047] rounded-full group-hover:animate-ping relative z-10"></span>
-                    </Link>
-                  </div>
-                  <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <Link href="/pricing" className="w-full flex items-center justify-center px-8 py-3 border border-[#8ECAE6] text-base font-medium rounded-md text-[#023047] bg-white hover:bg-[#8ECAE6]/10 transition-colors duration-200 md:py-4 md:text-lg md:px-10 group">
-                      查看课程
-                      <span className="ml-2 w-1.5 h-1.5 border border-[#8ECAE6] rounded-full group-hover:bg-[#8ECAE6] transition-colors duration-200"></span>
-                    </Link>
+                </div>
+                {/* Code Preview Card */}
+                <div className="relative hidden lg:block lg:col-span-5">
+                  <div className="absolute -left-3 -top-3 w-16 h-16 bg-[#8ECAE6] rounded-lg opacity-20 animate-pulse"></div>
+                  <div className="absolute -right-3 -bottom-3 w-16 h-16 bg-[#8ECAE6] rounded-lg opacity-20 animate-pulse"></div>
+                  <div className="bg-white rounded-lg shadow-lg p-4 relative z-10 transform rotate-1 border border-gray-100 hover:rotate-0 transition-all duration-300 hover:shadow-xl hover:border-[#8ECAE6]/20">
+                    <div className="border-b border-gray-200 pb-2 mb-3">
+                      <div className="flex space-x-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+                      </div>
+                    </div>
+                    <pre className="text-xs leading-5 sm:text-sm sm:leading-6 text-[#023047] font-mono overflow-x-auto group"><code><span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#FFB703]"># Two Sum - LeetCode #1
+# Time: O(n), Space: O(n)</span>
+
+class Solution:
+    def twoSum(self, nums: List[int], 
+               target: int) -&gt; List[int]:
+        <span className="text-[#8ECAE6]"># 使用哈希表优化</span>
+        hash_map = {}
+        
+        <span className="text-[#8ECAE6]"># 一次遍历</span>
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in hash_map:
+                return [hash_map[complement], i]
+            hash_map[num] = i
+        
+        return []</code></pre>
+                    <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#8ECAE6] rounded-full animate-ping opacity-75"></div>
                   </div>
                 </div>
               </div>
