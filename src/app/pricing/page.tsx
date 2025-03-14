@@ -181,7 +181,7 @@ export default function PricingPage({ searchParams }: { searchParams: { canceled
               <p className="text-sm text-[var(--color-navy)]">
                 您已是会员，可以阅读所有课程内容。
                 <button 
-                  onClick={() => router.push('/courses')}
+                  onClick={() => router.push('/docs')}
                   className="ml-2 text-[var(--color-teal)] hover:text-[var(--color-sky)] font-medium transition-colors duration-200"
                 >
                   立即阅读 →

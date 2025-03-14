@@ -13,7 +13,7 @@ export default function CoursesPage() {
   useEffect(() => {
     // 如果用户未登录，重定向到登录页
     if (!isLoading && !user) {
-      router.push('/login?redirect=/courses');
+      router.push('/login?redirect=/docs');
       return;
     }
   }, [user, isLoading, router]);
