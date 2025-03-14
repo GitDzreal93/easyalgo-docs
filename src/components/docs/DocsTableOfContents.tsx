@@ -154,8 +154,8 @@ export default function DocsTableOfContents() {
 
   return (
     <nav className="h-full">
-      <div className="bg-white rounded-lg border border-gray-200/70 shadow-[0_2px_4px_rgba(0,0,0,0.02)] p-4">
-        <h3 className="text-sm font-medium text-gray-900 mb-4 pb-3 border-b border-gray-100">本页目录</h3>
+      <div className="bg-white rounded-lg border border-[#8ECAE6]/30 shadow-[0_2px_4px_rgba(0,0,0,0.02)] p-4 dark:bg-[#023047] dark:border-[#8ECAE6]/20">
+        <h3 className="text-sm font-medium text-[#023047] dark:text-white mb-4 pb-3 border-b border-[#8ECAE6]/20">本页目录</h3>
         <ul className="space-y-2">
           {headings.map((heading) => (
             <li
@@ -167,11 +167,16 @@ export default function DocsTableOfContents() {
               <button
                 onClick={() => scrollToHeading(heading.id)}
                 className={clsx(
-                  'text-sm hover:text-emerald-600 transition-colors duration-200',
-                  'block w-full text-left py-1',
-                  activeId === heading.id
-                    ? 'text-emerald-600 font-medium'
-                    : 'text-gray-600'
+                  'text-sm transition-all duration-200 relative',
+                  'block w-full text-left py-1.5 px-2 rounded-md',
+                  'hover:bg-[#8ECAE6]/10 hover:text-[#023047] dark:hover:text-[#8ECAE6]',
+                  activeId === heading.id ? [
+                    'text-[#023047] dark:text-[#FFB703] font-medium',
+                    'bg-[#8ECAE6]/10 dark:bg-[#8ECAE6]/5',
+                    'before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2',
+                    'before:w-1 before:h-4 before:bg-[#FFB703]',
+                    'before:rounded-r-full'
+                  ] : 'text-[#023047]/70 dark:text-[#8ECAE6]/70'
                 )}
               >
                 {heading.text}
