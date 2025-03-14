@@ -48,14 +48,14 @@ export const SidebarPromotion: React.FC<SidebarPromotionProps> = ({
     : '';
   
   return (
-    <div className="w-full mb-6 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div className="w-full mb-6 rounded-lg overflow-hidden border border-[#8ECAE6] dark:border-[#8ECAE6]/30 bg-white dark:bg-[#023047]">
       <div className="p-4">
         {/* 主标题和描述 */}
         <div className="mb-3">
-          <h4 className="font-medium text-gray-900 dark:text-white">
+          <h4 className="font-medium text-[#023047] dark:text-white">
             {title}
           </h4>
-          <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+          <p className="text-sm text-[#023047]/80 dark:text-[#8ECAE6] mt-1">
             {description}
           </p>
         </div>
@@ -63,7 +63,7 @@ export const SidebarPromotion: React.FC<SidebarPromotionProps> = ({
         {/* 折扣信息 */}
         {discount && discount > 0 && (
           <div className="mb-3">
-            <span className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium px-2.5 py-1 rounded">
+            <span className="inline-block bg-[#8ECAE6]/20 dark:bg-[#8ECAE6]/10 text-[#023047] dark:text-[#8ECAE6] text-xs font-medium px-2.5 py-1 rounded">
               {discountText}
             </span>
           </div>
@@ -72,7 +72,7 @@ export const SidebarPromotion: React.FC<SidebarPromotionProps> = ({
         {/* 按钮 */}
         <button
           onClick={handleClick}
-          className="w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded transition-colors"
+          className="w-full text-center px-4 py-2 bg-[#FFB703] hover:bg-[#FFB703]/90 text-[#023047] text-sm font-medium rounded transition-colors"
         >
           {buttonText}
         </button>
