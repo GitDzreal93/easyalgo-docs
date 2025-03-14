@@ -93,18 +93,18 @@ export default async function DocumentPage(props: PageProps) {
 
     if (!content) {
       return (
-        <article className="bg-white rounded-lg shadow-sm p-6">
+        <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
           <header className="mb-8">
             {isChildDoc && (
-              <div className="flex items-center text-sm text-gray-500 mb-4">
-                <Link href={`/docs/${doc.slug.split('/')[0]}`} className="hover:text-emerald-600 flex items-center">
+              <div className="flex items-center text-sm text-[var(--text)] mb-4">
+                <Link href={`/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                   <ChevronRightIcon className="h-4 w-4 mr-1" />
                   返回上级
                 </Link>
               </div>
             )}
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{doc.title}</h1>
-            <div className="flex items-center text-sm text-gray-500">
+            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+            <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString()}
@@ -112,33 +112,32 @@ export default async function DocumentPage(props: PageProps) {
             </div>
           </header>
           <div className="prose max-w-none">
-            <p className="text-gray-600">文档内容不存在或正在编辑中</p>
-            <p className="text-gray-500">文件路径: {normalizedPath}</p>
+            <p className="text-[var(--text)]">文档内容不存在或正在编辑中</p>
+            <p className="text-[var(--text)] opacity-75">文件路径: {normalizedPath}</p>
           </div>
         </article>
       );
     }
-    
 
     try {
       return (
-        <article className="bg-white rounded-lg shadow-sm p-6">
+        <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
           <header className="mb-8">
             {isChildDoc && (
-              <div className="flex items-center text-sm text-gray-500 mb-4">
-                <Link href={`/docs/${doc.slug.split('/')[0]}`} className="hover:text-emerald-600 flex items-center">
+              <div className="flex items-center text-sm text-[var(--text)] mb-4">
+                <Link href={`/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                   <ChevronRightIcon className="h-4 w-4 mr-1" />
                   返回上级
                 </Link>
               </div>
             )}
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{doc.title}</h1>
-            <div className="flex items-center text-sm text-gray-500">
+            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+            <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString()}
               </span>
-              <span className="mx-2">·</span>
+              <span className="mx-2 text-[var(--text)]">·</span>
               <span className="flex items-center">
                 <ClockIcon className="mr-2 h-4 w-4" />
                 预计阅读时间 {Math.ceil((content?.length || 0) / 500)} 分钟

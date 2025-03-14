@@ -4,7 +4,7 @@ import { getDocsData } from '@/lib/docs';
 import type { DocNode } from '@/lib/docs';
 
 export const metadata: Metadata = {
-  title: '文档中心',
+  title: '课程中心',
   description: '浏览所有可用的文档内容',
 };
 
@@ -14,9 +14,9 @@ export default async function DocsPage() {
   if (docs.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">文档中心</h1>
+        <h1 className="text-3xl font-bold mb-6 text-[var(--text)]">课程中心</h1>
         <div className="text-center py-12">
-          <p className="text-gray-600">暂无文档</p>
+          <p className="text-[var(--foreground)]">暂无文档</p>
         </div>
       </div>
     );
@@ -44,15 +44,15 @@ export default async function DocsPage() {
     const docPath = normalizedSlug;
     
     return (
-      <div key={doc.node_token} className="border rounded-lg p-6 hover:shadow-lg transition-shadow bg-white h-full">
-        <h2 className="text-xl font-semibold mb-2">{doc.title}</h2>
-        <div className="text-gray-600 mb-4">
+      <div key={doc.node_token} className="border rounded-lg p-6 hover:shadow-lg transition-shadow bg-[var(--background)] h-full border-[var(--primary)] hover:border-[var(--accent)]">
+        <h2 className="text-xl font-semibold mb-2 text-[var(--text)]">{doc.title}</h2>
+        <div className="text-[var(--foreground)] opacity-75 mb-4">
           <p>最后更新：{new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString()}</p>
         </div>
         <div className="flex items-center justify-between mt-auto">
           <Link
             href={`/docs/${docPath}`}
-            className="text-emerald-600 hover:text-emerald-800 font-medium inline-flex items-center"
+            className="text-[var(--primary)] hover:text-[var(--accent)] font-medium inline-flex items-center transition-colors"
           >
             阅读更多 <span className="ml-1">→</span>
           </Link>
@@ -63,8 +63,8 @@ export default async function DocsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">文档中心</h1>
-      <div className="bg-gray-50 p-6 rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-[var(--text)]">课程中心</h1>
+      <div className="bg-[var(--background)] border border-[var(--primary)] p-6 rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {sortedDocs.map(renderDocItem)}
         </div>
