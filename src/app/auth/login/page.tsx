@@ -1,38 +1,59 @@
-import Link from 'next/link'
-import AuthForm from '@/components/auth/AuthForm'
+'use client';
+
+import { useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import AuthForm from '@/components/auth/AuthForm';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { user } = useAuth();
+  const redirect = searchParams.get('redirect') || '/';
+
+  useEffect(() => {
+    if (user) {
+      router.push(redirect);
+    }
+  }, [user, router, redirect]);
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--background)] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link href="/" className="flex justify-center">
-          <span className="sr-only">Jade Note</span>
-          <svg
-            className="h-12 w-auto text-emerald-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-            />
-          </svg>
+          <span className="sr-only">Easy Algo</span>
+          <div className="relative w-12 h-12">
+            <div className="absolute -inset-0.5 bg-[var(--color-orange)] rounded-lg blur opacity-30"></div>
+            <div className="relative flex items-center justify-center w-full h-full bg-[var(--color-sky)] text-white rounded-lg">
+              <span className="text-xl font-bold">EA</span>
+            </div>
+          </div>
         </Link>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--color-navy)]">
+          登录账号
+        </h2>
+        <p className="mt-2 text-center text-sm text-[var(--color-teal)]">
+          或者{' '}
+          <Link
+            href="/auth/register"
+            className="font-medium text-[var(--color-orange)] hover:text-[var(--color-orange)]/80 transition-colors duration-200"
+          >
+            注册新账号
+          </Link>
+        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-[var(--color-navy)]/5">
           <AuthForm type="login" />
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
+                <div className="w-full border-t border-[var(--color-navy)]/10" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
+                <span className="px-2 bg-white text-[var(--color-navy)]/60">
                   还没有账号？
                 </span>
               </div>
@@ -41,7 +62,7 @@ export default function LoginPage() {
             <div className="mt-6">
               <Link
                 href="/auth/register"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-emerald-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                className="w-full flex justify-center py-2 px-4 border border-[var(--color-sky)] rounded-md text-sm font-medium text-[var(--color-sky)] bg-white hover:bg-[var(--color-sky)]/5 transition-colors duration-200"
               >
                 立即注册
               </Link>
@@ -50,5 +71,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

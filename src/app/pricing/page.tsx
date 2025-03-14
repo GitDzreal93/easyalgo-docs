@@ -1,4 +1,10 @@
+'use client';
+
+import { useEffect } from 'react';
 import { CheckIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { StripeCheckoutButton } from '@/components/stripe/StripeCheckoutButton';
 
 interface Plan {
@@ -63,9 +69,84 @@ const faqs = [
   },
 ];
 
-export default async function PricingPage({ searchParams }: { searchParams: { canceled?: string } }) {
-  const params = await Promise.resolve(searchParams);
-  const canceled = params.canceled;
+export default function PricingPage({ searchParams }: { searchParams: { canceled?: string } }) {
+  const router = useRouter();
+  const { user } = useAuth();
+  const { subscription, isLoading } = useSubscription();
+  const canceled = searchParams.canceled;
+
+  // 处理免费计划的点击
+  const handleFreePlanClick = () => {
+    router.push('/docs');
+  };
+
+  // 处理会员计划的点击
+  const handlePremiumPlanClick = () => {
+    if (!user) {
+      router.push('/login?redirect=/pricing');
+      return;
+    }
+  };
+
+  // 渲染购买按钮
+  const renderActionButton = (plan: Plan) => {
+    if (!plan.cta || plan.cta.trim() === '') return null;
+
+    // 免费计划
+    if (!plan.highlighted) {
+      return (
+        <button
+          onClick={handleFreePlanClick}
+          className="mt-8 block w-full bg-[var(--color-teal)] hover:opacity-90 text-white rounded-md py-2 px-4 font-medium text-sm transition-opacity duration-200"
+        >
+          {plan.cta}
+        </button>
+      );
+    }
+
+    // 会员计划
+    if (isLoading) {
+      return (
+        <button
+          disabled
+          className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
+        >
+          加载中...
+        </button>
+      );
+    }
+
+    if (subscription) {
+      return (
+        <button
+          disabled
+          className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
+        >
+          已是会员
+        </button>
+      );
+    }
+
+    if (!user) {
+      return (
+        <button
+          onClick={handlePremiumPlanClick}
+          className="mt-8 block w-full bg-[var(--color-orange)] hover:opacity-90 text-white rounded-md py-2 px-4 font-medium text-sm transition-opacity duration-200"
+        >
+          {plan.cta}
+        </button>
+      );
+    }
+
+    return (
+      <StripeCheckoutButton
+        priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID || ''}
+        className="mt-8 block w-full bg-[var(--color-orange)] hover:opacity-90 text-white rounded-md py-2 px-4 font-medium text-sm transition-opacity duration-200"
+      >
+        {plan.cta}
+      </StripeCheckoutButton>
+    );
+  };
 
   return (
     <main className="flex flex-col items-center">
@@ -81,6 +162,30 @@ export default async function PricingPage({ searchParams }: { searchParams: { ca
             <div className="ml-3">
               <p className="text-sm text-[var(--color-navy)]">
                 支付已取消。如果您有任何疑问，请随时联系我们的客服团队。
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 会员状态提示 */}
+      {subscription && (
+        <div className="w-full bg-[var(--color-sky)] bg-opacity-10 border-l-4 border-[var(--color-sky)] p-4 mb-4">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-[var(--color-sky)]" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-[var(--color-navy)]">
+                您已是会员，可以阅读所有课程内容。
+                <button 
+                  onClick={() => router.push('/courses')}
+                  className="ml-2 text-[var(--color-teal)] hover:text-[var(--color-sky)] font-medium transition-colors duration-200"
+                >
+                  立即阅读 →
+                </button>
               </p>
             </div>
           </div>
@@ -131,18 +236,7 @@ export default async function PricingPage({ searchParams }: { searchParams: { ca
                     {plan.interval}
                   </span>
                 </p>
-                {plan.cta && plan.cta.trim() !== '' && (
-                  <StripeCheckoutButton
-                    priceId={process.env.NEXT_PUBLIC_STRIPE_PRICE_ID || ''}
-                    className={`mt-8 block w-full ${
-                      plan.highlighted
-                        ? 'bg-[var(--color-orange)] hover:bg-[var(--color-orange)] hover:opacity-90'
-                        : 'bg-[var(--color-teal)] hover:opacity-90'
-                    } text-white rounded-md py-2 px-4 font-medium text-sm transition-opacity duration-200`}
-                  >
-                    {plan.cta}
-                  </StripeCheckoutButton>
-                )}
+                {renderActionButton(plan)}
               </div>
               <div className="pt-6 pb-8 px-6">
                 <h3 className="text-xs font-medium text-[var(--color-navy)] tracking-wide uppercase">
