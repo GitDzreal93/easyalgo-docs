@@ -13,7 +13,15 @@ interface PageProps {
 }
 
 export const metadata = {
-  title: 'Jade Note 文档',
+  title: 'Easy Algo - 算法学习文档',
+  description: '最简单的算法学习平台，提供详细的算法解析、代码实现和练习题目。让算法学习变得简单有趣。',
+  keywords: '算法学习, 编程教程, Easy Algo, 数据结构, 算法解析, 编程入门, 代码实现',
+  openGraph: {
+    title: 'Easy Algo - 算法学习文档',
+    description: '最简单的算法学习平台，让算法学习变得简单有趣',
+    type: 'article',
+    locale: 'zh_CN',
+  },
 };
 
 export default async function DocumentPage(props: PageProps) {
