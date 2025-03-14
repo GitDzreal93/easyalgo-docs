@@ -1,33 +1,36 @@
 @import "tailwindcss";
 
 :root {
-  /* 原有配色保持不变 */
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #8ECAE6;
-  --accent: #FFB703;
-  --text: #023047;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  /* 新增配色方案 */
+  /* 主题配色 */
   --color-sky: #8ECAE6;     /* 浅蓝色 */
   --color-teal: #219EBC;    /* 青色 */
   --color-navy: #023047;    /* 深蓝色 */
   --color-yellow: #FFB703;  /* 黄色 */
   --color-orange: #FB8500;  /* 橙色 */
+
+  /* 系统配色 */
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: var(--color-sky);
+  --accent: var(--color-yellow);
+  --text: var(--color-navy);
+  
+  /* 字体 */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: var(--color-navy);
     --foreground: #ededed;
+    --text: var(--color-sky);
   }
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text);
   font-family: var(--font-sans, Arial), sans-serif;
 }
 

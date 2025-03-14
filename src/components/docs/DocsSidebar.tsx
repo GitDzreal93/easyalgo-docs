@@ -28,16 +28,16 @@ const DocLink = ({ doc, isActive, depth = 0 }: { doc: DocNode; isActive: boolean
         'text-sm leading-5',
         isExactMatch 
           ? [
-              'text-[#023047] dark:text-[#FFB703] font-medium',
-              'bg-[#8ECAE6]/10 dark:bg-[#8ECAE6]/5',
+              'text-[var(--color-navy)] dark:text-[var(--color-yellow)] font-medium',
+              'bg-[var(--color-sky)]/10 dark:bg-[var(--color-sky)]/5',
               'before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2',
-              'before:w-1 before:h-4 before:bg-[#FFB703]',
+              'before:w-1 before:h-4 before:bg-[var(--color-yellow)]',
               'before:rounded-r-full'
             ]
           : [
-              'text-[#023047]/70 dark:text-[#8ECAE6]/70',
-              'hover:text-[#023047] dark:hover:text-[#8ECAE6]',
-              'hover:bg-[#8ECAE6]/10'
+              'text-[var(--color-navy)]/70 dark:text-[var(--color-sky)]/70',
+              'hover:text-[var(--color-navy)] dark:hover:text-[var(--color-sky)]',
+              'hover:bg-[var(--color-sky)]/10'
             ],
         depth === 0 && !isExactMatch && 'font-medium'
       )}
@@ -148,7 +148,7 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
     });
     
     return (
-      <ul className="ml-3 pl-3 border-l border-[#8ECAE6]/20 dark:border-[#8ECAE6]/10">
+      <ul className="ml-3 pl-3 border-l border-[var(--color-sky)]/20 dark:border-[var(--color-sky)]/10">
         {sortedChildren.map(child => {
           console.log('渲染子文档链接:', {
             parentTitle: parentDoc.title,
@@ -167,9 +167,9 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-[#023047] rounded-lg border border-[#8ECAE6]/30 dark:border-[#8ECAE6]/20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+    <div className="h-full flex flex-col bg-white dark:bg-[var(--color-navy)] rounded-lg border border-[var(--color-sky)]/30 dark:border-[var(--color-sky)]/20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
       {/* 搜索区域 */}
-      <div className="flex-none px-4 py-4 border-b border-[#8ECAE6]/20">
+      <div className="flex-none px-4 py-4 border-b border-[var(--color-sky)]/20">
         <DocsSearch docs={docs} />
       </div>
       
@@ -180,7 +180,7 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
             <li key={doc.node_token} className="space-y-0.5">
               <DocLink doc={doc} isActive={isDocActive(doc)} depth={0} />
               {doc.children?.length > 0 && (
-                <ul className="ml-3 pl-3 border-l border-[#8ECAE6]/20 dark:border-[#8ECAE6]/10">
+                <ul className="ml-3 pl-3 border-l border-[var(--color-sky)]/20 dark:border-[var(--color-sky)]/10">
                   {sortByPosition(doc.children).map(child => (
                     <li key={child.node_token}>
                       <DocLink doc={child} isActive={isDocActive(child)} depth={1} />
