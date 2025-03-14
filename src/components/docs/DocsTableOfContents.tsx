@@ -154,8 +154,8 @@ export default function DocsTableOfContents() {
 
   return (
     <nav className="h-full">
-      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-[#8ECAE6]/20 shadow-lg shadow-[#8ECAE6]/5 p-5 dark:bg-[#023047]/50 dark:border-[#8ECAE6]/10">
-        <h3 className="text-base font-semibold text-[#023047] dark:text-white mb-6 pb-3 border-b border-[#8ECAE6]/10">
+      <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-[var(--primary)]/20 shadow-lg shadow-[var(--primary)]/5 p-5 dark:bg-[var(--background)]/50 dark:border-[var(--primary)]/10">
+        <h3 className="text-base font-semibold text-[var(--text)] mb-6 pb-3 border-b border-[var(--primary)]/10">
           本页目录
         </h3>
         <ul className="relative space-y-2.5">
@@ -178,17 +178,17 @@ export default function DocsTableOfContents() {
                   // 默认状态：指示器为灰色
                   'before:bg-gray-200 dark:before:bg-gray-700',
                   // 悬浮状态：指示器和背景
-                  'hover:before:bg-[#8ECAE6] hover:bg-[#8ECAE6]/5',
-                  'dark:hover:before:bg-[#8ECAE6] dark:hover:bg-[#8ECAE6]/10',
+                  'hover:before:bg-[var(--primary)] hover:bg-[var(--primary)]/5',
+                  'dark:hover:before:bg-[var(--primary)] dark:hover:bg-[var(--primary)]/10',
                   // 激活状态
                   activeId === heading.id && [
-                    'before:bg-[#FFB703]',
-                    'before:shadow-[0_0_8px_rgba(255,183,3,0.5)]',
-                    'bg-[#FFB703]/5 dark:bg-[#FFB703]/10',
-                    'text-[#023047] dark:text-[#FFB703] font-medium'
+                    'before:bg-[var(--accent)]',
+                    'before:shadow-[0_0_8px_var(--accent)]',
+                    'bg-[var(--accent)]/5 dark:bg-[var(--accent)]/10',
+                    'text-[var(--text)] font-medium'
                   ],
                   // 未激活状态的文字颜色
-                  activeId !== heading.id && 'text-[#023047]/70 dark:text-[#8ECAE6]/70'
+                  activeId !== heading.id && 'text-[var(--text)]/70'
                 )}
               >
                 <span
@@ -198,9 +198,9 @@ export default function DocsTableOfContents() {
                     heading.level === 2 && 'text-[14px]',
                     heading.level === 3 && 'text-[13px]',
                     // 悬浮状态文字颜色
-                    'group-hover:text-[#8ECAE6] dark:group-hover:text-[#8ECAE6]',
+                    'group-hover:text-[var(--primary)]',
                     // 激活状态覆盖悬浮状态
-                    activeId === heading.id && 'text-[#023047] dark:text-[#FFB703]'
+                    activeId === heading.id && 'text-[var(--text)]'
                   )}
                 >
                   {heading.text}
