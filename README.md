@@ -1,10 +1,10 @@
-# Jade Note
+# Easy Algo
 
 A modern, subscription-based documentation platform that transforms Markdown content into premium reading experiences. Built with Next.js 14 and designed for seamless deployment on Vercel or Cloudflare.
 
 ## Description
 
-Jade Note is a sophisticated documentation platform that offers both free and premium content through a subscription model. It's designed to provide an exceptional reading experience while maintaining simplicity in content management through Markdown.
+Easy Algo is a sophisticated documentation platform that offers both free and premium content through a subscription model. It's designed to provide an exceptional reading experience while maintaining simplicity in content management through Markdown.
 
 ### Key Features
 
