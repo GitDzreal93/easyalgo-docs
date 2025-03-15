@@ -1,10 +1,19 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 
-export default function AuthError({
+export const metadata: Metadata = {
+  title: '认证错误 - Easy Algo',
+  description: '认证过程中出现错误',
+}
+
+export default async function AuthError({
   searchParams,
 }: {
-  searchParams: { error?: string }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
+  const params = await searchParams
+  
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -13,7 +22,7 @@ export default function AuthError({
           <div className="relative w-12 h-12">
             <div className="absolute -inset-0.5 bg-[var(--color-orange)] rounded-lg blur opacity-30"></div>
             <div className="relative flex items-center justify-center w-full h-full bg-white rounded-lg">
-              <img src="/app_logo.png" alt="Easy Algo" className="w-8 h-8" />
+              <Image src="/app_logo.png" alt="Easy Algo" width={32} height={32} />
             </div>
           </div>
         </Link>
@@ -22,7 +31,7 @@ export default function AuthError({
             认证错误
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {searchParams.error || '抱歉，在处理您的认证请求时出现了问题。'}
+            {params.error || '抱歉，在处理您的认证请求时出现了问题。'}
           </p>
         </div>
       </div>

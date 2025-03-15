@@ -82,11 +82,11 @@ const Home = () => {
                         </div>
                         <div className="block">
                           <span className="pl-8" />
-                          <span className="text-[#023047]">def</span> <span className="text-[#FFB703] font-semibold">twoSum</span>(<span className="text-[#023047]">self</span>, nums: <span className="text-[#8ECAE6]">List[int]</span>, target: <span className="text-[#8ECAE6]">int</span>) -> <span className="text-[#8ECAE6]">List[int]</span>:
+                          <span className="text-[#023047]">def</span> <span className="text-[#FFB703] font-semibold">twoSum</span>(<span className="text-[#023047]">self</span>, nums: <span className="text-[#8ECAE6]">List[int]</span>, target: <span className="text-[#8ECAE6]">int</span>) {'->'} <span className="text-[#8ECAE6]">List[int]</span>:
                         </div>
                         <div className="block">
                           <span className="pl-16" />
-                          <span>hash_map = {'{'}{'}'};</span>
+                          <span>hash_map = {'{}'}</span>
                         </div>
                         <div className="block">
                           <span className="pl-16" />

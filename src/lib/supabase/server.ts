@@ -16,14 +16,14 @@ export const createClient = async () => {
         async set(name: string, value: string, options: any) {
           try {
             await cookieStore.set({ name, value, ...options })
-          } catch (error) {
+          } catch {
             // 这里可以添加错误处理逻辑
           }
         },
         async remove(name: string, options: any) {
           try {
             await cookieStore.delete({ name, ...options })
-          } catch (error) {
+          } catch {
             // 这里可以添加错误处理逻辑
           }
         },

@@ -69,11 +69,13 @@ const faqs = [
   },
 ];
 
-export default function PricingPage({ searchParams }: { searchParams: { canceled?: string } }) {
+export default function PricingPage({ searchParams }: { searchParams: Promise<{ canceled?: string }> }) {
   const router = useRouter();
   const { user } = useAuth();
   const { subscription, isLoading } = useSubscription();
-  const canceled = searchParams.canceled;
+  const { use } = require('react');
+  const params = use(searchParams);
+  const canceled = params.canceled;
 
   // 处理免费计划的点击
   const handleFreePlanClick = () => {

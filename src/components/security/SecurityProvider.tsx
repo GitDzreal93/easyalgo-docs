@@ -48,7 +48,7 @@ export function SecurityProvider({ children, config }: SecurityProviderProps) {
     if (!mergedConfig.watermark?.enabled) return;
 
     const watermark = document.createElement('div');
-    const { text, color, fontSize, opacity, rotate, username } = mergedConfig.watermark;
+    const { text, color, fontSize, rotate, username } = mergedConfig.watermark;
 
     // 创建水印文字
     const createWatermarkText = () => {

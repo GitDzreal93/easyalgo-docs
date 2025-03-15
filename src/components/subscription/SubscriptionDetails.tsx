@@ -1,12 +1,10 @@
 'use client';
 
 import { useSubscription } from '@/hooks/useSubscription';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export function SubscriptionDetails() {
   const { subscription, isLoading, error } = useSubscription();
-  const router = useRouter();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

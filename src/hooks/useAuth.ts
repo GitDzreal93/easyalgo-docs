@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { User, Session, AuthChangeEvent, Provider } from '@supabase/supabase-js';
-import { createClient } from '@/lib/supabase/client';
+import { createBrowserClient } from '@supabase/ssr';
 import { useRouter } from 'next/navigation';
 
 interface AuthError {
@@ -12,28 +12,11 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AuthError | null>(null);
-  const supabase = createClient();
   const router = useRouter();
-
-  useEffect(() => {
-    // 获取初始用户状态
-    getUser();
-
-    // 监听认证状态变化
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session: Session | null) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-      if (event === 'SIGNED_IN') {
-        router.refresh();
-      } else if (event === 'SIGNED_OUT') {
-        router.refresh();
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const getUser = async () => {
     try {
@@ -45,6 +28,26 @@ export function useAuth() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        if (event === 'SIGNED_IN') {
+          await getUser();
+          router.refresh();
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          router.refresh();
+        }
+      }
+    );
+
+    getUser();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase.auth, router]);
 
   const getSession = async () => {
     try {

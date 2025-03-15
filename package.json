@@ -26,6 +26,7 @@
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.2.1",
     "@stripe/stripe-js": "^5.10.0",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
     "bytemd": "^1.22.0",
@@ -61,6 +62,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

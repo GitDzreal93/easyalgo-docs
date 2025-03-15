@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { DocNode } from '@/lib/docs';
 import { Search } from 'lucide-react';
@@ -19,7 +19,7 @@ interface SearchResult {
   isParent?: boolean;
 }
 
-export function DocsSearch({ docs }: DocsSearchProps) {
+export function DocsSearch(_docs: DocsSearchProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');

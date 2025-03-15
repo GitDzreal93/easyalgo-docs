@@ -48,7 +48,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google-site-verification-code',
-    baidu: 'baidu-site-verification-code'
+  },
+  other: {
+    'baidu-site-verification': 'baidu-site-verification-code'
   },
   robots: {
     index: true,

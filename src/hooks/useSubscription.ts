@@ -115,7 +115,7 @@ export function useSubscription() {
         setSyncRetries(prev => prev + 1);
       }
     }, 30000), // 30 second delay between calls
-    [fetchSubscription, syncRetries]
+    [fetchSubscription, syncRetries, subscriptionCache]
   );
 
   const syncWithStripe = useCallback((subscriptionId: string) => {
