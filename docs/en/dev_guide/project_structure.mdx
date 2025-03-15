@@ -1,0 +1,61 @@
+# Project Structure
+
+This document explains the organization of the Easy Algo codebase.
+
+## Directory Structure
+
+```
+easyalgo/
+├── src/
+│   ├── app/
+│   │   ├── [locale]/        # Internationalized routes
+│   │   ├── api/            # API routes
+│   │   └── globals.css     # Global styles
+│   ├── components/         # Reusable components
+│   ├── lib/               # Utility functions and libraries
+│   └── styles/            # Component-specific styles
+├── docs/                  # Documentation
+│   ├── en/               # English documentation
+│   └── zh/               # Chinese documentation
+├── public/               # Static assets
+└── tests/                # Test files
+```
+
+## Key Directories
+
+### src/app/[locale]
+
+Contains all the internationalized pages and routes. The `[locale]` parameter supports multiple languages:
+
+- `en`: English content
+- `zh`: Chinese content
+
+### src/components
+
+Reusable React components organized by feature:
+
+- `auth/`: Authentication-related components
+- `docs/`: Documentation components
+- `layout/`: Layout components
+- `ui/`: Common UI components
+
+### src/lib
+
+Utility functions and shared logic:
+
+- `docs.ts`: Documentation handling
+- `auth.ts`: Authentication utilities
+- `api/`: API client functions
+
+## Configuration Files
+
+- `next.config.js`: Next.js configuration
+- `tailwind.config.js`: Tailwind CSS configuration
+- `tsconfig.json`: TypeScript configuration
+
+## Best Practices
+
+1. Keep components small and focused
+2. Use TypeScript for type safety
+3. Follow the established directory structure
+4. Document new components and features 

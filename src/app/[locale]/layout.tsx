@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import dynamic from 'next/dynamic';
+import { NextIntlClientProvider } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { setRequestLocale } from 'next-intl/server';
 
 const ClientLayout = dynamic(() => import('@/components/layout/ClientLayout'));
 
@@ -74,16 +77,36 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
+export default async function RootLayout({
   children,
-}: Readonly<{
+  params
+}: {
   children: React.ReactNode;
-}>) {
+  params: { locale: string };
+}) {
+  const locale = params.locale;
+  
+  // 设置请求的语言环境
+  setRequestLocale(locale);
+
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    notFound();
+  }
+
   return (
-    <html lang="zh">
+    <html lang={locale}>
       <body className={`${geist.className} min-h-screen bg-white flex flex-col`}>
-        <ClientLayout>{children}</ClientLayout>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ClientLayout>{children}</ClientLayout>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
-}
+} 

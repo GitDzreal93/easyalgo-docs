@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { DocumentTextIcon, LightBulbIcon, AcademicCapIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 import { TypedTitle } from '@/components/home/TypedTitle';
+import { useTranslations } from 'next-intl';
 
 export const metadata = {
   title: 'Easy Algo - 让算法学习变得简单有趣',
@@ -14,7 +15,9 @@ export const metadata = {
   },
 };
 
-const Home = () => {
+export default function Home() {
+  const t = useTranslations('home');
+  
   return (
     <>
       {/* Hero Section */}
@@ -43,19 +46,19 @@ const Home = () => {
                     </div>
                   </h1>
                   <p className="mt-6 text-base text-[#023047]/70 sm:mt-8 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-10 md:text-xl lg:mx-0 relative z-10">
-                    通过清晰的图解和实例，让数据结构与算法变得简单有趣。从基础到进阶，助你轻松掌握算法精髓，提升编程能力。
+                    {t('hero.description')}
                   </p>
                   <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                     <div className="rounded-md shadow">
                       <Link href="/docs" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-[#023047] bg-[#FFB703] hover:bg-[#FFB703]/90 transition-all duration-200 md:py-4 md:text-lg md:px-10 group relative overflow-hidden">
-                        <span className="relative z-10">开始学习</span>
+                        <span className="relative z-10">{t('hero.startLearning')}</span>
                         <span className="absolute inset-0 bg-gradient-to-r from-[#FFB703]/0 via-white/20 to-[#FFB703]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></span>
                         <span className="ml-2 w-1.5 h-1.5 bg-[#023047] rounded-full group-hover:animate-ping relative z-10"></span>
                       </Link>
                     </div>
                     <div className="mt-3 sm:mt-0 sm:ml-3">
                       <Link href="/pricing" className="w-full flex items-center justify-center px-8 py-3 border border-[#8ECAE6] text-base font-medium rounded-md text-[#023047] bg-white hover:bg-[#8ECAE6]/10 transition-colors duration-200 md:py-4 md:text-lg md:px-10 group">
-                        会员专属
+                        {t('hero.membershipButton')}
                         <span className="ml-2 w-1.5 h-1.5 border border-[#8ECAE6] rounded-full group-hover:bg-[#8ECAE6] transition-colors duration-200"></span>
                       </Link>
                     </div>
@@ -127,9 +130,9 @@ const Home = () => {
       <div className="bg-[#8ECAE6]/5 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#023047]">热门算法教程</h2>
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#023047]">{t('documents.title')}</h2>
             <p className="mt-4 max-w-2xl text-xl text-[#023047]/70 mx-auto">
-              精心编写的算法教程，让你的学习事半功倍
+              {t('documents.subtitle')}
             </p>
           </div>
 
@@ -142,15 +145,15 @@ const Home = () => {
                     <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">二叉树专题详解</h3>
+                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.binaryTree.title')}</h3>
                     <p className="mt-1 text-sm text-[#023047]/70">
-                      从基础到高级，全面掌握二叉树的各种操作和算法...
+                      {t('documents.cards.binaryTree.description')}
                     </p>
                   </div>
                 </div>
                 <div className="mt-4">
                   <Link href="/docs/binary-tree" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    开始学习
+                    {t('documents.startLearning')}
                     <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -167,15 +170,15 @@ const Home = () => {
                     <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">动态规划入门</h3>
+                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.dp.title')}</h3>
                     <p className="mt-1 text-sm text-[#023047]/70">
-                      图解动态规划的核心思想，从入门到实战...
+                      {t('documents.cards.dp.description')}
                     </p>
                   </div>
                 </div>
                 <div className="mt-4">
                   <Link href="/docs/dynamic-programming" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    开始学习
+                    {t('documents.startLearning')}
                     <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -192,15 +195,15 @@ const Home = () => {
                     <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
                   </div>
                   <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">LeetCode 精选题解</h3>
+                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.leetcode.title')}</h3>
                     <p className="mt-1 text-sm text-[#023047]/70">
-                      精选高频面试算法题，详细解析解题思路...
+                      {t('documents.cards.leetcode.description')}
                     </p>
                   </div>
                 </div>
                 <div className="mt-4">
                   <Link href="/docs/leetcode-solutions" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    开始学习
+                    {t('documents.startLearning')}
                     <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -216,7 +219,7 @@ const Home = () => {
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-[#023047]">为什么选择 Easy Algo？</h2>
+            <h2 className="text-3xl font-extrabold text-[#023047]">{t('features.title')}</h2>
           </div>
 
           <div className="mt-12">
@@ -229,9 +232,9 @@ const Home = () => {
                         <LightBulbIcon className="h-6 w-6 text-white" />
                       </span>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">通俗易懂</h3>
+                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.easy.title')}</h3>
                     <p className="mt-5 text-base text-[#023047]/70">
-                      深入浅出的讲解方式，配合清晰的图解，让复杂的算法变得简单易懂
+                      {t('features.cards.easy.description')}
                     </p>
                   </div>
                 </div>
@@ -245,9 +248,9 @@ const Home = () => {
                         <AcademicCapIcon className="h-6 w-6 text-[#023047]" />
                       </span>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">循序渐进</h3>
+                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.step.title')}</h3>
                     <p className="mt-5 text-base text-[#023047]/70">
-                      从基础到进阶的学习路线，帮助你系统地掌握数据结构与算法
+                      {t('features.cards.step.description')}
                     </p>
                   </div>
                 </div>
@@ -261,9 +264,9 @@ const Home = () => {
                         <CodeBracketIcon className="h-6 w-6 text-white" />
                       </span>
                     </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">实战演练</h3>
+                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.practice.title')}</h3>
                     <p className="mt-5 text-base text-[#023047]/70">
-                      大量实战案例和习题，帮助你快速应用所学知识
+                      {t('features.cards.practice.description')}
                     </p>
                   </div>
                 </div>
@@ -274,6 +277,4 @@ const Home = () => {
       </div>
     </>
   );
-};
-
-export default Home;
+} 

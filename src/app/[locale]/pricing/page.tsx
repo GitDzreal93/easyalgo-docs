@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { StripeCheckoutButton } from '@/components/stripe/StripeCheckoutButton';
+import { useTranslations } from 'next-intl';
 
 interface Plan {
   name: string;
@@ -18,57 +19,6 @@ interface Plan {
   badge?: string;
 }
 
-const plans: Plan[] = [
-  {
-    name: '免费',
-    description: '适合短期学习和体验的用户',
-    price: '¥0',
-    interval: '/永久',
-    features: [
-      '部分免费文档可读',
-    ],
-    cta: '阅读文档',
-    highlighted: false,
-  },
-  {
-    name: '终身会员',
-    description: '一次付费，永久使用',
-    price: '¥999',
-    interval: '/永久',
-    features: [
-      '所有年度会员功能',
-      '永久访问所有内容',
-      '专属技术咨询',
-      '超值优惠价格',
-    ],
-    cta: '立即购买',
-    highlighted: true,
-    badge: '最受欢迎',
-  },
-];
-
-const faqs = [
-  {
-    question: '如何选择合适的会员方案？',
-    answer:
-      '建议根据您的学习计划选择：短期学习选择月度会员，长期学习选择年度会员可享受更多优惠，想要一劳永逸可选择终身会员。',
-  },
-  {
-    question: '可以随时取消订阅吗？',
-    answer:
-      '是的，您可以随时取消订阅。取消后，您仍可以继续使用到当前订阅周期结束。我们不会收取任何额外费用。',
-  },
-  {
-    question: '支持哪些支付方式？',
-    answer: '我们支持支付宝、微信支付等主流支付方式，让您可以方便快捷地完成支付。',
-  },
-  {
-    question: '购买后遇到问题如何联系？',
-    answer:
-      '您可以通过网站底部的联系方式或发送邮件至 support@jadenote.com 联系我们的客服团队，我们会在24小时内回复您的问题。',
-  },
-];
-
 export default function PricingPage({ searchParams }: { searchParams: Promise<{ canceled?: string }> }) {
   const router = useRouter();
   const { user } = useAuth();
@@ -76,6 +26,29 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
   const { use } = require('react');
   const params = use(searchParams);
   const canceled = params.canceled;
+  const t = useTranslations('pricing');
+
+  const plans: Plan[] = [
+    {
+      name: t('plans.basic.name'),
+      description: t('plans.basic.description'),
+      price: t('plans.basic.price.monthly'),
+      interval: t('period'),
+      features: t('plans.basic.features', {}, { returnObjects: true }),
+      cta: t('cta.basic'),
+      highlighted: false,
+    },
+    {
+      name: t('plans.pro.name'),
+      description: t('plans.pro.description'),
+      price: t('plans.pro.price.monthly'),
+      interval: t('period'),
+      features: t('plans.pro.features', {}, { returnObjects: true }),
+      cta: t('cta.pro'),
+      highlighted: true,
+      badge: t('savePercent'),
+    },
+  ];
 
   // 处理免费计划的点击
   const handleFreePlanClick = () => {
@@ -113,7 +86,7 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
           disabled
           className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
         >
-          加载中...
+          {t('common.loading')}
         </button>
       );
     }
@@ -124,7 +97,7 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
           disabled
           className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
         >
-          已是会员
+          {t('common.alreadyMember')}
         </button>
       );
     }
@@ -163,7 +136,7 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
             </div>
             <div className="ml-3">
               <p className="text-sm text-[var(--color-navy)]">
-                支付已取消。如果您有任何疑问，请随时联系我们的客服团队。
+                {t('messages.paymentCanceled')}
               </p>
             </div>
           </div>
@@ -181,12 +154,12 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
             </div>
             <div className="ml-3">
               <p className="text-sm text-[var(--color-navy)]">
-                您已是会员，可以阅读所有课程内容。
+                {t('messages.alreadyMember')}
                 <button 
                   onClick={() => router.push('/docs')}
                   className="ml-2 text-[var(--color-teal)] hover:text-[var(--color-sky)] font-medium transition-colors duration-200"
                 >
-                  立即阅读 →
+                  {t('messages.startReading')} →
                 </button>
               </p>
             </div>
@@ -199,10 +172,10 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold text-[var(--color-navy)] sm:text-5xl sm:tracking-tight lg:text-6xl">
-              简单透明的定价方案
+              {t('title')}
             </h1>
             <p className="mt-5 text-xl text-[var(--color-teal)]">
-              选择最适合您的会员方案，随时享受优质内容
+              {t('subtitle')}
             </p>
           </div>
         </div>
@@ -242,20 +215,17 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
               </div>
               <div className="pt-6 pb-8 px-6">
                 <h3 className="text-xs font-medium text-[var(--color-navy)] tracking-wide uppercase">
-                  包含功能
+                  {t('features')}
                 </h3>
                 <ul className="mt-6 space-y-4">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex space-x-3">
                       <CheckIcon
                         className={`flex-shrink-0 h-5 w-5 ${
-                          plan.highlighted
-                            ? 'text-[var(--color-orange)]'
-                            : 'text-[var(--color-teal)]'
+                          plan.highlighted ? 'text-[var(--color-navy)]' : 'text-[var(--color-teal)]'
                         }`}
-                        aria-hidden="true"
                       />
-                      <span className="text-sm text-[var(--color-navy)] opacity-80">{feature}</span>
+                      <span className="text-sm text-[var(--color-navy)] opacity-90">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -264,27 +234,6 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
           ))}
         </div>
       </div>
-
-      {/* FAQ 区域 */}
-      <div className="bg-[var(--color-sky)] py-16 w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-[var(--color-navy)] text-center mb-12">
-            常见问题
-          </h2>
-          <div className="max-w-3xl mx-auto space-y-6">
-            {faqs.map((faq) => (
-              <div key={faq.question} className="py-4">
-                <h3 className="text-xl font-semibold text-[var(--color-navy)]">
-                  {faq.question}
-                </h3>
-                <p className="mt-3 text-base text-[var(--color-navy)] opacity-90">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </main>
   );
-}
+} 

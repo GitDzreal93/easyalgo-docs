@@ -1,3 +1,5 @@
+const withNextIntl = require('next-intl/plugin')();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -5,6 +7,10 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  // 启用实验性的 App Router 国际化功能
+  experimental: {
+    appDir: true,
+  }
 }
 
-module.exports = nextConfig 
+module.exports = withNextIntl(nextConfig); 

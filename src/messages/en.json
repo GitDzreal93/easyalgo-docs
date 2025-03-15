@@ -1,0 +1,193 @@
+{
+  "auth": {
+    "error": {
+      "title": "Authentication Error",
+      "defaultMessage": "Sorry, there was a problem processing your authentication request.",
+      "tryAgain": "Please try logging in or registering again. If the problem persists, please",
+      "contactSupport": "contact our support team",
+      "loginButton": "Back to Login",
+      "homeButton": "Back to Home"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email Address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "or": "or"
+    },
+    "register": {
+      "title": "Register",
+      "name": "Username",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in",
+      "or": "or"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Making Algorithm Learning Simple and Fun",
+      "description": "Learn data structures and algorithms through clear illustrations and examples. From basics to advanced, master algorithmic thinking effortlessly.",
+      "startLearning": "Start Learning",
+      "membershipButton": "View Membership"
+    },
+    "documents": {
+      "title": "Latest Documents",
+      "subtitle": "Explore our carefully crafted algorithm tutorials and documentation",
+      "startLearning": "Start Learning",
+      "cards": {
+        "binaryTree": {
+          "title": "Binary Tree Guide",
+          "description": "Deep dive into binary tree principles and applications"
+        },
+        "dp": {
+          "title": "Dynamic Programming",
+          "description": "Master the core concepts of dynamic programming"
+        },
+        "leetcode": {
+          "title": "LeetCode Solutions",
+          "description": "Detailed problem analysis and solution approaches"
+        }
+      }
+    },
+    "features": {
+      "title": "Why Choose Easy Algo?",
+      "cards": {
+        "easy": {
+          "title": "Easy to Understand",
+          "description": "Complex algorithms explained in a simple way"
+        },
+        "step": {
+          "title": "Step by Step",
+          "description": "Progress from basics to advanced with a logical learning path"
+        },
+        "practice": {
+          "title": "Hands-on Practice",
+          "description": "Rich exercises to reinforce your learning"
+        }
+      }
+    }
+  },
+  "pricing": {
+    "title": "Membership Plans",
+    "subtitle": "Choose the plan that's right for you",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "savePercent": "Save 20%",
+    "period": "/month",
+    "features": "Features",
+    "messages": {
+      "paymentCanceled": "Payment was canceled. If you have any questions, please contact our support team.",
+      "alreadyMember": "You are already a member and can access all course content.",
+      "startReading": "Start Reading"
+    },
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "description": "Perfect for getting started",
+        "price": {
+          "monthly": "$4.99",
+          "yearly": "$47.99"
+        },
+        "features": [
+          "Basic Algorithm Tutorials",
+          "Online Practice Problems",
+          "Community Discussion",
+          "Basic Solutions"
+        ]
+      },
+      "pro": {
+        "name": "Professional",
+        "description": "For serious learners",
+        "price": {
+          "monthly": "$7.99",
+          "yearly": "$76.99"
+        },
+        "features": [
+          "All Basic Features",
+          "Advanced Tutorials",
+          "Interview Prep",
+          "Premium Solutions"
+        ]
+      }
+    },
+    "cta": {
+      "basic": "Start Free Trial",
+      "pro": "Upgrade to Pro"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "basicInfo": "Basic Information",
+    "name": "Username",
+    "email": "Email",
+    "bio": "Bio",
+    "save": "Save Changes",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "updatePassword": "Update Password",
+    "membershipStatus": "Membership Status",
+    "lifetimeMember": "Lifetime Member",
+    "freeUser": "Free User",
+    "lifetimeMemberMessage": "You are a lifetime member and have permanent access to all content. Thank you for your support!",
+    "upgradeMessage": "Become a lifetime member to unlock all premium features and enjoy a complete learning experience.",
+    "viewPlans": "View Membership Plans",
+    "paymentSuccess": {
+      "title": "Payment Successful!",
+      "message": "Thank you for your purchase! You now have access to all member content."
+    }
+  },
+  "courses": {
+    "title": "Course Center",
+    "subtitle": "Systematic Algorithm Learning Courses",
+    "filter": {
+      "all": "All",
+      "basic": "Basic",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "search": {
+      "placeholder": "Search courses..."
+    },
+    "card": {
+      "lessons": "Lessons",
+      "duration": "Duration",
+      "level": "Level",
+      "students": "Students",
+      "startLearning": "Start Learning",
+      "continue": "Continue"
+    }
+  },
+  "docs": {
+    "title": "Documentation",
+    "search": "Search docs...",
+    "toc": "Table of Contents",
+    "edit": "Edit this page",
+    "lastUpdated": "Last updated",
+    "previous": "Previous",
+    "next": "Next",
+    "feedback": {
+      "title": "Was this page helpful?",
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "search": "Search",
+    "noResults": "No results found",
+    "back": "Back",
+    "alreadyMember": "Already a member"
+  }
+} 

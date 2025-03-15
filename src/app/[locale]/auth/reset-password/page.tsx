@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function ResetPassword() {
   const [email, setEmail] = useState('')
@@ -10,6 +11,7 @@ export default function ResetPassword() {
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
   const supabase = createClient()
+  const t = useTranslations('auth.resetPassword')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -26,7 +28,7 @@ export default function ResetPassword() {
 
       setStatus('success')
     } catch (error: any) {
-      setError(error.message || '发送重置密码邮件时出现错误')
+      setError(error.message || t('error.default'))
       setStatus('error')
     } finally {
       setLoading(false)
@@ -46,10 +48,10 @@ export default function ResetPassword() {
           </div>
         </Link>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--color-navy)]">
-          重置密码
+          {t('title')}
         </h2>
         <p className="mt-2 text-center text-sm text-[var(--color-teal)]">
-          输入您的邮箱地址，我们将向您发送重置密码的链接
+          {t('description')}
         </p>
       </div>
 
@@ -65,17 +67,17 @@ export default function ResetPassword() {
                 </div>
                 <div className="ml-3">
                   <h3 className="text-sm font-medium text-[var(--color-sky)]">
-                    重置密码邮件已发送
+                    {t('success.title')}
                   </h3>
                   <div className="mt-2 text-sm text-[var(--color-teal)]">
-                    <p>请检查您的邮箱，点击邮件中的链接重置密码。</p>
+                    <p>{t('success.message')}</p>
                   </div>
                   <div className="mt-4">
                     <Link
                       href="/auth/login"
                       className="text-sm font-medium text-[var(--color-orange)] hover:text-[var(--color-orange)]/80 transition-colors duration-200"
                     >
-                      返回登录页面 →
+                      {t('success.backToLogin')}
                     </Link>
                   </div>
                 </div>
@@ -102,7 +104,7 @@ export default function ResetPassword() {
               
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-[var(--color-navy)]">
-                  邮箱地址
+                  {t('emailLabel')}
                 </label>
                 <div className="mt-1">
                   <input
@@ -113,7 +115,7 @@ export default function ResetPassword() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
+                    placeholder={t('emailPlaceholder')}
                     className="block w-full rounded-md border border-[var(--color-navy)]/10 px-3 py-2 bg-white text-[var(--color-navy)] placeholder-[var(--color-navy)]/40 focus:border-[var(--color-sky)] focus:ring-[var(--color-sky)] focus:ring-1 focus:outline-none sm:text-sm transition-colors duration-200"
                   />
                 </div>
@@ -134,7 +136,7 @@ export default function ResetPassword() {
                     )}
                   </span>
                   <span className={loading ? 'opacity-0' : 'opacity-100'}>
-                    {loading ? '发送中...' : '发送重置链接'}
+                    {loading ? t('submitting') : t('submitButton')}
                   </span>
                 </button>
               </div>
@@ -144,7 +146,7 @@ export default function ResetPassword() {
                   href="/auth/login"
                   className="font-medium text-[var(--color-sky)] hover:text-[var(--color-sky)]/80 transition-colors duration-200"
                 >
-                  返回登录
+                  {t('backToLogin')}
                 </Link>
               </div>
             </form>
@@ -153,4 +155,4 @@ export default function ResetPassword() {
       </div>
     </div>
   )
-}
+} 

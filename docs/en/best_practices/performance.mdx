@@ -1,0 +1,210 @@
+# Performance Optimization
+
+This guide covers best practices for optimizing the performance of your Easy Algo application.
+
+## React Performance
+
+### Component Optimization
+
+1. **Memoization**
+   - Use `React.memo` for expensive components
+   - Implement `useMemo` for complex calculations
+   - Apply `useCallback` for function props
+
+```typescript
+// Good
+const MemoizedComponent = React.memo(function ExpensiveComponent({ data }) {
+  return <div>{/* Complex rendering */}</div>;
+});
+
+// Also good
+function ParentComponent() {
+  const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+  const memoizedCallback = useCallback(() => doSomething(a, b), [a, b]);
+  
+  return <ChildComponent value={memoizedValue} onClick={memoizedCallback} />;
+}
+```
+
+2. **State Management**
+   - Keep state as local as possible
+   - Use appropriate state management tools
+   - Implement state updates efficiently
+
+```typescript
+// Good
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+}
+
+// Bad
+function Counter() {
+  const [state, setState] = useState({ count: 0, unrelatedData: [] });
+  // Updating unrelated state together
+}
+```
+
+## Data Loading
+
+### API Optimization
+
+1. **Data Fetching**
+   - Implement proper caching strategies
+   - Use pagination for large datasets
+   - Apply debouncing for search inputs
+
+```typescript
+// Good - Using React Query for caching
+function UserList() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['users'],
+    queryFn: fetchUsers,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+// Good - Implementing pagination
+function PaginatedList() {
+  const [page, setPage] = useState(1);
+  const { data } = useQuery(['items', page], () => fetchPage(page));
+}
+```
+
+2. **Error Handling**
+   - Implement proper error boundaries
+   - Add retry mechanisms
+   - Show loading states
+
+```typescript
+// Good
+function DataComponent() {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['data'],
+    queryFn: fetchData,
+    retry: 3,
+    retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage error={error} />;
+  return <DataDisplay data={data} />;
+}
+```
+
+## Image Optimization
+
+### Best Practices
+
+1. **Image Loading**
+   - Use next/image for automatic optimization
+   - Implement lazy loading
+   - Choose appropriate image formats
+
+```typescript
+// Good
+import Image from 'next/image';
+
+function OptimizedImage() {
+  return (
+    <Image
+      src="/large-image.jpg"
+      alt="Description"
+      width={800}
+      height={600}
+      loading="lazy"
+      placeholder="blur"
+    />
+  );
+}
+```
+
+2. **Responsive Images**
+   - Use appropriate sizes
+   - Implement srcset for different viewports
+   - Optimize for mobile devices
+
+## Code Splitting
+
+### Implementation
+
+1. **Dynamic Imports**
+   - Use dynamic imports for large components
+   - Implement route-based code splitting
+   - Lazy load non-critical components
+
+```typescript
+// Good
+const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
+  loading: () => <LoadingSpinner />,
+  ssr: false,
+});
+
+// Good - Lazy loading based on viewport
+const InViewComponent = dynamic(() => import('./InViewComponent'), {
+  loading: () => <LoadingPlaceholder />,
+});
+```
+
+2. **Bundle Analysis**
+   - Regularly analyze bundle size
+   - Remove unused dependencies
+   - Optimize import statements
+
+## Monitoring
+
+### Performance Metrics
+
+1. **Key Metrics**
+   - First Contentful Paint (FCP)
+   - Largest Contentful Paint (LCP)
+   - Time to Interactive (TTI)
+   - Cumulative Layout Shift (CLS)
+
+2. **Tools**
+   - Use Lighthouse for audits
+   - Implement Real User Monitoring (RUM)
+   - Monitor Core Web Vitals
+
+```typescript
+// Example of performance monitoring
+export function PerformanceMonitor() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Monitor LCP
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        console.log('LCP:', lastEntry.startTime);
+      }).observe({ entryTypes: ['largest-contentful-paint'] });
+    }
+  }, []);
+  
+  return null;
+}
+```
+
+## Caching Strategy
+
+### Implementation
+
+1. **Browser Caching**
+   - Set appropriate cache headers
+   - Implement service workers
+   - Use local storage efficiently
+
+2. **API Caching**
+   - Cache API responses
+   - Implement stale-while-revalidate
+   - Use appropriate cache invalidation
+
+```typescript
+// Good - Implementing SWR pattern
+function DataComponent() {
+  const { data } = useSWR('/api/data', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: 60000, // Refresh every minute
+  });
+}
+``` 

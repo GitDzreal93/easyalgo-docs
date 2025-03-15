@@ -19,6 +19,7 @@ export interface DocNode {
 }
 
 export interface PageParams {
+  locale: string;
   slug: string | string[];
 }
 
@@ -66,14 +67,19 @@ export async function getSlugFromParams(params: any): Promise<string> {
   }
 }
 
-export const getDocsData = cache(async () => {
+export const getDocsData = cache(async (locale: string = 'zh') => {
   try {
-    console.log('开始加载文档数据...');
-    const docsPath = path.join(process.cwd(), 'docs', 'docs.json');
+    console.log('开始加载文档数据...', { locale });
+    const docsPath = path.join(process.cwd(), 'docs', locale, 'docs.json');
     console.log('文档路径:', docsPath);
     
     if (!fs.existsSync(docsPath)) {
       console.error('docs.json 文件不存在:', docsPath);
+      // 如果当前语言的文档不存在，尝试使用默认语言（中文）
+      if (locale !== 'zh') {
+        console.log('尝试加载默认语言（中文）文档');
+        return getDocsData('zh');
+      }
       return [];
     }
     
@@ -107,7 +113,7 @@ export const getDocsData = cache(async () => {
   }
 });
 
-export const getDocContent = cache(async (filename: string) => {
+export const getDocContent = cache(async (filename: string, locale: string = 'zh') => {
   try {
     if (!filename) {
       console.error('文件名为空');
@@ -116,36 +122,30 @@ export const getDocContent = cache(async (filename: string) => {
 
     // 规范化文件名
     const normalizedFilename = filename.replace(/^\/+|\/+$/g, '');
-    const docsDir = path.join(process.cwd(), 'docs');
+    const docsDir = path.join(process.cwd(), 'docs', locale);
     const filePath = path.join(docsDir, normalizedFilename);
 
     console.log('尝试读取文件:', {
       originalFilename: filename,
       normalizedFilename,
+      locale,
       docsDir,
       fullPath: filePath
     });
 
     // 检查文件是否存在
     if (!fs.existsSync(filePath)) {
-      // 列出 docs 目录下的所有 .mdx 文件
-      const allFiles = fs.readdirSync(docsDir, { recursive: true })
-        .filter((f): f is string => typeof f === 'string');
-      
-      const allMdxFiles = allFiles
-        .filter(f => f.endsWith('.mdx'))
-        .map(f => ({
-          relativePath: path.relative(docsDir, path.join(docsDir, f)),
-          fullPath: path.join(docsDir, f)
-        }));
+      // 如果当前语言的文档不存在，尝试使用默认语言（中文）
+      if (locale !== 'zh') {
+        console.log('文档在当前语言中不存在，尝试加载默认语言（中文）版本');
+        return getDocContent(filename, 'zh');
+      }
 
       console.error('文件不存在:', {
         originalFilename: filename,
         normalizedFilename,
         fullPath: filePath,
-        docsDir,
-        allFiles,
-        mdxFiles: allMdxFiles
+        docsDir
       });
       return null;
     }
@@ -159,7 +159,6 @@ export const getDocContent = cache(async (filename: string) => {
     });
     
     // 对 MDX 内容进行预处理，确保其能正确渲染
-    // 处理代码块的格式，确保可以正确识别语言
     const processedSource = source
       // 确保代码块的格式正确，如果没有指定语言，则添加空语言标识符
       .replace(/```(\s*)(\n|\r\n)/g, '```text$2')
@@ -174,7 +173,6 @@ export const getDocContent = cache(async (filename: string) => {
       firstLine: processedSource.split('\n')[0]
     });
     
-    // 返回处理后的 MDX 内容
     return processedSource;
   } catch (error) {
     console.error('读取文档内容错误:', {
@@ -189,9 +187,9 @@ export const getDocContent = cache(async (filename: string) => {
   }
 });
 
-export const findDocBySlug = cache(async (slug: string) => {
-  console.log('开始根据 slug 查找文档:', slug);
-  const docs = await getDocsData();
+export const findDocBySlug = cache(async (slug: string, locale: string = 'zh') => {
+  console.log('开始根据 slug 查找文档:', { slug, locale });
+  const docs = await getDocsData(locale);
   console.log('获取到文档数据:', docs.map(d => ({
     title: d.title,
     slug: d.slug,
@@ -229,76 +227,21 @@ export const findDocBySlug = cache(async (slug: string) => {
 
       // 如果是父节点，检查其子节点
       if (node.children && node.children.length > 0) {
-        console.log('检查子节点:', {
-          parentTitle: node.title,
-          parentSlug: normalizedNodeSlug,
-          childrenCount: node.children.length,
-          children: node.children.map(c => ({
-            title: c.title,
-            slug: c.slug.replace(/^\/+|\/+$/g, ''),
-            filename: c.filename
-          }))
-        });
-        
-        // 检查目标是否是当前节点的子节点
-        const isChildOfCurrent = targetSlug.startsWith(normalizedNodeSlug + '/');
-        if (isChildOfCurrent) {
-          console.log('目标是当前节点的子节点:', {
-            parentSlug: normalizedNodeSlug,
-            targetSlug: targetSlug
-          });
-          
-          // 在子节点中查找目标文档
-          for (const child of node.children) {
-            const normalizedChildSlug = child.slug.replace(/^\/+|\/+$/g, '');
-            if (normalizedChildSlug === targetSlug) {
-              console.log('在子节点中找到文档:', {
-                parentTitle: node.title,
-                childTitle: child.title,
-                childSlug: child.slug,
-                childFilename: child.filename
-              });
-              return child;
-            }
-          }
-        }
-        
-        // 如果没有直接匹配，继续递归查找
-        const found = findDoc(node.children, targetSlug);
-        if (found) {
-          console.log('在子节点中找到文档:', {
-            parentTitle: node.title,
-            childTitle: found.title,
-            childSlug: found.slug,
-            childFilename: found.filename
-          });
-          return found;
+        const childDoc = findDoc(node.children, targetSlug);
+        if (childDoc) {
+          return childDoc;
         }
       }
     }
-
     return null;
   };
-
-  const result = findDoc(docs, normalizedTargetSlug);
-  if (!result) {
-    console.log('未找到文档:', {
-      originalSlug: slug,
-      normalizedSlug: normalizedTargetSlug,
-      availableSlugs: docs.flatMap(d => [
-        { title: d.title, slug: d.slug, filename: d.filename },
-        ...(d.children?.map(c => ({ title: c.title, slug: c.slug, filename: c.filename })) || [])
-      ])
-    });
-  } else {
-    console.log('找到文档:', {
-      title: result.title,
-      slug: result.slug,
-      filename: result.filename,
-      path: result.filename.replace(/^\/+|\/+$/g, ''),
-      hasChildren: result.children?.length > 0
-    });
+  
+  const doc = findDoc(docs, normalizedTargetSlug);
+  
+  if (!doc && locale !== 'zh') {
+    console.log('在当前语言中未找到文档，尝试在默认语言（中文）中查找');
+    return findDocBySlug(slug, 'zh');
   }
   
-  return result;
+  return doc;
 });
