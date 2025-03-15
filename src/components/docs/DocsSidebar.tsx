@@ -48,10 +48,6 @@ const DocLink = ({ doc, isActive, depth = 0 }: { doc: DocNode; isActive: boolean
   );
 };
 
-const SidebarItem = ({ doc, _isActive }: { doc: DocNode; isActive?: boolean }) => {
-  // ... existing code ...
-};
-
 export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
   const pathname = usePathname();
   console.log('当前路径:', pathname);

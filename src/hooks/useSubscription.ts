@@ -157,7 +157,7 @@ export function useSubscription() {
     if (subscription?.stripe_subscription_id) {
       // Add a delay before first sync
       timeoutId = setTimeout(() => {
-        syncWithStripe(subscription.stripe_subscription_id);
+        syncWithStripe(subscription.stripe_subscription_id!);
       }, 1000);
     }
 

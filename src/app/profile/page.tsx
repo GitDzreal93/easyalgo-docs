@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 
-export default function ProfilePage() {
+function ProfileContent() {
   const { user, loading: authLoading, error: authError, getSession } = useAuth();
   const { subscription } = useSubscription();  // 只用来判断是否已付费
   const router = useRouter();
@@ -149,5 +149,13 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense>
+      <ProfileContent />
+    </Suspense>
   );
 } 

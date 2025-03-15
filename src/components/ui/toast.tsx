@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { CheckCircleIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
 // Toast Types
-type ToastType = 'success' | 'error';
+type ToastType = 'success' | 'error' | 'loading';
 
 // Toast Props Interface
 interface ToastProps {
@@ -44,6 +44,8 @@ const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000, onClose }
         return 'bg-green-100 border-green-500 text-green-800';
       case 'error':
         return 'bg-red-100 border-red-500 text-red-800';
+      case 'loading':
+        return 'bg-gray-100 border-gray-500 text-gray-800';
       default:
         return 'bg-gray-100 border-gray-500 text-gray-800';
     }
@@ -55,6 +57,8 @@ const Toast: React.FC<ToastProps> = ({ message, type, duration = 3000, onClose }
         return <CheckCircleIcon className="w-5 h-5 text-green-600" />;
       case 'error':
         return <XCircleIcon className="w-5 h-5 text-red-600" />;
+      case 'loading':
+        return null;
       default:
         return null;
     }
@@ -119,30 +123,39 @@ export const useToast = () => {
   return context;
 };
 
-// Helper function to create a toast without using context
+// 存储所有活动的 toast
+const activeToasts = new Map<string, HTMLDivElement>();
+
 const createToastElement = (
   message: string, 
   type: ToastType, 
   duration?: number
-) => {
-  // This ensures the toast component can be rendered on the client-side
-  if (typeof window === 'undefined') return;
+): string => {
+  // 生成唯一的 toast ID
+  const toastId = Math.random().toString(36).substring(2, 9);
   
-  // Create a temporary div to render the toast
+  // 创建一个临时 div 来渲染 toast
   const div = document.createElement('div');
   document.body.appendChild(div);
   
-  // Create React root
+  // 存储 div 引用
+  activeToasts.set(toastId, div);
+  
+  // 创建 React root
   const root = createRoot(div);
   
   const removeToast = () => {
-    // Unmount component
+    // 从 Map 中移除
+    activeToasts.delete(toastId);
+    // 卸载组件
     root.unmount();
-    // Remove div from DOM
-    document.body.removeChild(div);
+    // 从 DOM 中移除
+    if (document.body.contains(div)) {
+      document.body.removeChild(div);
+    }
   };
   
-  // Render toast component
+  // 渲染 toast 组件
   root.render(
     <Toast 
       message={message} 
@@ -151,13 +164,38 @@ const createToastElement = (
       onClose={removeToast} 
     />
   );
+
+  return toastId;
 };
 
-// Export functions for direct usage
+// 导出函数供直接使用
 export const showSuccessToast = (message: string, duration?: number) => {
-  createToastElement(message, 'success', duration);
+  return createToastElement(message, 'success', duration);
 };
 
 export const showErrorToast = (message: string, duration?: number) => {
-  createToastElement(message, 'error', duration);
+  return createToastElement(message, 'error', duration);
+};
+
+export const showLoadingToast = (message: string, duration?: number) => {
+  return createToastElement(message, 'loading', duration);
+};
+
+export const hideToast = (toastId?: string) => {
+  if (toastId) {
+    // 隐藏特定的 toast
+    const div = activeToasts.get(toastId);
+    if (div && document.body.contains(div)) {
+      document.body.removeChild(div);
+      activeToasts.delete(toastId);
+    }
+  } else {
+    // 隐藏所有 toast
+    activeToasts.forEach((div) => {
+      if (document.body.contains(div)) {
+        document.body.removeChild(div);
+      }
+    });
+    activeToasts.clear();
+  }
 };
