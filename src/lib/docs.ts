@@ -67,12 +67,13 @@ export async function getSlugFromParams(params: any): Promise<string> {
   }
 }
 
-export const getDocsData = cache(async (locale: string = 'zh') => {
+export const getDocsData = cache(async (locale: string = 'zh'): Promise<DocNode[]> => {
   try {
     console.log('开始加载文档数据...', { locale });
     const docsPath = path.join(process.cwd(), 'docs', locale, 'docs.json');
     console.log('文档路径:', docsPath);
     
+    // 检查文件是否存在
     if (!fs.existsSync(docsPath)) {
       console.error('docs.json 文件不存在:', docsPath);
       // 如果当前语言的文档不存在，尝试使用默认语言（中文）
@@ -80,40 +81,69 @@ export const getDocsData = cache(async (locale: string = 'zh') => {
         console.log('尝试加载默认语言（中文）文档');
         return getDocsData('zh');
       }
+      console.log('返回空数组，因为文档不存在');
       return [];
     }
     
+    // 读取文件内容
+    console.log('开始读取文件内容...');
     const data = await readFile(docsPath, 'utf8');
-    console.log('成功读取 docs.json 文件');
+    console.log('成功读取 docs.json 文件，内容长度:', data.length);
     
-    if (!data) {
+    if (!data || data.trim().length === 0) {
       console.error('docs.json 文件为空');
       return [];
     }
     
+    // 解析 JSON
     try {
       console.log('开始解析 docs.json 数据...');
-      const docs = JSON.parse(data) as DocNode[];
+      const docs = JSON.parse(data);
       
+      // 验证数据结构
       if (!Array.isArray(docs)) {
         console.error('无效的 docs.json 格式: 根节点必须是数组');
         return [];
       }
       
-      console.log('文档数据解析成功，文档数量:', docs.length);
-      // Ensure docs are properly sorted by position at the root level
-      return docs.sort((a, b) => a.position - b.position);
+      // 验证每个文档对象的必要字段
+      const validDocs = docs.filter(doc => {
+        const isValid = doc && 
+          typeof doc === 'object' && 
+          typeof doc.title === 'string' && 
+          typeof doc.node_token === 'string' && 
+          typeof doc.slug === 'string';
+        
+        if (!isValid) {
+          console.error('发现无效的文档对象:', doc);
+        }
+        return isValid;
+      });
+      
+      console.log('文档数据解析成功，有效文档数量:', validDocs.length);
+      
+      // 确保所有文档都有正确的 position 字段
+      const docsWithPosition = validDocs.map((doc, index) => ({
+        ...doc,
+        position: typeof doc.position === 'number' ? doc.position : index
+      }));
+      
+      // 按 position 排序
+      const sortedDocs = docsWithPosition.sort((a, b) => a.position - b.position);
+      console.log('文档排序完成，返回结果');
+      
+      return sortedDocs;
     } catch (parseError) {
       console.error('解析 docs.json 时出错:', parseError);
-      return [];
+      throw new Error(`解析文档数据失败: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
     }
   } catch (error) {
-    console.error('Error loading docs data:', error);
-    return [];
+    console.error('加载文档数据时出错:', error);
+    throw error; // 重新抛出错误，让上层处理
   }
 });
 
-export const getDocContent = cache(async (filename: string, locale: string = 'zh') => {
+export const getDocContent = cache(async (filename: string, locale: string = 'zh'): Promise<string | null> => {
   try {
     if (!filename) {
       console.error('文件名为空');
@@ -187,13 +217,13 @@ export const getDocContent = cache(async (filename: string, locale: string = 'zh
   }
 });
 
-export const findDocBySlug = cache(async (slug: string, locale: string = 'zh') => {
+export const findDocBySlug = cache(async (slug: string, locale: string = 'zh'): Promise<DocNode | null> => {
   console.log('开始根据 slug 查找文档:', { slug, locale });
   const docs = await getDocsData(locale);
-  console.log('获取到文档数据:', docs.map(d => ({
+  console.log('获取到文档数据:', docs.map((d: DocNode) => ({
     title: d.title,
     slug: d.slug,
-    children: d.children?.map(c => ({ title: c.title, slug: c.slug }))
+    children: d.children?.map((c: DocNode) => ({ title: c.title, slug: c.slug }))
   })));
   
   // 规范化输入的 slug
