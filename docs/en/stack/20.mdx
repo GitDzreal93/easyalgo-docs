@@ -1,0 +1,151 @@
+---
+title: 20. Valid Parentheses
+description: Use a stack data structure to validate if parentheses are properly matched and closed in the correct order.
+date: 2024-03-14
+tag: ["Easy", "Stack"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+3. Every close bracket has a corresponding open bracket of the same type.
+
+**Example 1:**
+```
+Input: s = "()"
+Output: true
+```
+
+**Example 2:**
+```
+Input: s = "()[]{}"
+Output: true
+```
+
+**Example 3:**
+```
+Input: s = "(]"
+Output: false
+```
+
+**Constraints:**
+```
+1 <= s.length <= 10^4
+s consists of parentheses only '()[]{}'
+```
+
+## Solution
+**Problem Simplified:**
+
+Imagine you're playing a matching game with brackets. Given a string like `()[]{}`, your task is to ensure all brackets are correctly paired up. It's similar to a card matching game where each opening bracket needs its matching closing bracket of the same type. For example, '(' pairs with ')', '[' pairs with ']', and '{' pairs with '}'. The tricky part is that the brackets must follow a strict order - just like Russian nesting dolls, where the last bracket you open must be the first one you close.
+
+**Edge Cases and Test Cases:**
+
+*   Empty string: `""`, Expected output: `true`
+*   Single opening bracket: `"("`, Expected output: `false`
+*   Single closing bracket: `")"`, Expected output: `false`
+*   Single type of brackets: `"((()))"`, Expected output: `true`
+*   Mixed brackets: `"(){}[]"`, Expected output: `true`
+*   Wrong order: `"(]"`, Expected output: `false`
+*   Incorrectly nested: `"([)]"`, Expected output: `false`
+*   Long string: `"()".repeat(5000)`, Expected output: `true`
+
+**Test Cases:**
+
+| Input (s)    | Expected Output |
+| :----------- | :-------------- |
+| `""`         | `true`          |
+| `"("`        | `false`         |
+| `")"`        | `false`         |
+| `"()"`       | `true`          |
+| `"()[]{}"`   | `true`          |
+| `"(]"`       | `false`         |
+| `"([)]"`     | `false`         |
+| `"{[]}"`     | `true`          |
+| `"()".repeat(5000)` | `true`          |
+
+**Solution Analysis:**
+
+| Approach   | Pros                                  | Cons                                | Time Complexity | Space Complexity |
+| :--------- | :------------------------------------ | :---------------------------------- | :-------------- | :--------------- |
+| Stack      | Easy to understand, clean code         | Requires extra stack space          | O(n)            | O(n)            |
+| Replace    | Intuitive, straightforward            | Less efficient, multiple iterations | O(n^2)          | O(1)            |
+| Recursion  | Clean code, follows natural intuition | Less efficient, risk of stack overflow | O(n^2)          | O(n)            |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: Indicates how the execution time increases with input size. O(n) represents linear growth (doubles when input doubles), while O(n^2) shows quadratic growth (quadruples when input doubles).
+    *   Space Complexity: Shows how memory usage scales with input size. O(n) means memory needs grow linearly with input, while O(1) indicates constant memory usage regardless of input size.
+
+*   **Recommended Approach:** Stack. It offers the best balance between readability and efficiency.
+
+**Python Implementation:**
+
+**Version 1: With Detailed Comments**
+
+```python
+def isValid(s: str) -> bool:
+    """
+    Determines if a string of parentheses is valid.
+
+    Args:
+        s: A string containing only parentheses.
+
+    Returns:
+        True if the parentheses are valid, False otherwise.
+    """
+    # Initialize an empty stack to store opening brackets
+    stack = []
+    
+    # Create a mapping of closing to opening brackets
+    mapping = {")": "(", "}": "{", "]": "["}
+    
+    # Iterate through each character in the string
+    for char in s:
+        # If it's a closing bracket
+        if char in mapping:
+            # Pop the top element if stack isn't empty, else use dummy value "#"
+            top_element = stack.pop() if stack else "#"
+            # If the popped element doesn't match the current closing bracket, return False
+            if mapping[char] != top_element:
+                return False
+        else:
+            # If it's an opening bracket, push it onto the stack
+            stack.append(char)
+    
+    # Return True if stack is empty (all brackets matched)
+    return not stack
+
+# Code Execution Flow:
+# 1. Initialize empty stack and bracket mapping dictionary.
+# 2. Iterate through input string s.
+# 3. For closing brackets, try to pop from stack.
+#    - If stack empty, use "#" as placeholder.
+#    - Check if popped element matches current closing bracket. If not, return False.
+# 4. For opening brackets, push onto stack.
+# 5. After iteration, return True if stack empty, False otherwise.
+```
+
+**Version 2: Clean Code**
+
+```python
+def isValid(s: str) -> bool:
+    stack = []
+    mapping = {")": "(", "}": "{", "]": "["}
+    for char in s:
+        if char in mapping:
+            top_element = stack.pop() if stack else "#"
+            if mapping[char] != top_element:
+                return False
+        else:
+            stack.append(char)
+    return not stack
+```

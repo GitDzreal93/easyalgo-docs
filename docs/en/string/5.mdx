@@ -1,0 +1,160 @@
+---
+title: 5. Longest Palindromic Substring
+description: Find the longest palindromic substring in a given string using center expansion or dynamic programming methods.
+date: 2024-03-14
+tag: [Medium, String]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+
+Given a string `s`, find the longest palindromic substring in `s`.
+
+A string is called a palindrome when it reads the same backward as forward.
+
+**Example 1**:
+```
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+```
+
+**Example 2**:
+```
+Input: s = "cbbd"
+Output: "bb"
+```
+
+**Constraints:**
+```
+1 <= s.length <= 1000
+s consists only of digits and English letters
+```
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have a string of characters, and you need to find the longest segment that reads the same forwards and backwards (a palindrome). For example, "aba" is a palindrome because it reads the same in both directions, while "abc" is not. Your task is to find the longest such palindrome within the given string.
+
+**Edge Cases and Test Cases:**
+
+* Empty string: `s = ""`, Result: `""`
+* Single character: `s = "a"`, Result: `"a"`
+* All same characters: `s = "aaaa"`, Result: `"aaaa"`
+* General case: `s = "babad"`, Result: `"bab"` or `"aba"`
+* Longer string: `s = "cbbd"`, Result: `"bb"`
+
+**Solution Analysis:**
+
+| Approach | Pros | Cons | Time Complexity | Space Complexity |
+| -------- | ---- | ---- | --------------- | ---------------- |
+| Brute Force | Simple and straightforward | Low efficiency, lots of repeated calculations | O(n³) | O(1) |
+| Center Expansion | Efficient, clear logic | Need to handle odd and even length cases | O(n²) | O(1) |
+| Dynamic Programming | Efficient, avoids repeated calculations | Requires extra space for state storage | O(n²) | O(n²) |
+| Manacher's Algorithm | Most efficient, linear time complexity | Complex implementation, harder to understand | O(n) | O(n) |
+
+* **Complexity Analysis:**
+  * Time Complexity: Evaluates how execution time grows with input size. For example, O(n) indicates linear growth, O(n²) indicates quadratic growth.
+  * Space Complexity: Evaluates how additional memory usage grows with input size.
+
+* **Recommended Approach:**
+
+  Center Expansion method. It's relatively easy to understand and implement, and efficient enough for interviews.
+
+**Python Implementation:**
+
+**Version 1: With Detailed Comments**
+
+```python
+def longestPalindrome(s: str) -> str:
+    """
+    Find the longest palindromic substring in string s.
+
+    Args:
+        s: Input string.
+
+    Returns:
+        The longest palindromic substring.
+    """
+
+    def expandAroundCenter(s, left, right):
+        """
+        Expand around center to find palindrome.
+
+        Args:
+            s: String.
+            left: Left pointer.
+            right: Right pointer.
+
+        Returns:
+            Length of palindrome.
+        """
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1  # Return palindrome length
+
+    if not s:  # Edge case: empty string
+        return ""
+
+    start = 0  # Start position of longest palindrome
+    max_len = 0  # Length of longest palindrome
+
+    for i in range(len(s)):
+        # Find odd length palindrome with i as center
+        len1 = expandAroundCenter(s, i, i)
+        # Find even length palindrome with i and i+1 as center
+        len2 = expandAroundCenter(s, i, i + 1)
+        length = max(len1, len2)
+
+        if length > max_len:
+            max_len = length
+            start = i - (length - 1) // 2
+
+    return s[start:start + max_len]  # Return longest palindrome
+
+
+# Code execution process:
+# For s = "babad":
+# 1. Iterate through string s
+# 2. For i = 0: expandAroundCenter(s, 0, 0) returns 1, expandAroundCenter(s, 0, 1) returns 1, length = 1, max_len = 1, start = 0
+# 3. For i = 1: expandAroundCenter(s, 1, 1) returns 3, expandAroundCenter(s, 1, 2) returns 2, length = 3, max_len = 3, start = 0
+# 4. For i = 2: expandAroundCenter(s, 2, 2) returns 1, expandAroundCenter(s, 2, 3) returns 1, length = 1
+# 5. For i = 3: expandAroundCenter(s, 3, 3) returns 3, expandAroundCenter(s, 3, 4) returns 2, length = 3
+# 6. For i = 4: expandAroundCenter(s, 4, 4) returns 1, expandAroundCenter(s, 4, 5) returns 0, length = 1
+# 7. Return s[0:3] = "bab"
+```
+
+**Version 2: Clean Code**
+
+```python
+def longestPalindrome(s: str) -> str:
+    def expandAroundCenter(s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1
+
+    if not s:
+        return ""
+
+    start = 0
+    max_len = 0
+
+    for i in range(len(s)):
+        len1 = expandAroundCenter(s, i, i)
+        len2 = expandAroundCenter(s, i, i + 1)
+        length = max(len1, len2)
+
+        if length > max_len:
+            max_len = length
+            start = i - (length - 1) // 2
+
+    return s[start:start + max_len]
+```
+
+I hope this explanation helps you understand the problem and its solution!

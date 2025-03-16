@@ -1,0 +1,200 @@
+---
+title: 3. Longest Substring Without Repeating Characters
+description: Find the length of the longest substring without repeating characters in a given string.
+date: 2024-03-14
+tag: ["Medium", "String"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+
+Given a string s, find the length of the longest substring without repeating characters.
+
+**Example 1:**
+```
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The longest substring without repeating characters is "abc", which has length 3.
+```
+
+**Example 2:**
+```
+Input: s = "bbbbb"
+Output: 1
+Explanation: The longest substring without repeating characters is "b", which has length 1.
+```
+
+**Example 3:**
+```
+Input: s = "pwwkew"
+Output: 3
+Explanation: The longest substring without repeating characters is "wke", which has length 3.
+Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
+```
+
+**Constraints:**
+```
+0 <= s.length <= 5 * 10^4
+s consists of English letters, digits, symbols and spaces
+```
+
+## Solution
+
+Let's solve this problem of finding the longest substring without repeating characters.
+
+**Problem Simplified:**
+
+Imagine you have a string and you need to find the longest continuous sequence of characters where no character appears more than once. For example, in the string "abcabcbb", the longest substring without repeating characters is "abc" with a length of 3.
+
+**Edge Cases and Test Cases:**
+
+*   **Edge Cases:**
+    *   Empty string "" -> 0
+    *   Single character "a" -> 1
+    *   All repeating characters "bbbbb" -> 1
+    *   No repeating characters "abcdefg" -> 7
+
+*   **Test Cases:**
+
+    | Input (s) | Output | Explanation |
+    |---|---|---|
+    | `"abcabcbb"` | `3` | Longest substring "abc" |
+    | `"bbbbb"` | `1` | Longest substring "b" |
+    | `"pwwkew"` | `3` | Longest substring "wke" |
+    | `""` | `0` | Empty string |
+    | `"abcdefg"` | `7` | Entire string |
+
+**Solution Analysis:**
+
+| Approach | Pros | Cons | Time Complexity | Space Complexity |
+|---|---|---|---|---|
+| Brute Force | Simple and straightforward | Inefficient | O(n^2) | O(1) |
+| Sliding Window | Efficient, single pass | Requires extra space | O(n) | O(k) |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: Indicates how the execution time increases with input size. O(n) represents linear growth, while O(n^2) shows quadratic growth.
+    *   Space Complexity: Shows how memory usage scales with input size. k represents the size of the character set.
+
+*   **Recommended Approach:**
+
+    Sliding Window. It offers significant advantages in time complexity and is relatively simple to implement.
+
+**Python Implementation:**
+
+*   **Version 1: With Detailed Comments**
+
+```python
+def length_of_longest_substring(s):
+    """
+    Find the length of the longest substring without repeating characters.
+
+    Args:
+        s: Input string.
+
+    Returns:
+        Length of the longest substring without repeating characters.
+    """
+    if not s:  # Handle empty string
+        return 0
+
+    char_index = {}  # Dictionary to store the last position of each character
+    max_length = 0  # Length of the longest substring
+    start = 0  # Start position of sliding window
+
+    for end, char in enumerate(s):
+        # If character is already in window, update start position
+        if char in char_index and char_index[char] >= start:
+            start = char_index[char] + 1
+        else:
+            # Update longest substring length
+            max_length = max(max_length, end - start + 1)
+
+        # Update character's latest position
+        char_index[char] = end
+
+    return max_length
+
+## Test Case
+s = "abcabcbb"
+result = length_of_longest_substring(s)
+print(result)  # Output: 3
+```
+
+*   **Version 2: Clean Code**
+
+```python
+def length_of_longest_substring(s):
+    if not s:
+        return 0
+    char_index = {}
+    max_length = 0
+    start = 0
+    for end, char in enumerate(s):
+        if char in char_index and char_index[char] >= start:
+            start = char_index[char] + 1
+        else:
+            max_length = max(max_length, end - start + 1)
+        char_index[char] = end
+    return max_length
+```
+
+**Detailed Code Execution Process:**
+
+Let's walk through an example with input `s = "abcabcbb":`
+
+1.  Initialization:
+    *   `char_index = {}` (empty dictionary)
+    *   `max_length = 0`
+    *   `start = 0`
+
+2.  String Traversal:
+    *   `a`: Position 0, add to dict `{a: 0}`, length 1
+    *   `b`: Position 1, add to dict `{a: 0, b: 1}`, length 2
+    *   `c`: Position 2, add to dict `{a: 0, b: 1, c: 2}`, length 3
+    *   `a`: Position 3, duplicate found, move start to 1, update `{a: 3, b: 1, c: 2}`
+    *   `b`: Position 4, duplicate found, move start to 2, update `{a: 3, b: 4, c: 2}`
+    *   `c`: Position 5, duplicate found, move start to 3, update `{a: 3, b: 4, c: 5}`
+    *   `b`: Position 6, duplicate found, move start to 5, update `{a: 3, b: 6, c: 5}`
+    *   `b`: Position 7, duplicate found, move start to 7, update `{a: 3, b: 7, c: 5}`
+
+3.  Final Result:
+    *   The longest substring without repeating characters is "abc" with length 3
+
+**Time and Space Complexity Analysis:**
+
+*   Time Complexity: O(n)
+    *   We traverse the string once, where n is the length of the string
+    *   Each character is processed exactly once
+
+*   Space Complexity: O(k)
+    *   k is the size of the character set
+    *   In the worst case, we need to store all unique characters in the hash map
+    *   For ASCII characters, k ≤ 128
+    *   For Unicode characters, k could be much larger
+
+**Key Points to Remember:**
+
+1.  The sliding window technique is essential for this problem
+2.  Using a hash map to store character positions improves efficiency
+3.  Always update the start pointer when encountering duplicates
+4.  Keep track of the maximum length seen so far
+5.  Handle edge cases (empty string, single character)
+
+**Common Pitfalls:**
+
+1.  Forgetting to update character positions in the hash map
+2.  Incorrect window start position update
+3.  Not considering edge cases
+4.  Inefficient substring extraction
+
+**Interview Tips:**
+
+1.  Start with a brute force approach to show problem-solving process
+2.  Explain the sliding window technique clearly
+3.  Discuss time and space complexity trade-offs
+4.  Mention possible optimizations for specific cases
+5.  Consider asking about input constraints and character set

@@ -1,0 +1,161 @@
+---
+title: Linked List Algorithm Interview Guide
+description: A comprehensive guide to linked list algorithms and their solutions
+date: 2024-03-16
+tags: ["Linked List"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 1. Basic Concepts of Linked Lists
+
+A linked list is a linear data structure consisting of a sequence of nodes, where each node contains two main components:
+
+*   **Data Field:** Stores the node's actual data.
+*   **Next Pointer:** Stores a reference to the next node in the sequence.
+
+The last node in a linked list points to `None` (in Python), indicating the end of the list.
+
+Think of a linked list like a train, where each car (node) carries cargo (data) and is connected to the next car (pointer).
+
+## 2. Characteristics of Linked Lists
+
+*   **Dynamic Size:** Unlike arrays, linked lists can grow or shrink during runtime without needing to specify an initial size.
+*   **Non-Contiguous Memory:** Nodes can be stored anywhere in memory, connected through pointers.
+*   **Efficient Insertion/Deletion:** When node location is known, inserting or deleting nodes has O(1) time complexity.
+
+## 3. Advantages and Disadvantages
+
+| Feature | Advantages | Disadvantages |
+|---------|------------|---------------|
+| Storage | Dynamic allocation, efficient memory usage | Extra space needed for pointers |
+| Insert/Delete | O(1) when node position is known | Finding specific nodes takes O(n) |
+| Access | Sequential access only | No random access |
+
+## 4. Working with Linked Lists in Python
+
+In Python, we typically define a class to represent linked list nodes:
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+```
+
+*   `val`: The data field, initialized to `0` by default (can be changed based on needs)
+*   `next`: The pointer field, initialized to `None` to indicate end of list
+
+**Creating a Linked List**
+
+```python
+# Create a simple linked list: 1 -> 2 -> 3
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
+```
+
+**Traversing a Linked List**
+
+```python
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.val, end=" -> ")
+        current = current.next
+    print("None")
+
+print_linked_list(head)  # Output: 1 -> 2 -> 3 -> None
+```
+
+## 5. Common Linked List Algorithms
+
+### 5.1 Types of Linked List Problems
+
+*   **Reversal Problems:** Reversing part or all of a linked list
+*   **Merging Problems:** Combining two or more linked lists
+*   **Cycle Detection:** Finding and handling cycles in linked lists
+*   **Node Removal:** Removing nodes based on specific conditions
+*   **List Sorting:** Sorting nodes in a linked list
+*   **Middle Node Finding:** Locating the middle node(s)
+*   **List Partitioning:** Dividing lists based on certain values
+
+### 5.2 Problem-Solving Techniques
+
+*   **Visualization:** Draw out the linked list structure to better understand the problem
+*   **Dummy Node:** Use a dummy head node to simplify operations, especially when dealing with the head
+*   **Multiple Pointers:** Use various pointer techniques:
+    *   **Fast/Slow Pointers:** One pointer moves twice as fast as the other
+    *   **Previous/Current Pointers:** Keep track of both current and previous nodes
+*   **Recursion:** Some problems are naturally solved using recursive approaches
+*   **Iteration:** Most problems can be solved iteratively, often with better readability
+*   **Divide and Conquer:** Break complex problems into smaller, manageable parts
+
+### 5.3 Classic Example: Reversing a Linked List
+
+**Problem:** Given the head of a singly linked list, reverse the list and return the new head.
+
+**Iterative Solution:**
+
+```python
+def reverse_linked_list_iterative(head):
+    prev = None
+    current = head
+    while current:
+        next_temp = current.next  # Store next node
+        current.next = prev       # Reverse current node's pointer
+        prev = current           # Move prev to current
+        current = next_temp       # Move current to next node
+    return prev
+```
+
+**Recursive Solution:**
+
+```python
+def reverse_linked_list_recursive(head):
+    if not head or not head.next:
+        return head
+        
+    new_head = reverse_linked_list_recursive(head.next)
+    head.next.next = head
+    head.next = None
+    
+    return new_head
+```
+
+**Solution Explanation:**
+
+*   **Iterative Approach:** Maintain two pointers `prev` and `current`. For each node, reverse its next pointer to point to the previous node, then move both pointers forward.
+*   **Recursive Approach:** Recursively reverse the rest of the list, then adjust the current node's connections.
+
+## 6. Common Mistakes to Avoid
+
+*   **Null Pointer Errors:** Always check for `None` before accessing next pointers
+*   **Lost References:** Maintain proper references when modifying the list structure
+*   **Infinite Loops:** Avoid creating cycles unintentionally
+*   **Edge Cases:** Handle empty lists and single-node lists properly
+*   **Over-reliance on Visualization:** While diagrams help, ensure you can implement the solution in code
+
+## 7. Summary
+
+Linked lists are fundamental data structures that require:
+
+*   Understanding basic concepts and operations
+*   Mastering common linked list manipulations
+*   Practicing implementation of various algorithms
+*   Handling edge cases properly
+
+## 8. Memory Aid Poem
+
+```
+Nodes linked in a chain so neat,
+Next pointers make the path complete.
+Two pointers dance to reverse with care,
+While dummy nodes make edge cases fair.
+
+Practice well the common ways,
+To handle nodes through coding days.
+Master links and you will see,
+How powerful linked lists can be!
+```

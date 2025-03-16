@@ -1,0 +1,168 @@
+---
+title: Reverse Integer
+description: Reverse a given integer, return 0 if the result exceeds 32-bit signed integer range.
+date: 2024-03-14
+tag: ["Medium", "Math"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Reverse Integer](https://leetcode.com/problems/reverse-integer/)
+
+Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-2³¹, 2³¹ - 1], then return 0.
+
+Assume the environment does not allow you to store 64-bit integers (signed or unsigned).
+
+**Example 1:**
+```
+Input: x = 123
+Output: 321
+```
+
+**Example 2:**
+```
+Input: x = -123
+Output: -321
+```
+
+**Example 3:**
+```
+Input: x = 120
+Output: 21
+```
+
+**Example 4:**
+```
+Input: x = 0
+Output: 0
+```
+
+**Constraints:**
+```
+-2³¹ <= x <= 2³¹ - 1
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have a number like 123, and you need to flip it to become 321. However, if the flipped number is too large and exceeds what a 32-bit integer can hold (-2,147,483,648 to 2,147,483,647), return 0. For negative numbers, the sign should remain negative after flipping.
+
+**Edge Cases and Test Examples:**
+
+*   **Positive Numbers:**
+    *   `x = 123,  Output: 321`
+    *   `x = 120,  Output: 21`
+    *   `x = 1534236469, Output: 0 (exceeds range)`
+*   **Negative Numbers:**
+    *   `x = -123, Output: -321`
+    *   `x = -120, Output: -21`
+    *   `x = -1563847412, Output: 0 (exceeds range)`
+*   **Zero:**
+    *   `x = 0,   Output: 0`
+*   **Boundary Values:**
+    *   `x = 2147483647, Output: 0 (exceeds range)`
+    *   `x = -2147483648, Output: 0 (exceeds range)`
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | -------------- | --------------- |
+| String Conversion | Intuitive and easy to understand | Less efficient due to string operations | O(n) | O(n) |
+| Mathematical (Mod/Divide) | No extra space needed, more efficient | Need to handle overflow carefully | O(log n) | O(1) |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: Depends on the number of digits, hence O(n) for string conversion and O(log n) for mathematical approach.
+    *   Space Complexity: String conversion needs extra space for string storage, while mathematical approach only needs constant variables.
+
+**Recommended Approach:** Mathematical (Mod/Divide)
+
+*   Advantages: Better performance, lower space complexity, more aligned with algorithmic requirements.
+*   Rationale: Better tests understanding of basic mathematical operations and boundary condition handling.
+
+**Python Implementation:**
+
+*   **Version 1: With Detailed Comments**
+
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        """
+        Reverse digits of an integer.
+        
+        Args:
+            x: The input integer to reverse
+            
+        Returns:
+            The reversed integer, or 0 if result exceeds 32-bit integer range
+        """
+        # Handle negative numbers
+        is_negative = x < 0
+        # Convert to positive for easier processing
+        x = abs(x)
+        
+        # Initialize result
+        result = 0
+        
+        # Process each digit
+        while x > 0:
+            # Get rightmost digit
+            digit = x % 10
+            # Remove rightmost digit from x
+            x //= 10
+            
+            # Check for overflow before adding new digit
+            if result > 214748364 or (result == 214748364 and digit > 7):
+                return 0
+            
+            # Add digit to result
+            result = result * 10 + digit
+        
+        # Apply negative sign if original number was negative
+        return -result if is_negative else result
+```
+
+*   **Version 2: Clean Implementation**
+
+```python
+class Solution:
+    def reverse(self, x: int) -> int:
+        # Get sign and absolute value
+        sign = -1 if x < 0 else 1
+        x = abs(x)
+        
+        # Reverse digits
+        result = 0
+        while x:
+            result = result * 10 + x % 10
+            x //= 10
+            
+        # Check for 32-bit integer overflow
+        if result > 2**31 - 1:
+            return 0
+            
+        return sign * result
+```
+
+**Step-by-Step Execution:**
+
+Let's walk through with input `x = 123`:
+
+1.  Initialize:
+    *   `sign = 1` (positive number)
+    *   `x = 123`
+    *   `result = 0`
+2.  First iteration:
+    *   `result = 0 * 10 + 123 % 10 = 3`
+    *   `x = 123 // 10 = 12`
+3.  Second iteration:
+    *   `result = 3 * 10 + 12 % 10 = 32`
+    *   `x = 12 // 10 = 1`
+4.  Third iteration:
+    *   `result = 32 * 10 + 1 % 10 = 321`
+    *   `x = 1 // 10 = 0`
+5.  Check overflow: `321 < 2³¹ - 1`, so it's safe
+6.  Return: `sign * result = 1 * 321 = 321`

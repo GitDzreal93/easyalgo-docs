@@ -1,0 +1,158 @@
+---
+title: Generate Parentheses
+description: Generate all valid combinations of parentheses using backtracking algorithm, ensuring proper matching of opening and closing brackets.
+date: 2024-03-14
+tag: [Medium, String, Backtracking]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
+
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+**Example 1:**
+```
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+```
+
+**Example 2:**
+```
+Input: n = 1
+Output: ["()"]
+```
+
+**Constraints:**
+```
+1 <= n <= 8
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you're working at a bracket factory, and your task is to generate all possible valid combinations of n pairs of parentheses. For example, if n = 3, you need to produce combinations like "((()))", "(()())", "(())()", "()(())", and "()()()". The challenge is to ensure that each combination is valid - meaning every opening bracket must have a matching closing bracket in the correct order. The input n is relatively small, ranging from 1 to 8.
+
+**Edge Cases and Test Examples:**
+
+*   **Edge Cases:**
+    *   n = 1, Output: ["()"]
+    *   n = 8, Maximum value, no need to worry about overflow
+*   **Test Examples:**
+    *   Input: n = 2
+        Output: ["(())", "()()"]
+    *   Input: n = 3
+        Output: ["((()))", "(()())", "(())()", "()(())", "()()()"]
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | -------------- | ---------------- |
+| Brute Force | Easy to understand | Inefficient, generates invalid combinations | O(2^(2n) * n) | O(2^(2n) * n) |
+| Backtracking | Only generates valid combinations, efficient | Slightly more complex to understand | O(4^n / √n) | O(4^n / √n) |
+| Dynamic Programming | Can solve it, but backtracking is more direct for generating all combinations | More complex state transitions | O(4^n / √n) | O(4^n / √n) |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: Mainly considers the number of valid parentheses combinations, which follows the Catalan number pattern, approximately O(4^n / √n)
+    *   Space Complexity: Storage needed for all valid combinations, matching the time complexity
+
+**Recommended Approach:**
+
+I recommend using the **Backtracking** approach. It efficiently generates only valid combinations, has a clear code structure, and is easy to understand and remember - making it perfect for interviews.
+
+**Python Implementation:**
+
+**Version 1: With Detailed Comments**
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> list[str]:
+        """
+        Generate all valid combinations of parentheses
+
+        Args:
+            n: Number of pairs of parentheses
+
+        Returns:
+            List of all valid parentheses combinations
+        """
+        result = []  # Store the results
+
+        def backtrack(s, left, right):
+            """
+            Backtracking function to generate combinations
+
+            Args:
+                s: Current parentheses string
+                left: Remaining count of available opening brackets
+                right: Remaining count of available closing brackets
+            """
+            # Base case: when no brackets left, add current string to result
+            if left == 0 and right == 0:
+                result.append(s)
+                return
+
+            # If we have remaining opening brackets, we can add one
+            if left > 0:
+                backtrack(s + "(", left - 1, right)
+
+            # If we have more closing brackets than opening ones, we can add a closing bracket
+            if right > left:
+                backtrack(s + ")", left, right - 1)
+
+        # Start backtracking with empty string
+        backtrack("", n, n)
+        return result
+```
+
+**Version 2: Clean Implementation**
+
+```python
+class Solution:
+    def generateParenthesis(self, n: int) -> list[str]:
+        result = []
+
+        def backtrack(s, left, right):
+            if left == 0 and right == 0:
+                result.append(s)
+                return
+
+            if left > 0:
+                backtrack(s + "(", left - 1, right)
+
+            if right > left:
+                backtrack(s + ")", left, right - 1)
+
+        backtrack("", n, n)
+        return result
+```
+
+**Code Execution Walkthrough:**
+
+Let's walk through how the code works with n = 2:
+
+1.  **Initialize:** `result = []`, `backtrack("", 2, 2)`
+2.  **First backtrack:** `s = ""`, `left = 2`, `right = 2`
+    *   Add opening bracket: `backtrack("(", 1, 2)`
+3.  **Second backtrack:** `s = "("`, `left = 1`, `right = 2`
+    *   Add opening bracket: `backtrack("((", 0, 2)`
+4.  **Third backtrack:** `s = "(("`, `left = 0`, `right = 2`
+    *   Add closing bracket: `backtrack("(()", 0, 1)`
+5.  **Fourth backtrack:** `s = "(()"`, `left = 0`, `right = 1`
+    *   Add closing bracket: `backtrack("(())", 0, 0)`
+6.  **Fifth backtrack:** `s = "(())"`, `left = 0`, `right = 0`
+    *   Base case reached, add "(())" to result
+7.  **Back to third backtrack:** Try closing bracket, `backtrack("()", 1, 1)`
+8.  **Fourth backtrack:** `s = "()"`, `left = 1`, `right = 1`
+    *   Add opening bracket: `backtrack("()(", 0, 1)`
+9.  **Fifth backtrack:** `s = "()("`, `left = 0`, `right = 1`
+    *   Add closing bracket: `backtrack("()()", 0, 0)`
+10. **Sixth backtrack:** `s = "()()"`, `left = 0`, `right = 0`
+    *   Base case reached, add "()()" to result
+11. **Final result:** `result = ["(())", "()()"]`
+
+I hope this explanation helps you understand the solution!

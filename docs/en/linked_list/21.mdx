@@ -1,0 +1,172 @@
+---
+title: Merge Two Sorted Lists
+description: Merge two sorted linked lists into one sorted list using iterative or recursive approach.
+date: 2024-03-14
+tag: ["Easy", "Linked List"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+
+Merge two sorted linked lists and return it as a sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+**Example 1:**
+```
+Input: l1 = [1,2,4], l2 = [1,3,4]
+Output: [1,1,2,3,4,4]
+```
+
+**Example 2:**
+```
+Input: l1 = [], l2 = []
+Output: []
+```
+
+**Example 3:**
+```
+Input: l1 = [], l2 = [0]
+Output: [0]
+```
+
+**Constraints:**
+```
+The number of nodes in both lists is in the range [0, 50]
+-100 <= Node.val <= 100
+Both l1 and l2 are sorted in non-decreasing order
+
+Note: The lists are singly-linked, meaning each node only points to the next node
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have two lines of students arranged by height, like two queues sorted from shortest to tallest. Your task is to merge these two lines into a single line, maintaining the height order. If one line is empty (empty list), you can simply use the other line as your result. The problem is essentially merging two sorted linked lists into one sorted linked list.
+
+**Edge Cases and Test Examples:**
+
+*   **Empty Lists:** `l1 = [], l2 = []`, Expected output: `[]`
+*   **One Empty List:** `l1 = [], l2 = [0]`, Expected output: `[0]`
+*   **One Empty List:** `l1 = [1], l2 = []`, Expected output: `[1]`
+*   **Normal Case:** `l1 = [1,2,4], l2 = [1,3,4]`, Expected output: `[1,1,2,3,4,4]`
+*   **All Elements in One List Smaller:** `l1 = [1,2,3], l2 = [4,5,6]`, Expected output: `[1,2,3,4,5,6]`
+*   **All Elements in One List Larger:** `l1 = [4,5,6], l2 = [1,2,3]`, Expected output: `[1,2,3,4,5,6]`
+*   **Including Negative Numbers:** `l1 = [-1,0,1], l2 = [-2,2]`, Expected output: `[-2,-1,0,1,2]`
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | -------------- | ---------------- |
+| Recursive | Clean code, easy to understand | Potential stack overflow, slightly less efficient | O(m+n) | O(m+n) |
+| Iterative | More efficient, avoids stack overflow | Slightly more complex code | O(m+n) | O(1) |
+| In-place Modification | Lowest space complexity | Modifies original list structure, may not be suitable for all scenarios | O(m+n) | O(1) |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: Based on how many times each node is visited. Both recursive and iterative approaches visit each node once, resulting in O(m+n) where m and n are the lengths of the lists.
+    *   Space Complexity: Recursive approach uses O(m+n) stack space in worst case. Iterative approach uses O(1) as it only needs a few extra pointers.
+
+**Recommended Approach:** Iterative
+
+*   **Rationale:** The iterative method is more efficient, avoids potential stack overflow issues, and maintains O(1) space complexity, making it more controllable.
+
+**Python Implementation:**
+
+**Version 1: With Detailed Comments**
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        Merge two sorted linked lists
+
+        Args:
+            list1: Head node of the first sorted list
+            list2: Head node of the second sorted list
+
+        Returns:
+            Head node of the merged sorted list
+        """
+
+        # Create a dummy node to simplify merged list handling
+        dummy = ListNode(-1)
+        # tail pointer points to the last node of merged list
+        tail = dummy
+
+        # Loop through both lists until one is empty
+        while list1 and list2:
+            # If list1's current node value is less than or equal to list2's
+            if list1.val <= list2.val:
+                # Add list1's current node to merged list
+                tail.next = list1
+                # Move list1 pointer forward
+                list1 = list1.next
+            else:
+                # Add list2's current node to merged list
+                tail.next = list2
+                # Move list2 pointer forward
+                list2 = list2.next
+            # Move tail pointer forward
+            tail = tail.next
+
+        # If list1 has remaining nodes, add them to merged list
+        if list1:
+            tail.next = list1
+        # If list2 has remaining nodes, add them to merged list
+        if list2:
+            tail.next = list2
+
+        # Return head of merged list (skip dummy node)
+        return dummy.next
+```
+
+**Version 2: Clean Implementation**
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        tail = dummy
+
+        while list1 and list2:
+            if list1.val <= list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+
+        if list1:
+            tail.next = list1
+        if list2:
+            tail.next = list2
+
+        return dummy.next
+```
+
+**Step-by-Step Execution:**
+
+1.  **Initialization:** Create a dummy node `dummy` and a tail pointer `tail` pointing to `dummy` for building the merged list.
+2.  **Compare and Merge:** While both `list1` and `list2` have nodes:
+    *   Compare current nodes' values.
+    *   Add the smaller value node to the merged list.
+    *   Move the pointer of the list that contributed the node.
+    *   Move the tail pointer to the newly added node.
+3.  **Handle Remaining Nodes:** After one list is exhausted, append any remaining nodes from the other list.
+4.  **Return Result:** Return `dummy.next` as the head of the merged list.

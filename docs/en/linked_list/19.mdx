@@ -1,0 +1,157 @@
+---
+title: Remove Nth Node From End of List
+description: Use the two-pointer technique to remove the nth node from the end of a linked list in one pass, with special attention to head node handling.
+date: 2024-03-14
+tag: ["Medium", "Linked List"]
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+**Example 1:**
+```
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+```
+
+**Example 2:**
+```
+Input: head = [1], n = 1
+Output: []
+```
+
+**Example 3:**
+```
+Input: head = [1,2], n = 1
+Output: [1]
+```
+
+**Constraints:**
+```
+The number of nodes in the list is sz
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+```
+
+Follow up: Could you do this in one pass?
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have a string of beads (linked list), and you want to remove the nth bead counting from the end. For example, if you have beads [1, 2, 3, 4, 5] and n is 2, you want to remove the second-to-last bead (which is 4), resulting in [1, 2, 3, 5]. The problem gives you the start of the bead string (head) and n, and you need to return the start of the modified bead string.
+
+**Edge Cases and Test Examples:**
+
+*   **Empty List:** `head = [], n = 1` (Invalid input, per problem constraints list cannot be empty)
+*   **Single Node:** `head = [1], n = 1` Output: `[]`
+*   **Remove Head:** `head = [1, 2, 3], n = 3` Output: `[2, 3]`
+*   **Remove Tail:** `head = [1, 2, 3], n = 1` Output: `[1, 2]`
+*   **General Case:** `head = [1, 2, 3, 4, 5], n = 2` Output: `[1, 2, 3, 5]`
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | -------------- | ---------------- |
+| 1. Two Pass | Simple and straightforward | Requires two list traversals | O(L) | O(1) |
+| 2. Fast-Slow Pointers (One Pass) | Only needs one traversal, efficient | Slightly more complex, requires understanding pointer relationships | O(L) | O(1) |
+
+Where L is the length of the linked list.
+
+*   **Time Complexity Analysis:** Traversing the linked list takes O(L) time, where L is the list length.
+*   **Space Complexity Analysis:** All solutions use only constant extra space, thus O(1).
+
+**Recommended Approach:** Fast-Slow Pointers (One Pass). It maintains time efficiency while requiring only one traversal, meeting the follow-up challenge, and uses minimal space.
+
+**Python Implementation:**
+
+**Version 1: With Detailed Comments**
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
+    """
+    Remove the nth node from the end of the linked list
+
+    Args:
+        head: The head node of the linked list
+        n: The nth node from the end to remove
+
+    Returns:
+        The head node of the modified linked list
+    """
+
+    # Create a dummy node pointing to head to handle head node removal
+    dummy = ListNode(0)
+    dummy.next = head
+
+    # Initialize fast and slow pointers to dummy node
+    slow = dummy
+    fast = dummy
+
+    # Move fast pointer n+1 steps ahead
+    for _ in range(n + 1):
+        # If fast reaches end, n is larger than list length
+        if not fast:
+            return head
+        fast = fast.next
+
+    # Move both pointers until fast reaches the end
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    # Now slow points to the node before the one to be removed
+    # Remove the target node
+    slow.next = slow.next.next
+
+    # Return the head of the modified list
+    return dummy.next
+```
+
+**Version 2: Clean Implementation**
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
+    dummy = ListNode(0)
+    dummy.next = head
+
+    slow = dummy
+    fast = dummy
+
+    for _ in range(n + 1):
+        if not fast:
+            return head
+        fast = fast.next
+
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    slow.next = slow.next.next
+
+    return dummy.next
+```
+
+**Step-by-Step Execution:**
+
+1.  **Initialization:** Create a dummy node `dummy` with `dummy.next` pointing to the head node. Set both fast and slow pointers to `dummy`.
+2.  **Advance Fast Pointer:** Move `fast` pointer `n + 1` steps forward. The extra step ensures that `slow` will point to the node *before* the one we want to remove.
+3.  **Move Both Pointers:** Move both `fast` and `slow` pointers simultaneously until `fast` reaches the end (becomes `None`). At this point, `slow` points to the node just before the nth node from the end.
+4.  **Remove Node:** Execute `slow.next = slow.next.next` to remove the target node.
+5.  **Return Result:** Return `dummy.next` as the head of the modified list. Using `dummy.next` handles cases where the head node is removed.

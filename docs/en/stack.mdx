@@ -1,0 +1,436 @@
+---
+title: Stack Algorithm Interview Guide
+description: A comprehensive guide to stack-related algorithms and solutions
+date: 2024-03-16
+tags: ["Stack"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 1. Basic Concepts of Stacks
+
+### 1.1 What is a Stack?
+
+A stack is a specialized linear data structure that follows a particular order for its operations. Think of it like a stack of plates - you can only add or remove plates from the top. This "top" position is called the stack top, while the "bottom" position is called the stack base.
+
+### 1.2 Stack Characteristics
+
+* **LIFO (Last In, First Out)**: The last element added to the stack will be the first one to be removed. Just like with plates, the last one you put on top will be the first one you take off.
+* **Operations are restricted to the top**: You can only interact with the topmost element.
+
+## 2. Advantages and Disadvantages of Stacks
+
+| Aspect | Advantages | Disadvantages |
+|--------|------------|---------------|
+| **Pros** | Simple structure, easy to implement; Highly efficient for many scenarios (e.g., function call stack) | Limited to top-only access; Cannot randomly access elements |
+| **Cons** | Limited stack depth (capacity); Stack overflow can occur | Relatively low space utilization |
+
+## 3. Stack Operations in Python
+
+Python offers several ways to implement stack operations.
+
+### 3.1 Basic Operations
+
+* **push**: Add an element to the top of the stack
+* **pop**: Remove and return the top element
+* **peek**: Return the top element without removing it
+* **is_empty**: Check if the stack is empty
+* **size**: Return the number of elements in the stack
+
+### 3.2 Code Examples
+
+#### 3.2.1 Custom Stack Implementation
+
+```python
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)  # Add element to the end of list
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()  # Remove and return the last element
+        else:
+            return None  # Or raise an exception for empty stack
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]  # Return last element without removing
+        else:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+# Usage Example
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+
+print("Top element:", stack.peek())  # Output: 3
+print("Popped:", stack.pop())      # Output: 3
+print("Stack size:", stack.size())   # Output: 2
+```
+
+#### 3.2.2 Using Python Built-in Data Structures
+
+##### Using Lists
+```python
+# Using Python list as a stack
+stack = []
+
+# Push operations
+stack.append(1)  # [1]
+stack.append(2)  # [1, 2]
+stack.append(3)  # [1, 2, 3]
+
+# View top element
+print("Top element:", stack[-1])  # Output: 3
+
+# Pop operation
+popped = stack.pop()  # [1, 2]
+print("Popped element:", popped)  # Output: 3
+
+# Check if empty
+print("Is stack empty:", len(stack) == 0)  # Output: False
+
+# Get stack size
+print("Stack size:", len(stack))  # Output: 2
+```
+
+##### Using collections.deque
+```python
+from collections import deque
+
+# Using deque as a stack (more efficient for large datasets)
+stack = deque()
+
+# Push operations
+stack.append(1)  # deque([1])
+stack.append(2)  # deque([1, 2])
+stack.append(3)  # deque([1, 2, 3])
+
+# View top element
+print("Top element:", stack[-1])  # Output: 3
+
+# Pop operation
+popped = stack.pop()  # deque([1, 2])
+print("Popped element:", popped)  # Output: 3
+
+# Check if empty
+print("Is stack empty:", len(stack) == 0)  # Output: False
+
+# Get stack size
+print("Stack size:", len(stack))  # Output: 2
+```
+
+Benefits of using Python's built-in data structures for stacks:
+1. Clean and concise code
+2. Optimized performance (especially with deque)
+3. Better memory efficiency
+4. Direct access to Python's built-in methods and features
+
+## 4. Common Stack Algorithm Problems
+
+Stack problems typically fall into these categories:
+
+* **Parentheses Matching**: Validating properly closed parentheses
+* **Expression Evaluation**: Converting infix expressions to postfix and evaluating them
+* **Browser History**: Implementing forward/backward navigation using two stacks
+* **Monotonic Stack**: Finding the next greater/smaller element in an array
+* **Recursion Implementation**: Using stacks to implement recursive algorithms iteratively
+
+## 5. Problem-Solving Techniques
+
+### 5.1 Universal Solution for Parentheses Matching
+
+Parentheses matching is a classic stack application. Here's the approach:
+
+1. **Initialize empty stack**: For storing opening brackets
+2. **Iterate through string**:
+   - For opening brackets: Push onto stack
+   - For closing brackets: Check if matches stack top
+3. **Final check**: Stack must be empty
+
+Example code:
+```python
+def is_valid_parentheses(s: str) -> bool:
+    # Map closing brackets to their corresponding opening brackets
+    brackets_map = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+    }
+    stack = []
+    
+    for char in s:
+        # If it's a closing bracket
+        if char in brackets_map:
+            # Stack is empty or top doesn't match
+            if not stack or stack[-1] != brackets_map[char]:
+                return False
+            stack.pop()
+        # If it's an opening bracket
+        else:
+            stack.append(char)
+    
+    # Stack must be empty for valid expression
+    return len(stack) == 0
+```
+
+### 5.2 Systematic Approach to Expression Evaluation
+
+Expression evaluation typically involves two steps:
+1. **Convert infix to postfix**
+2. **Evaluate postfix expression**
+
+#### 5.2.1 Infix to Postfix Conversion Steps:
+
+1. **Define operator precedence**
+2. **Use stack for operators**
+3. **Process expression:**
+   - Output numbers directly
+   - Compare operators with stack top
+
+Example code:
+```python
+def infix_to_postfix(expression: str) -> str:
+    precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '^': 3}
+    stack = []
+    postfix = []
+    
+    for char in expression:
+        # If number, add to result
+        if char.isdigit():
+            postfix.append(char)
+        # If operator
+        elif char in precedence:
+            # Pop operators with higher or equal precedence
+            while (stack and stack[-1] in precedence and 
+                   precedence[stack[-1]] >= precedence[char]):
+                postfix.append(stack.pop())
+            stack.append(char)
+    
+    # Add remaining operators to result
+    while stack:
+        postfix.append(stack.pop())
+    
+    return ''.join(postfix)
+```
+
+#### 5.2.2 Postfix Expression Evaluation:
+
+1. **Use stack for operands**
+2. **Process postfix expression:**
+   - Push numbers onto stack
+   - For operators, pop two operands and compute
+
+```python
+def evaluate_postfix(postfix: str) -> int:
+    stack = []
+    
+    for char in postfix:
+        if char.isdigit():
+            stack.append(int(char))
+        else:
+            b = stack.pop()
+            a = stack.pop()
+            if char == '+': stack.append(a + b)
+            elif char == '-': stack.append(a - b)
+            elif char == '*': stack.append(a * b)
+            elif char == '/': stack.append(a // b)
+    
+    return stack[0]
+```
+
+### 5.3 Monotonic Stack Techniques
+
+Monotonic stacks are used to find the next greater/smaller element in an array efficiently.
+
+#### 5.3.1 Building a Monotonic Stack:
+
+1. **Determine monotonicity**: Increasing or decreasing
+2. **Choose storage content**: Values or indices
+3. **Select processing direction**: Left-to-right or right-to-left
+
+Example: Finding next greater element
+```python
+def next_greater_element(nums: List[int]) -> List[int]:
+    n = len(nums)
+    result = [-1] * n  # Initialize result array
+    stack = []  # Store indices
+    
+    for i in range(n):
+        # While current element is greater than stack top
+        while stack and nums[i] > nums[stack[-1]]:
+            # Update next greater element for stack top
+            result[stack.pop()] = nums[i]
+        stack.append(i)
+    
+    return result
+```
+
+### 5.4 Converting Recursion to Iteration
+
+Recursive functions can be converted to iterative form using stacks:
+
+1. **Analyze recursive parameters**: Identify state to save
+2. **Design stack elements**: Encapsulate state in objects or tuples
+3. **Simulate recursion**: Replace recursive calls with loops
+
+Example: Binary tree preorder traversal
+```python
+def preorder_iterative(root: TreeNode) -> List[int]:
+    if not root:
+        return []
+    
+    result = []
+    stack = [root]
+    
+    while stack:
+        node = stack.pop()
+        result.append(node.val)
+        
+        # Push right child first, then left
+        if node.right:
+            stack.append(node.right)
+        if node.left:
+            stack.append(node.left)
+    
+    return result
+```
+
+### 5.5 Practical Tips Summary
+
+1. **Empty Stack Handling**:
+   - Always check if stack is empty before operations
+   - Consider return values for special cases
+
+2. **Stack Traversal Timing**:
+   - Process during push
+   - Process during pop
+   - Process when stack is empty
+
+3. **Multiple Stack Coordination**:
+   - Use multiple stacks for complex problems
+   - Combine stacks with other data structures
+
+4. **State Management**:
+   - Store values, indices, or state information
+   - Use tuples or custom objects to encapsulate multiple pieces of information
+
+5. **Optimization Techniques**:
+   - Use sentinel values to simplify boundary conditions
+   - Preprocess data to reduce stack operations
+   - Leverage problem characteristics to minimize push/pop operations
+
+Remember: The key to stack problems is understanding **when to push and pop** and **what the stack elements represent**.
+
+## 6. Common Mistakes
+
+* **Operating on empty stack**: Always check if stack is empty before pop or peek operations
+* **Only counting brackets**: For parentheses matching, both order and type must match
+* **Misunderstanding monotonic stack properties**: Maintain proper monotonicity
+* **Stack overflow**: Watch out for recursion depth in recursive implementations
+
+## 7. Real-world Applications of Stack Algorithms
+
+Stacks are ubiquitous in software development:
+
+### 7.1 Programming Languages and Compilers
+
+1. **Function Call Stack**
+   - Managing function calls and returns
+   - Storing local variables and parameters
+   - Implementing recursion
+
+2. **Expression Evaluation**
+   - Calculator applications
+   - Programming language parsers
+   - Mathematical formula evaluators
+
+### 7.2 Browser Features
+
+1. **History**
+   - Forward/back navigation
+   - User browsing history
+   - Session management
+
+2. **DOM Parsing**
+   - HTML/XML document parsing
+   - Tag matching validation
+   - Tree structure building
+
+### 7.3 Editor Features
+
+1. **Undo/Redo**
+   - Text editor history
+   - Graphics editor modifications
+   - Any scenario requiring operation rollback
+
+2. **Code Formatting**
+   - Bracket matching
+   - Indentation management
+   - Syntax error detection
+
+### 7.4 Application State Management
+
+1. **State Management Frameworks**
+   - Redux state time-travel
+   - Application state preservation
+   - Operation history
+
+2. **Route Management**
+   - SPA routing history
+   - Page navigation
+   - Deep linking
+
+### 7.5 Algorithm Applications
+
+1. **Depth-First Search**
+   - Maze solving
+   - Graph traversal
+   - Tree traversal
+
+2. **Monotonic Stack Applications**
+   - Stock price span calculation
+   - Temperature prediction
+   - Largest rectangle in histogram
+
+### 7.6 System Design
+
+1. **Task Scheduling**
+   - Process/thread scheduling
+   - Event handling
+   - Interrupt handling
+
+2. **Memory Management**
+   - Stack memory allocation
+   - Function call frame management
+   - Resource cleanup
+
+## 8. Summary
+
+Stacks are simple yet powerful data structures that frequently appear in coding interviews. Understanding their concepts, characteristics, operations, and applications is crucial for solving stack-related problems. Remember, **practice and deep understanding are key to mastering stack algorithms**.
+
+## 9. Mnemonic Poem
+
+```
+Stack your data, LIFO style,
+Push and pop make coding worthwhile.
+Brackets match with careful grace,
+Each element knows its place.
+Monotonic rules we keep,
+While recursion runs deep.
+Practice hard and you will see,
+Stack problems solved with glee!
+```
+
+Good luck with your interview preparation!

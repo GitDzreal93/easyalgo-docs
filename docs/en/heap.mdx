@@ -1,0 +1,246 @@
+---
+title: Heap Algorithm Interview Guide
+description: A comprehensive guide to heap data structures and algorithms
+date: 2024-03-16
+tags: ["Heap"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+Heaps are crucial data structures that frequently appear in algorithm interviews. Mastering heaps will give you a significant advantage when solving problems involving priority queues, Top K elements, and similar scenarios.
+
+## 1. Basic Concepts
+
+A heap is a specialized **tree-based data structure** that satisfies two key properties:
+
+*   **Structural Property:** A heap must be a **complete binary tree** (all levels except possibly the last are completely filled, and nodes in the last level are filled from left to right). This ensures efficient array-based representation.
+*   **Heap Property:** The value of any node must be consistently either greater than or equal to (or less than or equal to) the values of its children. This determines whether it's a max heap or min heap.
+
+    *   **Max Heap:** Parent value >= Children's values (largest element at root)
+    *   **Min Heap:** Parent value <= Children's values (smallest element at root)
+
+**In simple terms:** A heap is a tree where either parents are always bigger than their children (max heap) or parents are always smaller than their children (min heap).
+
+## 2. Characteristics
+
+*   **Storage Structure:** Typically implemented using **arrays**. For an array index `i`:
+    *   Parent index: `(i - 1) // 2` (integer division)
+    *   Left child index: `2 * i + 1`
+    *   Right child index: `2 * i + 2`
+*   **Core Operations:**
+    *   **Insert:** Add new element at the end, then bubble up (heapify up/sift up) to maintain heap property.
+    *   **Remove Top:** Remove root element, move last element to root, then bubble down (heapify down/sift down) to maintain heap property.
+    *   **Get Top:** Simply return the first array element.
+*   **Key Property:** The root is always the maximum value in a max heap or the minimum value in a min heap.
+
+## 3. Advantages
+
+*   **Efficient Priority Queue Implementation:** Perfect for managing prioritized elements.
+*   **Time Complexity:**
+    *   Insert: O(log n)
+    *   Remove Top: O(log n)
+    *   Get Top: O(1)
+*   **Space Complexity:** O(n), where n is the number of elements.
+
+## 4. Disadvantages
+
+*   **Limited Access:** Only efficient for accessing the maximum/minimum element.
+*   **Unstable Sorting:** Elements with equal values may change relative positions during heap operations.
+
+## 5. Working with Heaps in Python
+
+### 5.1 Using the heapq Module
+
+Python's `heapq` module provides a built-in implementation of min heaps:
+
+*   **`heapq.heapify(list)`:** Convert a list into a heap in-place.
+*   **`heapq.heappush(heap, item)`:** Push an item onto the heap.
+*   **`heapq.heappop(heap)`:** Pop and return the smallest item.
+*   **`heapq.nlargest(n, iterable, key=None)`:** Get n largest elements.
+*   **`heapq.nsmallest(n, iterable, key=None)`:** Get n smallest elements.
+
+### 5.2 Custom Heap Implementation
+
+Here's a custom implementation of a min heap to better understand how heaps work:
+
+```python
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+    
+    def parent(self, i):
+        return (i - 1) // 2
+    
+    def left_child(self, i):
+        return 2 * i + 1
+    
+    def right_child(self, i):
+        return 2 * i + 2
+    
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+    
+    def sift_up(self, i):
+        parent = self.parent(i)
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self.swap(i, parent)
+            self.sift_up(parent)
+    
+    def sift_down(self, i):
+        min_idx = i
+        left = self.left_child(i)
+        right = self.right_child(i)
+        
+        if left < len(self.heap) and self.heap[left] < self.heap[min_idx]:
+            min_idx = left
+        
+        if right < len(self.heap) and self.heap[right] < self.heap[min_idx]:
+            min_idx = right
+        
+        if min_idx != i:
+            self.swap(i, min_idx)
+            self.sift_down(min_idx)
+    
+    def push(self, val):
+        self.heap.append(val)
+        self.sift_up(len(self.heap) - 1)
+    
+    def pop(self):
+        if not self.heap:
+            return None
+        
+        if len(self.heap) == 1:
+            return self.heap.pop()
+        
+        root = self.heap[0]
+        self.heap[0] = self.heap.pop()
+        self.sift_down(0)
+        
+        return root
+    
+    def peek(self):
+        return self.heap[0] if self.heap else None
+    
+    def size(self):
+        return len(self.heap)
+
+# Usage Example
+heap = MinHeap()
+
+# Insert elements
+for num in [3, 1, 4, 1, 5, 9, 2, 6]:
+    heap.push(num)
+
+print(f"Heap size: {heap.size()}")  # Output: Heap size: 8
+print(f"Top element: {heap.peek()}")  # Output: Top element: 1
+
+# Pop all elements (in ascending order)
+while heap.size() > 0:
+    print(heap.pop(), end=' ')  # Output: 1 1 2 3 4 5 6 9
+```
+
+**Code Examples:**
+
+```python
+import heapq
+
+# Create a list
+nums = [3, 1, 4, 1, 5, 9, 2, 6]
+
+# Convert list to min heap
+heapq.heapify(nums)
+print(f"Min heap: {nums}")  # Output: Min heap: [1, 1, 2, 3, 5, 9, 4, 6]
+
+# Insert an element
+heapq.heappush(nums, 0)
+print(f"After pushing 0: {nums}")  # Output: After pushing 0: [0, 1, 2, 1, 5, 9, 4, 6, 3]
+
+# Remove smallest element
+smallest = heapq.heappop(nums)
+print(f"Popped smallest: {smallest}")  # Output: Popped smallest: 0
+print(f"After popping: {nums}")  # Output: After popping: [1, 1, 2, 3, 5, 9, 4, 6]
+
+# Find 3 largest elements
+largest_3 = heapq.nlargest(3, [3, 1, 4, 1, 5, 9, 2, 6])
+print(f"3 largest elements: {largest_3}")  # Output: 3 largest elements: [9, 6, 5]
+
+# Find 3 smallest elements
+smallest_3 = heapq.nsmallest(3, [3, 1, 4, 1, 5, 9, 2, 6])
+print(f"3 smallest elements: {smallest_3}")  # Output: 3 smallest elements: [1, 1, 2]
+```
+
+## 6. Common Problem Types
+
+Heap problems typically fall into these categories:
+
+*   **Top K Problems:** Finding K largest/smallest elements in a collection.
+*   **Priority Queue Applications:** Task scheduling, event processing.
+*   **Median Finding:** Maintaining the median of a data stream.
+*   **Heap Sort:** While not the fastest sorting algorithm, it's an important concept.
+*   **Merging K Sorted Lists:** Combining multiple sorted lists into one.
+
+## 7. Problem-Solving Tips
+
+*   **Understand Requirements:** First determine if you need a max heap or min heap.
+*   **Choose Right Tools:** Use Python's `heapq` module when appropriate.
+*   **Visualize:** Draw the heap's tree structure to understand operations better.
+*   **Handle Edge Cases:** Consider empty arrays, K > array length, etc.
+*   **Master `heapify`, `heappush`, `heappop` Usage.**
+
+## 8. Real-World Applications
+
+### 8.1 Operating Systems
+- Process scheduling
+- Memory management
+- Resource allocation
+
+### 8.2 Database Systems
+- Query optimization
+- TOP-K queries
+- Cache management
+
+### 8.3 Network Applications
+- Packet scheduling
+- Bandwidth management
+- Load balancing
+
+### 8.4 Game Development
+- AI pathfinding
+- Event systems
+- Physics engines
+
+### 8.5 Streaming Services
+- Data packet scheduling
+- Bandwidth control
+- Real-time processing
+
+## 9. Common Mistakes
+
+*   **Forgetting Heap Properties:** Not maintaining heap property after operations.
+*   **Array Index Errors:** Miscalculating parent/child indices.
+*   **Wrong Heap Type:** Using min heap when max heap is needed.
+*   **Misunderstanding `heapq.heapify`:** It modifies the list in-place.
+
+## 10. Summary
+
+Heaps are powerful data structures that can solve many algorithmic problems efficiently. Remember:
+
+*   Understand heap concepts and properties
+*   Master the `heapq` module
+*   Practice regularly
+*   Stay calm during interviews!
+
+## 11. Memory Aid Poem
+
+```
+A heap's a tree that's quite unique,
+Where parent-child relations speak.
+Max heap or min heap, take your pick,
+Top K problems it solves quick.
+
+Array-based implementation clean,
+Log N operations to intervene.
+Practice well and you will see,
+How powerful heaps can truly be!
+```

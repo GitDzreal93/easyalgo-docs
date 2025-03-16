@@ -1,0 +1,206 @@
+---
+title: Merge k Sorted Lists
+description: Merge multiple sorted linked lists into one sorted list using divide and conquer or priority queue to optimize time complexity.
+date: 2024-03-14
+tag: ["Hard", "Linked List", "Heap"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+
+You are given an array of `k` linked-lists `lists`, each linked-list is sorted in ascending order.
+
+Merge all the linked-lists into one sorted linked-list and return it.
+
+**Example 1:**
+```
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+Merging them into one sorted list:
+1->1->2->3->4->4->5->6
+```
+
+**Example 2:**
+```
+Input: lists = []
+Output: []
+```
+
+**Example 3:**
+```
+Input: lists = [[]]
+Output: []
+```
+
+**Constraints:**
+```
+k == lists.length
+0 <= k <= 10^4
+0 <= lists[i].length <= 500
+-10^4 <= lists[i][j] <= 10^4
+lists[i] is sorted in ascending order
+The sum of lists[i].length won't exceed 10^4
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have k decks of cards, each deck sorted from smallest to largest. Your task is to merge these k decks into a single deck, maintaining the ascending order. If all decks are empty, the result should be empty as well.
+
+**Edge Cases and Test Examples:**
+
+*   **Edge Cases:**
+    *   Empty input: `lists = []`
+    *   Lists containing empty list: `[[], [1, 2, 3]]`
+    *   Single list: `[[1, 2, 3]]`
+    *   All empty lists: `[[], [], []]`
+*   **Test Cases:**
+    *   `Input: lists = [[1,4,5],[1,3,4],[2,6]]`
+        `Output: [1,1,2,3,4,4,5,6]`
+    *   `Input: lists = []`
+        `Output: []`
+    *   `Input: lists = [[]]`
+        `Output: []`
+    *   `Input: lists = [[1, 2], [3, 4], [5, 6]]`
+        `Output: [1, 2, 3, 4, 5, 6]`
+    *   `Input: lists = [[5, 6], [1, 2], [3, 4]]`
+        `Output: [1, 2, 3, 4, 5, 6]`
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+|---|---|---|---|---|
+| One by One Merge | Simple implementation | Low efficiency, multiple traversals | O(kN) | O(1) |
+| Divide and Conquer | High efficiency | Extra recursion stack space | O(N*logk) | O(logk) |
+| Priority Queue | Intuitive and efficient | Extra heap space | O(N*logk) | O(k) |
+
+*   **Complexity Analysis:**
+    *   Time Complexity: k is the number of lists, N is the total number of nodes.
+    *   Space Complexity: Considers recursion stack or heap space overhead.
+
+*   **Recommended Approach:**
+
+    Priority Queue (min-heap) is the most intuitive and efficient solution, ideal for interview scenarios.
+
+**Python Implementation:**
+
+*   **Version 1: Priority Queue (with detailed comments)**
+
+```python
+from typing import List, Optional
+import heapq
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeKLists(lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+    """
+    Merge k sorted linked lists.
+
+    Args:
+        lists: List containing heads of k sorted linked lists.
+
+    Returns:
+        Head of the merged sorted linked list.
+    """
+    # Handle empty input
+    if not lists:
+        return None
+
+    # Create a dummy node as the head of result list
+    dummy = ListNode(0)
+    current = dummy
+
+    # Create a priority queue (min heap)
+    # Each element is a tuple: (node value, list index)
+    heap = []
+
+    # Add first node of each list to the heap
+    for i, head in enumerate(lists):
+        if head:
+            # Note: heapq sorts by first element of tuple
+            # so we put node value as first element
+            heapq.heappush(heap, (head.val, i))
+            lists[i] = head.next
+
+    # Keep taking smallest value from heap
+    while heap:
+        val, i = heapq.heappop(heap)
+        # Add smallest value to result list
+        current.next = ListNode(val)
+        current = current.next
+
+        # If the list we took from still has nodes, add next node to heap
+        if lists[i]:
+            heapq.heappush(heap, (lists[i].val, i))
+            lists[i] = lists[i].next
+
+    return dummy.next
+```
+
+*   **Version 2: Divide and Conquer (clean implementation)**
+
+```python
+from typing import List, Optional
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeTwoLists(l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    dummy = ListNode(0)
+    current = dummy
+    
+    while l1 and l2:
+        if l1.val <= l2.val:
+            current.next = l1
+            l1 = l1.next
+        else:
+            current.next = l2
+            l2 = l2.next
+        current = current.next
+    
+    current.next = l1 if l1 else l2
+    return dummy.next
+
+def mergeKLists(lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+    if not lists:
+        return None
+    if len(lists) == 1:
+        return lists[0]
+    
+    mid = len(lists) // 2
+    left = mergeKLists(lists[:mid])
+    right = mergeKLists(lists[mid:])
+    return mergeTwoLists(left, right)
+```
+
+**Step-by-Step Execution:**
+
+Let's walk through the priority queue solution with input `lists = [[1,4,5],[1,3,4],[2,6]]`:
+
+1.  Initialization:
+    *   Create empty priority queue (min heap)
+    *   Create dummy node, `current` points to dummy
+2.  Add first nodes to heap:
+    *   Heap contains: `[(1,0), (1,1), (2,2)]` (format: (value, list index))
+3.  Process loop:
+    *   First iteration: Remove `(1,0)`, add to result list, push `4` to heap
+    *   Second iteration: Remove `(1,1)`, add to result list, push `3` to heap
+    *   Third iteration: Remove `(2,2)`, add to result list, push `6` to heap
+    *   And so on...
+4.  Final return: `dummy.next`, giving us `[1,1,2,3,4,4,5,6]`

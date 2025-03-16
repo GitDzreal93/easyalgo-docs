@@ -1,0 +1,193 @@
+---
+title: 17. Letter Combinations of a Phone Number
+description: Given a string of digits, return all possible letter combinations using backtracking approach.
+date: 2024-03-14
+tag: [Medium, String, Backtracking]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digits to letters (just like on telephone buttons) is given below. Note that 1 does not map to any letters.
+
+**Example 1:**
+```
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+```
+
+**Example 2:**
+```
+Input: digits = ""
+Output: []
+```
+
+**Example 3:**
+```
+Input: digits = "2"
+Output: ["a","b","c"]
+```
+
+**Constraints:**
+```
+0 <= digits.length <= 4
+digits[i] is a digit in the range ['2', '9'].
+
+Note: Each digit maps to letters as shown on phone buttons:
+2: "abc"
+3: "def"
+4: "ghi"
+5: "jkl"
+6: "mno"
+7: "pqrs"
+8: "tuv"
+9: "wxyz"
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have an old-style phone keypad where each number button has several letters associated with it. Given a sequence of digits, your task is to generate all possible combinations of letters that could be formed by pressing these buttons. For example, if you press "23", where 2 corresponds to "abc" and 3 corresponds to "def", you need to output all possible combinations: "ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf". If no digits are provided, return an empty list.
+
+**Edge Cases and Test Examples:**
+
+*   **Empty Input:** `digits = ""`, Expected output: `[]`
+*   **Single Digit:** `digits = "2"`, Expected output: `["a", "b", "c"]`
+*   **Multiple Digits:** `digits = "23"`, Expected output: `["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]`
+*   **Input with Maximum Digits:** `digits = "79"`, Expected output: `["pw", "px", "py", "pz", "qw", "qx", "qy", "qz", "rw", "rx", "ry", "rz", "sw", "sx", "sy", "sz"]`
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | --------------- | ---------------- |
+| Recursive Backtracking | Easy to understand and implement with clean code. | May have overhead from function calls (though not a concern for this problem's constraints). | O(4^n) | O(n) |
+| Iterative | Avoids recursive function call overhead. | More complex implementation and harder to understand. | O(4^n) | O(4^n) |
+
+*Complexity Analysis:*
+
+*   Time Complexity: O(4^n) because each digit can map to at most 4 letters (as in 7 and 9), so for n digits, we have at most 4^n combinations.
+*   Space Complexity: For recursive approach, O(n) for the call stack depth. For iterative approach, O(4^n) to store all combinations.
+
+*Recommended Approach:*
+
+I recommend using the recursive backtracking approach. It's more intuitive, has cleaner code, and is perfect for interview situations.
+
+**Python Implementation:**
+
+*Version 1: With Detailed Comments*
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> list[str]:
+        """
+        Return all possible letter combinations that the phone number could represent.
+        :param digits: Input string containing digits 2-9
+        :return: List of all possible letter combinations
+        """
+        if not digits:  # Return empty list for empty input
+            return []
+
+        # Mapping of digits to letters
+        digit_to_letters = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+        }
+
+        result = []  # Store the final combinations
+
+        def backtrack(combination, next_digits):
+            """
+            Recursive backtracking function to generate letter combinations
+            :param combination: Current letter combination being built
+            :param next_digits: Remaining digits to process
+            :return: None
+            """
+            if not next_digits:  # Base case: no more digits to process
+                result.append(combination)  # Add the complete combination to result
+                return
+
+            digit = next_digits[0]  # Get the first digit
+            letters = digit_to_letters[digit]  # Get corresponding letters
+            for letter in letters:  # Try each possible letter
+                # Recursively build combinations with remaining digits
+                backtrack(combination + letter, next_digits[1:])
+
+        backtrack("", digits)  # Start with empty combination and all digits
+        return result
+```
+
+*Version 2: Without Comments*
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> list[str]:
+        if not digits:
+            return []
+
+        digit_to_letters = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+        }
+
+        result = []
+
+        def backtrack(combination, next_digits):
+            if not next_digits:
+                result.append(combination)
+                return
+
+            digit = next_digits[0]
+            letters = digit_to_letters[digit]
+            for letter in letters:
+                backtrack(combination + letter, next_digits[1:])
+
+        backtrack("", digits)
+        return result
+```
+
+**Detailed Walkthrough:**
+
+Let's walk through the execution for input `digits = "23"`:
+
+1.  `letterCombinations("23")` is called.
+2.  Input is not empty, proceed with main logic.
+3.  Initialize `result` as empty list `[]`.
+4.  Call `backtrack("", "23")`.
+5.  `next_digits` is not empty.
+6.  `digit = "2"`, `letters = "abc"`.
+7.  Loop through "abc":
+    *   `letter = "a"`, call `backtrack("a", "3")`.
+    *   `next_digits` not empty.
+    *   `digit = "3"`, `letters = "def"`.
+    *   Loop through "def":
+        *   `letter = "d"`, call `backtrack("ad", "")`.
+        *   `next_digits` empty, add "ad" to `result`.
+        *   `letter = "e"`, call `backtrack("ae", "")`.
+        *   `next_digits` empty, add "ae" to `result`.
+        *   `letter = "f"`, call `backtrack("af", "")`.
+        *   `next_digits` empty, add "af" to `result`.
+    *   `letter = "b"`, similar process for "b".
+    *   `letter = "c"`, similar process for "c".
+8.  `backtrack` calls complete.
+9.  Return `result` containing `["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]`.
+
+I hope this solution helps you understand the problem and its implementation!

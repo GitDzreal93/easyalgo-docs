@@ -1,0 +1,128 @@
+---
+title: 14. Longest Common Prefix
+description: Find the longest common prefix among an array of strings. Return an empty string if there is no common prefix.
+date: 2024-03-14
+tag: ["Easy", "String"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [Longest Common Prefix](https://leetcode.com/problems/longest-common-prefix/)
+
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+**Example 1:**
+```
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+```
+
+**Example 2:**
+```
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+```
+
+**Constraints:**
+```
+1 <= strs.length <= 200
+0 <= strs[i].length <= 200
+strs[i] consists of only lowercase English letters
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Imagine you have a collection of words, like "flower", "flow", "flight". Your task is to find the longest sequence of characters that all these words share from their beginning. In this example, the longest common prefix is "fl". If the words have no characters in common at their start, like "dog", "racecar", "car", then return an empty string.
+
+**Edge Cases and Test Cases:**
+
+* **Empty Array:** `strs = []`, Result: `""`
+* **Single String:** `strs = ["flower"]`, Result: `"flower"`
+* **No Common Prefix:** `strs = ["dog", "racecar", "car"]`, Result: `""`
+* **All Identical:** `strs = ["flower", "flower", "flower"]`, Result: `"flower"`
+* **Partial Common Prefix:** `strs = ["flower", "flow", "flight"]`, Result: `"fl"`
+* **One String is Prefix of Another:** `strs = ["flower", "flow"]`, Result: `"flow"`
+
+**Solution Analysis:**
+
+| Approach | Pros | Cons | Time Complexity | Space Complexity |
+|----------|------|------|-----------------|------------------|
+| Brute Force | Simple and straightforward | Less efficient with multiple comparisons | O(S) | O(1) |
+| Horizontal Scanning | Fewer comparisons needed | Slightly more complex code | O(S) | O(1) |
+| Binary Search | More efficient in some cases | More complex implementation | O(S log n) | O(1) |
+| **Vertical Scanning** | **Clean code, efficient, easy to understand** | **No significant drawbacks** | **O(S)** | **O(1)** |
+| Divide and Conquer | Suitable for parallel processing and large datasets | Complex implementation, higher overhead | O(S) | O(m log n) |
+
+Where S is the sum of all characters in all strings, n is the number of strings, and m is the length of the shortest string in the array.
+
+**Complexity Analysis:**
+
+* **Time Complexity:** The time required for algorithm execution, typically expressed in Big O notation.
+* **Space Complexity:** The additional space required by the algorithm, also expressed in Big O notation.
+
+**Recommended Approach:**
+
+I recommend the **Vertical Scanning** approach as it provides an excellent balance between efficiency, code simplicity, and readability, making it ideal for interviews.
+
+**Python Implementation:**
+
+```python
+# Version 1: With Detailed Comments
+def longestCommonPrefix(strs):
+    """
+    Find the longest common prefix string amongst an array of strings.
+
+    Args:
+        strs: Array of strings.
+
+    Returns:
+        The longest common prefix, or "" if none exists.
+    """
+    if not strs:  # If array is empty, no common prefix exists
+        return ""
+
+    for i in range(len(strs[0])):  # Iterate through each character of first string
+        char = strs[0][i]  # Current character to compare
+        for j in range(1, len(strs)):  # Compare with remaining strings
+            if i >= len(strs[j]) or strs[j][i] != char:  # If string too short or character mismatch
+                return strs[0][:i]  # Return prefix found so far
+
+    return strs[0]  # First string is prefix of all strings
+
+# Version 2: Clean Code
+def longestCommonPrefix_clean(strs):
+    if not strs:
+        return ""
+
+    for i in range(len(strs[0])):
+        char = strs[0][i]
+        for j in range(1, len(strs)):
+            if i >= len(strs[j]) or strs[j][i] != char:
+                return strs[0][:i]
+
+    return strs[0]
+```
+
+**Detailed Execution Process:**
+
+Let's walk through the process using `strs = ["flower", "flow", "flight"]`:
+
+1. **Initialization:** First check if the string array is empty.
+2. **Outer Loop:** Iterate through each character of "flower".
+   * `i = 0`, `char = 'f'`
+   * **Inner Loop:** Check if 'f' is also the first character of "flow" and "flight". It is.
+   * `i = 1`, `char = 'l'`
+   * **Inner Loop:** Check if 'l' is also the second character of "flow" and "flight". It is.
+   * `i = 2`, `char = 'o'`
+   * **Inner Loop:** When `j = 1`, `strs[j] = "flow"`, `i = 2`, `char = 'o'`. `strs[1][2]` is 'o', but `strs[2][2]` is 'i', not 'o'.
+   * Function returns `strs[0][:2]`, which is "fl".
+
+I hope this explanation helps!

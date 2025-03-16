@@ -1,0 +1,204 @@
+---
+title: Three Sum
+description: Find all unique triplets in an array that sum to zero using two-pointer technique.
+date: 2024-03-14
+tag: ["Medium", "Array"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## Problem
+
+> LeetCode link: [3Sum](https://leetcode.com/problems/3sum/)
+
+Given an integer array `nums`, find all unique triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
+
+The solution set must not contain duplicate triplets.
+
+**Example 1:**
+```
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Explanation: 
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0
+nums[0] + nums[4] + nums[3] = (-1) + (-1) + 2 = 0
+The distinct triplets are [-1,0,1] and [-1,-1,2].
+Note that the order of the output and the order of the triplets does not matter.
+```
+
+**Example 2:**
+```
+Input: nums = [0,1,1]
+Output: []
+Explanation: The only possible triplet does not sum up to 0.
+```
+
+**Example 3:**
+```
+Input: nums = [0,0,0]
+Output: [[0,0,0]]
+Explanation: The only possible triplet sums up to 0.
+```
+
+**Constraints:**
+```
+3 <= nums.length <= 3000
+-10^5 <= nums[i] <= 10^5
+```
+
+## Solution
+
+**Problem Simplified:**
+
+Find all unique combinations of three numbers from a list that add up to zero. Each number must be from different positions in the list, and no duplicate combinations are allowed.
+
+**Edge Cases and Test Examples:**
+
+*   Empty array or length less than 3: Return empty array `[]`
+*   All numbers identical and sum to 0: e.g., `[0, 0, 0]`, return `[[0, 0, 0]]`
+*   No valid triplets: e.g., `[1, 2, 3]`, return `[]`
+*   Array with duplicates: e.g., `[-1, 0, 1, 2, -1, -4]`, return `[[-1, -1, 2], [-1, 0, 1]]`
+
+Test Cases:
+
+| Input (nums) | Output |
+| ------------ | ------ |
+| `[-1, 0, 1, 2, -1, -4]` | `[[-1, -1, 2], [-1, 0, 1]]` |
+| `[0, 1, 1]` | `[]` |
+| `[0, 0, 0]` | `[[0, 0, 0]]` |
+| `[-2, 0, 1, 1, 2]` | `[[-2, 0, 2], [-1, -1, 2]]` |
+| `[]` | `[]` |
+| `[1, 2, -2, -1]` | `[[-2, -1, 1]]` |
+
+**Solution Analysis:**
+
+| Approach | Advantages | Disadvantages | Time Complexity | Space Complexity |
+| -------- | ---------- | ------------- | -------------- | ---------------- |
+| Brute Force | Simple to understand | Time limit exceeded for large inputs | O(n³) | O(1) |
+| Hash Table | Theoretically faster | Extra space needed, complex duplicate handling | O(n²) | O(n) |
+| Sort + Two Pointers | Efficient, low space usage | Modifies input array | O(n log n) | O(1) |
+
+Complexity Analysis:
+*   Time Complexity: Measures how algorithm runtime grows with input size
+*   Space Complexity: Measures how memory usage grows with input size
+
+Recommended Approach: Sort + Two Pointers
+*   Easy to remember and implement
+*   Clean code structure
+*   Optimal time complexity for interviews
+
+**Python Implementation:**
+
+Version 1: With Detailed Comments
+
+```python
+def threeSum(nums):
+    """
+    Find all unique triplets in the array that sum to zero.
+
+    Args:
+        nums: List of integers
+
+    Returns:
+        List of lists containing unique triplets that sum to zero
+    """
+    n = len(nums)
+    if n < 3:
+        return []  # Return empty list if array length is less than 3
+
+    nums.sort()  # Sort array for two-pointer approach
+    result = []  # Store result triplets
+
+    for i in range(n - 2):  # Iterate through array, leaving room for two pointers
+        # Skip duplicates to avoid duplicate triplets
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+
+        left = i + 1  # Left pointer starts after current element
+        right = n - 1  # Right pointer starts at end
+
+        while left < right:  # While pointers haven't met
+            total = nums[i] + nums[left] + nums[right]  # Calculate sum
+
+            if total == 0:  # Found valid triplet
+                result.append([nums[i], nums[left], nums[right]])
+
+                # Skip duplicates for both pointers
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+
+                left += 1  # Move both pointers
+                right -= 1
+            elif total < 0:  # Sum too small, increase it
+                left += 1
+            else:  # Sum too large, decrease it
+                right -= 1
+
+    return result
+```
+
+Version 2: Clean Implementation
+
+```python
+def threeSum(nums):
+    n = len(nums)
+    if n < 3:
+        return []
+
+    nums.sort()
+    result = []
+
+    for i in range(n - 2):
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+
+        left = i + 1
+        right = n - 1
+
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+
+            if total == 0:
+                result.append([nums[i], nums[left], nums[right]])
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+
+                left += 1
+                right -= 1
+            elif total < 0:
+                left += 1
+            else:
+                right -= 1
+
+    return result
+```
+
+**Step-by-Step Execution:**
+
+Let's walk through the solution with input `nums = [-1, 0, 1, 2, -1, -4]`:
+
+1.  **Initial Setup:**
+    *   Sort the array: `[-4, -1, -1, 0, 1, 2]`
+    *   Initialize empty result list
+
+2.  **Main Loop:**
+    *   First iteration (i = 0, nums[i] = -4):
+        *   Set pointers: left = 1 (-1), right = 5 (2)
+        *   Try combinations with -4
+        *   No valid triplets found (sum always < 0)
+
+    *   Second iteration (i = 1, nums[i] = -1):
+        *   Skip duplicate -1
+        *   Set pointers: left = 2, right = 5
+        *   Find triplet [-1, -1, 2]
+
+    *   Continue iterations...
+
+3.  **Final Result:**
+    *   Return `[[-1, -1, 2], [-1, 0, 1]]`
