@@ -36,7 +36,21 @@
       "title": "Making Algorithm Learning Simple and Fun",
       "description": "Learn data structures and algorithms through clear illustrations and examples. From basics to advanced, master algorithmic thinking effortlessly.",
       "startLearning": "Start Learning",
-      "membershipButton": "View Membership"
+      "membershipButton": "View Membership",
+      "typedTitle": {
+        "part1": "A_",
+        "part2": "Al_",
+        "part3": "Alg_",
+        "part4": "Algo_",
+        "part5": "Algor_",
+        "part6": "Algori_",
+        "part7": "Algorit_",
+        "part8": "Algorith_",
+        "part9": "Algorithm_",
+        "part10": "Algorithms_",
+        "part11": "Algorithms Made_",
+        "complete": "Algorithms Made Easy!"
+      }
     },
     "documents": {
       "title": "Latest Documents",

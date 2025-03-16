@@ -139,8 +139,9 @@ export default async function RootLayout({
 
   let messages;
   try {
-    messages = require(`../../messages/${locale}.json`);
+    messages = (await import(`../../messages/${locale}.json`)).default;
   } catch (error) {
+    console.error('Error loading messages:', error);
     notFound();
   }
 

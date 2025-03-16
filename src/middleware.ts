@@ -6,9 +6,11 @@ export default createMiddleware({
   defaultLocale: 'zh',
   // 配置支持的语言
   locales: locales,
+  // 添加 localePrefix 配置
+  localePrefix: 'always'
 });
 
 export const config = {
   // 匹配所有路径，除了api路由、静态文件等
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)', '/']
 }; 
