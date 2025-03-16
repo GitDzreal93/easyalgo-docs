@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
+import createNextIntlPlugin from 'next-intl/plugin';
 
+const withNextIntl = createNextIntlPlugin();
 const withMDX = createMDX({
-  // Optionally provide remark and rehype plugins
   options: {
     remarkPlugins: [],
     rehypePlugins: [],
@@ -10,10 +11,22 @@ const withMDX = createMDX({
 });
 
 const nextConfig: NextConfig = {
-  // Configure pageExtensions to include md and mdx
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  // Other Next.js config options
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
+  // 添加主题相关的环境变量
+  env: {
+    PRIMARY_COLOR: '#8ECAE6',
+    ACCENT_COLOR: '#FFB703',
+    TEXT_COLOR: '#023047',
+  },
 };
 
-// Apply MDX configuration to Next.js config
-export default withMDX(nextConfig);
+// 应用 MDX 和 next-intl 配置
+export default withNextIntl(withMDX(nextConfig));
