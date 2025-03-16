@@ -1,4 +1,28 @@
 {
+  "layout": {
+    "metadata": {
+      "title": {
+        "default": "Easy Algo - Learn Algorithms Made Easy",
+        "template": "%s | Easy Algo"
+      },
+      "description": "Professional algorithm tutorial website offering data structures, algorithm explanations, LeetCode solutions, and interview guides. Learn algorithms through clear illustrations and examples.",
+      "keywords": [
+        "algorithm tutorial",
+        "data structures",
+        "LeetCode solutions",
+        "algorithm learning",
+        "interview prep",
+        "programming basics",
+        "algorithm analysis",
+        "code examples"
+      ],
+      "openGraph": {
+        "title": "Easy Algo - Learn Algorithms Made Easy",
+        "description": "Professional algorithm tutorial website with data structures, algorithm explanations, and LeetCode solutions.",
+        "alt": "Easy Algo - Algorithm Learning Platform"
+      }
+    }
+  },
   "auth": {
     "error": {
       "title": "Authentication Error",
@@ -50,6 +74,17 @@
         "part10": "Algorithms_",
         "part11": "Algorithms Made_",
         "complete": "Algorithms Made Easy!"
+      },
+      "codeExample": {
+        "title": "Two Sum - LeetCode #1",
+        "complexity": "Time: O(n), Space: O(n)",
+        "solution": "Solution",
+        "method": "twoSum",
+        "params": {
+          "self": "self",
+          "nums": "nums",
+          "target": "target"
+        }
       }
     },
     "documents": {
@@ -100,7 +135,8 @@
     "messages": {
       "paymentCanceled": "Payment was canceled. If you have any questions, please contact our support team.",
       "alreadyMember": "You are already a member and can access all course content.",
-      "startReading": "Start Reading"
+      "startReading": "Start Reading",
+      "loading": "Loading..."
     },
     "plans": {
       "basic": {
@@ -135,6 +171,31 @@
     "cta": {
       "basic": "Start Free Trial",
       "pro": "Upgrade to Pro"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "questions": [
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit cards, PayPal, and other popular payment methods through our secure payment processor Stripe."
+        },
+        {
+          "question": "Can I cancel my subscription anytime?",
+          "answer": "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period."
+        },
+        {
+          "question": "Is there a refund policy?",
+          "answer": "Yes, we offer a 7-day money-back guarantee if you're not satisfied with our service."
+        },
+        {
+          "question": "What's included in the Pro plan?",
+          "answer": "The Pro plan includes all basic features plus advanced tutorials, interview preparation materials, and premium solutions with detailed explanations."
+        },
+        {
+          "question": "How do I access the content after purchase?",
+          "answer": "After purchase, you'll have immediate access to all content included in your plan. Simply log in to your account to start learning."
+        }
+      ]
     }
   },
   "profile": {

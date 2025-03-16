@@ -13,7 +13,7 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-// 基础元数据
+// Base metadata
 const baseMetadata: Metadata = {
   metadataBase: new URL('https://easyalgo.com'),
   authors: [{ name: 'Easy Algo Team' }],
@@ -49,7 +49,7 @@ const baseMetadata: Metadata = {
   },
 };
 
-// 本地化元数据
+// Localized metadata
 const localizedMetadata = {
   zh: {
     title: {
@@ -98,10 +98,20 @@ export async function generateMetadata(
     return baseMetadata;
   }
 
-  const meta = localizedMetadata[locale as keyof typeof localizedMetadata];
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    console.error('Error loading messages:', error);
+    return baseMetadata;
+  }
+
+  const meta = messages.layout.metadata;
   const metadata: Metadata = {
     ...baseMetadata,
-    ...meta,
+    title: meta.title,
+    description: meta.description,
+    keywords: meta.keywords,
     openGraph: {
       type: 'website',
       url: 'https://easyalgo.com',
@@ -136,7 +146,7 @@ export default async function RootLayout({
     notFound();
   }
 
-  // 设置请求的语言环境
+  // Set request locale
   setRequestLocale(locale);
 
   let messages;

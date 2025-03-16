@@ -1,4 +1,28 @@
 {
+  "layout": {
+    "metadata": {
+      "title": {
+        "default": "Easy Algo - 通俗易懂的算法学习平台",
+        "template": "%s | Easy Algo"
+      },
+      "description": "专业的算法教程网站，提供数据结构与算法详解、LeetCode 题解、面试算法指南。通过清晰的图解和实例，让算法学习变得简单有趣。",
+      "keywords": [
+        "算法教程",
+        "数据结构",
+        "LeetCode题解",
+        "算法学习",
+        "面试算法",
+        "编程入门",
+        "算法解析",
+        "代码示例"
+      ],
+      "openGraph": {
+        "title": "Easy Algo - 通俗易懂的算法学习平台",
+        "description": "专业的算法教程网站，提供数据结构与算法详解、LeetCode 题解、面试算法指南。",
+        "alt": "Easy Algo - 算法学习平台"
+      }
+    }
+  },
   "auth": {
     "error": {
       "title": "认证错误",
@@ -69,6 +93,17 @@
         "part10": "算法学习，从未如此简_",
         "part11": "算法学习，从未如此简单_",
         "complete": "算法学习，从未如此简单！"
+      },
+      "codeExample": {
+        "title": "Two Sum - LeetCode #1",
+        "complexity": "Time: O(n), Space: O(n)",
+        "solution": "Solution",
+        "method": "twoSum",
+        "params": {
+          "self": "self",
+          "nums": "nums",
+          "target": "target"
+        }
       }
     },
     "documents": {
@@ -119,7 +154,8 @@
     "messages": {
       "paymentCanceled": "支付已取消。如有任何问题，请联系我们的支持团队。",
       "alreadyMember": "您已是会员，可以访问所有课程内容。",
-      "startReading": "开始阅读"
+      "startReading": "开始阅读",
+      "loading": "加载中..."
     },
     "plans": {
       "basic": {
@@ -154,6 +190,31 @@
     "cta": {
       "basic": "开始免费试用",
       "pro": "升级到专业版"
+    },
+    "faq": {
+      "title": "常见问题",
+      "questions": [
+        {
+          "question": "支持哪些支付方式？",
+          "answer": "我们通过安全的支付处理商 Stripe 支持所有主流信用卡、PayPal 等支付方式。"
+        },
+        {
+          "question": "我可以随时取消订阅吗？",
+          "answer": "是的，您可以随时取消订阅。您的访问权限将持续到当前计费周期结束。"
+        },
+        {
+          "question": "是否有退款政策？",
+          "answer": "是的，如果您对我们的服务不满意，我们提供7天无理由退款保证。"
+        },
+        {
+          "question": "专业版包含哪些内容？",
+          "answer": "专业版包含所有基础功能，以及高级教程、面试准备材料和带详细解释的优质解决方案。"
+        },
+        {
+          "question": "购买后如何访问内容？",
+          "answer": "购买后，您将立即获得计划内所有内容的访问权限。只需登录您的账户即可开始学习。"
+        }
+      ]
     }
   },
   "profile": {

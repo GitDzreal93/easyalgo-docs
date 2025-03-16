@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
-import { CheckIcon } from '@heroicons/react/24/solid';
+import { useEffect, useState } from 'react';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -19,6 +19,12 @@ interface Plan {
   badge?: string;
 }
 
+// 定义翻译选项接口
+interface TranslationOptions {
+  returnObjects: boolean;
+  [key: string]: any;
+}
+
 export default function PricingPage({ searchParams }: { searchParams: Promise<{ canceled?: string }> }) {
   const router = useRouter();
   const { user } = useAuth();
@@ -27,6 +33,18 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
   const params = use(searchParams);
   const canceled = params.canceled;
   const t = useTranslations('pricing');
+  const [openFaqIndices, setOpenFaqIndices] = useState<number[]>([]);
+
+  // 获取功能列表
+  const getFeatures = (key: string): string[] => {
+    try {
+      const features = t.raw(key);
+      return Array.isArray(features) ? features : [];
+    } catch (error) {
+      console.error(`Error loading features for ${key}:`, error);
+      return [];
+    }
+  };
 
   const plans: Plan[] = [
     {
@@ -34,7 +52,12 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
       description: t('plans.basic.description'),
       price: t('plans.basic.price.monthly'),
       interval: t('period'),
-      features: t('plans.basic.features', {}, { returnObjects: true }),
+      features: [
+        t('plans.basic.features.0'),
+        t('plans.basic.features.1'),
+        t('plans.basic.features.2'),
+        t('plans.basic.features.3')
+      ],
       cta: t('cta.basic'),
       highlighted: false,
     },
@@ -43,7 +66,12 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
       description: t('plans.pro.description'),
       price: t('plans.pro.price.monthly'),
       interval: t('period'),
-      features: t('plans.pro.features', {}, { returnObjects: true }),
+      features: [
+        t('plans.pro.features.0'),
+        t('plans.pro.features.1'),
+        t('plans.pro.features.2'),
+        t('plans.pro.features.3')
+      ],
       cta: t('cta.pro'),
       highlighted: true,
       badge: t('savePercent'),
@@ -86,7 +114,7 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
           disabled
           className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
         >
-          {t('common.loading')}
+          {t('messages.loading')}
         </button>
       );
     }
@@ -97,7 +125,7 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
           disabled
           className="mt-8 block w-full bg-gray-300 cursor-not-allowed text-white rounded-md py-2 px-4 font-medium text-sm"
         >
-          {t('common.alreadyMember')}
+          {t('messages.alreadyMember')}
         </button>
       );
     }
@@ -120,6 +148,14 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
       >
         {plan.cta}
       </StripeCheckoutButton>
+    );
+  };
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndices(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
     );
   };
 
@@ -232,6 +268,47 @@ export default function PricingPage({ searchParams }: { searchParams: Promise<{ 
               </div>
             </div>
           ))}
+        </div>
+      </div>
+      
+      {/* FAQ区域 */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-[var(--color-navy)]">
+            {t('faq.title')}
+          </h2>
+        </div>
+        <div className="space-y-4">
+          {t.raw('faq.questions').map((faq: { question: string; answer: string }, index: number) => {
+            const isOpen = openFaqIndices.includes(index);
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-sm border border-[var(--color-navy)] border-opacity-10 hover:border-[var(--color-sky)] transition-colors duration-200"
+              >
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full px-6 py-4 flex justify-between items-center text-left"
+                >
+                  <h3 className="text-lg font-medium text-[var(--color-navy)]">
+                    {faq.question}
+                  </h3>
+                  {isOpen ? (
+                    <ChevronUpIcon className="h-5 w-5 text-[var(--color-teal)]" />
+                  ) : (
+                    <ChevronDownIcon className="h-5 w-5 text-[var(--color-teal)]" />
+                  )}
+                </button>
+                {isOpen && (
+                  <div className="px-6 pb-4">
+                    <p className="text-[var(--color-navy)] opacity-80">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </main>

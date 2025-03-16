@@ -3,18 +3,6 @@ import { DocumentTextIcon, LightBulbIcon, AcademicCapIcon, CodeBracketIcon } fro
 import { TypedTitle } from '@/components/home/TypedTitle';
 import { useTranslations } from 'next-intl';
 
-export const metadata = {
-  title: 'Easy Algo - 让算法学习变得简单有趣',
-  description: '最简单的算法学习平台，通过清晰的图解和实例，让数据结构与算法变得简单有趣。从基础到进阶，助你轻松掌握算法精髓。',
-  keywords: '算法学习, Easy Algo, 数据结构, 算法教程, LeetCode题解, 编程入门, 算法图解',
-  openGraph: {
-    title: 'Easy Algo - 让算法学习变得简单有趣',
-    description: '通过清晰的图解和实例，让数据结构与算法变得简单有趣',
-    type: 'website',
-    locale: 'zh_CN',
-  },
-};
-
 export default function Home() {
   const t = useTranslations('home');
   
@@ -78,14 +66,14 @@ export default function Home() {
                     </div>
                     <div className="w-full">
                       <pre className="text-[13px] leading-6 sm:text-sm sm:leading-7 text-[#023047] font-mono whitespace-pre-wrap break-words p-6 bg-gray-50/50 rounded-md">
-                        <span className="block text-[#FFB703] font-medium"># Two Sum - LeetCode #1</span>
-                        <span className="block mb-4 text-[#FFB703] font-medium"># Time: O(n), Space: O(n)</span>
+                        <span className="block text-[#FFB703] font-medium"># {t('hero.codeExample.title')}</span>
+                        <span className="block mb-4 text-[#FFB703] font-medium"># {t('hero.codeExample.complexity')}</span>
                         <div className="block">
-                          <span className="text-[#023047]">class</span> <span className="text-[#8ECAE6] font-semibold">Solution</span>:
+                          <span className="text-[#023047]">class</span> <span className="text-[#8ECAE6] font-semibold">{t('hero.codeExample.solution')}</span>:
                         </div>
                         <div className="block">
                           <span className="pl-8" />
-                          <span className="text-[#023047]">def</span> <span className="text-[#FFB703] font-semibold">twoSum</span>(<span className="text-[#023047]">self</span>, nums: <span className="text-[#8ECAE6]">List[int]</span>, target: <span className="text-[#8ECAE6]">int</span>) {'->'} <span className="text-[#8ECAE6]">List[int]</span>:
+                          <span className="text-[#023047]">def</span> <span className="text-[#FFB703] font-semibold">{t('hero.codeExample.method')}</span>(<span className="text-[#023047]">{t('hero.codeExample.params.self')}</span>, nums: <span className="text-[#8ECAE6]">List[int]</span>, target: <span className="text-[#8ECAE6]">int</span>) {'->'} <span className="text-[#8ECAE6]">List[int]</span>:
                         </div>
                         <div className="block">
                           <span className="pl-16" />
