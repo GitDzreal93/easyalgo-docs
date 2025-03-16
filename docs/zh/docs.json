@@ -34,7 +34,7 @@
         "has_child": false,
         "slug": "linked_list_2",
         "position": 0,
-        "filename": "2.mdx"
+        "filename": "linked_list/2.mdx"
       },
       {
         "depth": 1,
@@ -48,7 +48,7 @@
         "has_child": false,
         "slug": "linked_list_19",
         "position": 1,
-        "filename": "19.mdx"
+        "filename": "linked_list/19.mdx"
       },
       {
         "depth": 1,
@@ -62,7 +62,7 @@
         "has_child": false,
         "slug": "linked_list_21",
         "position": 2,
-        "filename": "21.mdx"
+        "filename": "linked_list/21.mdx"
       }
     ],
     "has_child": true,
@@ -91,7 +91,7 @@
         "has_child": false,
         "slug": "stack_20",
         "position": 0,
-        "filename": "20.mdx"
+        "filename": "stack/20.mdx"
       }
     ],
     "has_child": true,
@@ -120,7 +120,7 @@
         "has_child": false,
         "slug": "array_1",
         "position": 0,
-        "filename": "1.mdx"
+        "filename": "array/1.mdx"
       },
       {
         "depth": 1,
@@ -134,7 +134,7 @@
         "has_child": false,
         "slug": "array_4",
         "position": 1,
-        "filename": "4.mdx"
+        "filename": "array/4.mdx"
       },
       {
         "depth": 1,
@@ -148,7 +148,7 @@
         "has_child": false,
         "slug": "array_11",
         "position": 2,
-        "filename": "11.mdx"
+        "filename": "array/11.mdx"
       },
       {
         "depth": 1,
@@ -162,7 +162,7 @@
         "has_child": false,
         "slug": "array_15",
         "position": 3,
-        "filename": "15.mdx"
+        "filename": "array/15.mdx"
       },
       {
         "depth": 1,
@@ -176,7 +176,7 @@
         "has_child": false,
         "slug": "array_16",
         "position": 4,
-        "filename": "16.mdx"
+        "filename": "array/16.mdx"
       }
     ],
     "has_child": true,
@@ -205,7 +205,7 @@
         "has_child": false,
         "slug": "math_7",
         "position": 0,
-        "filename": "7.mdx"
+        "filename": "math/7.mdx"
       }
     ],
     "has_child": true,
@@ -234,7 +234,7 @@
         "has_child": false,
         "slug": "string_3",
         "position": 0,
-        "filename": "3.mdx"
+        "filename": "string/3.mdx"
       },
       {
         "depth": 1,
@@ -248,7 +248,7 @@
         "has_child": false,
         "slug": "string_5",
         "position": 1,
-        "filename": "5.mdx"
+        "filename": "string/5.mdx"
       },
       {
         "depth": 1,
@@ -262,7 +262,7 @@
         "has_child": false,
         "slug": "string_8",
         "position": 2,
-        "filename": "8.mdx"
+        "filename": "string/8.mdx"
       },
       {
         "depth": 1,
@@ -276,7 +276,7 @@
         "has_child": false,
         "slug": "string_13",
         "position": 3,
-        "filename": "13.mdx"
+        "filename": "string/13.mdx"
       },
       {
         "depth": 1,
@@ -290,7 +290,7 @@
         "has_child": false,
         "slug": "string_14",
         "position": 4,
-        "filename": "14.mdx"
+        "filename": "string/14.mdx"
       },
       {
         "depth": 1,
@@ -304,7 +304,7 @@
         "has_child": false,
         "slug": "string_17",
         "position": 5,
-        "filename": "17.mdx"
+        "filename": "string/17.mdx"
       },
       {
         "depth": 1,
@@ -318,7 +318,7 @@
         "has_child": false,
         "slug": "string_22",
         "position": 6,
-        "filename": "22.mdx"
+        "filename": "string/22.mdx"
       }
     ],
     "has_child": true,
@@ -347,7 +347,7 @@
         "has_child": false,
         "slug": "heap_23",
         "position": 0,
-        "filename": "23.mdx"
+        "filename": "heap/23.mdx"
       },
       {
         "depth": 1,
@@ -361,7 +361,7 @@
         "has_child": false,
         "slug": "heap_17_14",
         "position": 1,
-        "filename": "17.14.mdx"
+        "filename": "heap/17.14.mdx"
       }
     ],
     "has_child": true,
