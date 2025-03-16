@@ -7,11 +7,15 @@ import { usePathname } from 'next/navigation';
 import UserMenu from '../auth/UserMenu';
 import clsx from 'clsx';
 import { useAuth } from '@/hooks/useAuth';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
   const pathname = usePathname();
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +54,7 @@ export default function Header() {
                     : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
-                首页
+                {t('nav.home')}
               </Link>
               <Link 
                 href="/docs" 
@@ -61,7 +65,7 @@ export default function Header() {
                     : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
-                课程
+                {t('nav.courses')}
               </Link>
               <Link 
                 href="/pricing" 
@@ -72,20 +76,23 @@ export default function Header() {
                     : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
                 )}
               >
-                会员
+                {t('nav.members')}
               </Link>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+            {/* 语言切换组件 */}
+            <LanguageSwitcher />
+
             {user ? (
               <UserMenu user={user} />
             ) : (
               <>
                 <Link href="/auth/login" className="text-[#023047]/70 hover:text-[#023047] px-3 py-2 text-sm font-medium transition-colors duration-200">
-                  登录
+                  {t('auth.login.title')}
                 </Link>
                 <Link href="/auth/register" className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-[#023047] bg-[#FFB703] hover:bg-[#FFB703]/90 transition-colors duration-200">
-                  注册
+                  {t('auth.register.title')}
                 </Link>
               </>
             )}

@@ -4,6 +4,8 @@ import "../globals.css";
 import { NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import '@/lib/fontawesome';
 
 const ClientLayout = require('@/components/layout/ClientLayout').default;
 

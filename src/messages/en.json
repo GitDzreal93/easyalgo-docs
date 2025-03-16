@@ -203,5 +203,10 @@
     "noResults": "No results found",
     "back": "Back",
     "alreadyMember": "Already a member"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "members": "Membership"
   }
 } 
