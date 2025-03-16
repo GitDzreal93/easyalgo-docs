@@ -3,6 +3,8 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { DocNode } from '@/lib/docs';
 import { DocsSearch } from './DocsSearch';
 
@@ -45,6 +47,40 @@ const DocLink = ({ doc, isActive, depth = 0 }: { doc: DocNode; isActive: boolean
     >
       {doc.title}
     </Link>
+  );
+};
+
+// 分类目录组件
+const CategorySection = ({ doc, isActive }: { doc: DocNode; isActive: boolean }) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  
+  return (
+    <div className="space-y-0.5">
+      <div className="flex items-center">
+        <DocLink doc={doc} isActive={isActive} depth={0} />
+        {doc.children?.length > 0 && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={clsx(
+              'p-1 rounded-md ml-1 text-[var(--color-navy)]/50 hover:text-[var(--color-navy)] dark:text-[var(--color-sky)]/50 dark:hover:text-[var(--color-sky)]',
+              'transition-transform duration-200',
+              isExpanded ? 'transform rotate-180' : ''
+            )}
+          >
+            <ChevronDownIcon className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+      {isExpanded && doc.children?.length > 0 && (
+        <ul className="ml-3 pl-3 border-l border-[var(--color-sky)]/20 dark:border-[var(--color-sky)]/10 space-y-0.5">
+          {sortByPosition(doc.children).map(child => (
+            <li key={child.node_token}>
+              <DocLink doc={child} isActive={isActive} depth={1} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 
@@ -123,71 +159,19 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
     return false;
   };
 
-  // Render child docs for a parent doc
-  const renderChildDocs = (parentDoc: DocNode) => {
-    if (!parentDoc.children?.length) {
-      console.log('文档没有子节点:', {
-        title: parentDoc.title,
-        slug: parentDoc.slug
-      });
-      return null;
-    }
-    
-    const sortedChildren = sortByPosition(parentDoc.children);
-    console.log('渲染子文档:', { 
-      parentTitle: parentDoc.title, 
-      parentSlug: parentDoc.slug,
-      parentFilename: parentDoc.filename,
-      totalChildren: sortedChildren.length,
-      children: sortedChildren.map(c => ({ 
-        title: c.title, 
-        slug: c.slug,
-        filename: c.filename,
-        position: c.position
-      }))
-    });
-    
-    return (
-      <ul className="ml-3 pl-3 border-l border-[var(--color-sky)]/20 dark:border-[var(--color-sky)]/10">
-        {sortedChildren.map(child => {
-          console.log('渲染子文档链接:', {
-            parentTitle: parentDoc.title,
-            childTitle: child.title,
-            childSlug: child.slug,
-            childFilename: child.filename
-          });
-          return (
-            <li key={child.node_token}>
-              <DocLink doc={child} isActive={isDocActive(child)} depth={1} />
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
-
   return (
-    <div className="h-full flex flex-col bg-white dark:bg-[var(--color-navy)] rounded-lg border border-[var(--color-sky)]/30 dark:border-[var(--color-sky)]/20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+    <div className="h-[calc(100vh-4rem)] flex flex-col bg-white dark:bg-[var(--color-navy)] rounded-lg border border-[var(--color-sky)]/30 dark:border-[var(--color-sky)]/20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
       {/* 搜索区域 */}
-      <div className="flex-none px-4 py-4 border-b border-[var(--color-sky)]/20">
+      <div className="shrink-0 px-4 py-4 border-b border-[var(--color-sky)]/20">
         <DocsSearch docs={docs} />
       </div>
       
       {/* 导航区域 */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
-        <ul className="space-y-1">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 min-h-0 scrollbar-thin scrollbar-thumb-[var(--color-sky)]/20 hover:scrollbar-thumb-[var(--color-sky)]/30 scrollbar-track-transparent">
+        <ul className="space-y-2">
           {sortedDocs.map(doc => (
-            <li key={doc.node_token} className="space-y-0.5">
-              <DocLink doc={doc} isActive={isDocActive(doc)} depth={0} />
-              {doc.children?.length > 0 && (
-                <ul className="ml-3 pl-3 border-l border-[var(--color-sky)]/20 dark:border-[var(--color-sky)]/10">
-                  {sortByPosition(doc.children).map(child => (
-                    <li key={child.node_token}>
-                      <DocLink doc={child} isActive={isDocActive(child)} depth={1} />
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <li key={doc.node_token}>
+              <CategorySection doc={doc} isActive={isDocActive(doc)} />
             </li>
           ))}
         </ul>

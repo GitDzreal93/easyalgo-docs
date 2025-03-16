@@ -15,16 +15,16 @@ export async function DocsLayout({ children }: DocsLayoutProps) {
   
   return (
     <ClientDocsLayout>
-      <div className="max-w-[90rem] mx-auto relative">
-        <div className="flex pb-8">
+      <div className="max-w-[90rem] mx-auto">
+        <div className="flex gap-8 py-8">
           {/* 左侧边栏 */}
-          <aside className="fixed w-72" style={{ top: 'calc(4rem + 2rem)' }}>
+          <aside className="w-72 flex-shrink-0">
             {docs.length > 0 && <DocsSidebar docs={docs} />}
           </aside>
 
           {/* 主内容区 */}
-          <main className="flex-1 min-w-0 ml-72 mr-64">
-            <div className="max-w-4xl mx-auto px-8">
+          <main className="flex-1 min-w-0">
+            <div className="max-w-4xl mx-auto">
               <div className="pb-8">
                 {children}
               </div>
@@ -32,7 +32,7 @@ export async function DocsLayout({ children }: DocsLayoutProps) {
           </main>
 
           {/* 右侧目录 */}
-          <aside className="fixed right-[max(0px,calc((100%-90rem)/2))] w-64 hidden xl:block" style={{ top: 'calc(4rem + 2rem)' }}>
+          <aside className="w-64 hidden xl:block flex-shrink-0">
             <DocsTableOfContentsWrapper />
           </aside>
         </div>
