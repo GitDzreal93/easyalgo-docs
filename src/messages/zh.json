@@ -222,5 +222,10 @@
     "noResults": "未找到结果",
     "back": "返回",
     "alreadyMember": "已是会员"
+  },
+  "nav": {
+    "home": "首页",
+    "courses": "课程",
+    "members": "会员"
   }
 } 
