@@ -1,0 +1,159 @@
+---
+title: 19. 删除链表的倒数第 N 个结点
+description: 使用双指针技巧，一次遍历删除链表倒数第N个节点，注意头节点处理。
+date: 2024-03-14
+tag: ['中等', '链表']
+premium: false
+percentage: 30
+---
+
+## 题目 19
+
+> leetcode 链接： [删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+**示例 1：**
+```
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+```
+
+**示例 2：**
+```
+输入：head = [1], n = 1
+输出：[]
+```
+
+**示例 3：**
+```
+输入：head = [1,2], n = 1
+输出：[1]
+```
+ 
+**提示：**
+```
+链表中结点的数目为 sz
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+```
+
+进阶：你能尝试使用一趟扫描实现吗？
+
+## 题解
+
+**题意简化：**
+
+想象你有一串珠子（链表），你想移除从后往前数的第 n 个珠子。例如，如果珠子是 [1, 2, 3, 4, 5]，n 是 2，那么你想移除倒数第二个珠子（也就是 4），结果是 [1, 2, 3, 5]。题目会给你这串珠子的开头（head）和 n，你要返回修改后的珠子串的开头。
+
+**边界值与测试用例：**
+
+*   **空链表：**  `head = [], n = 1`  （无效输入，按题目假设链表不为空处理）
+*   **单节点链表：**  `head = [1], n = 1`  输出 `[]`
+*   **删除头节点：**  `head = [1, 2, 3], n = 3`  输出 `[2, 3]`
+*   **删除尾节点：**  `head = [1, 2, 3], n = 1`  输出 `[1, 2]`
+*   **一般情况：**  `head = [1, 2, 3, 4, 5], n = 2`  输出 `[1, 2, 3, 5]`
+
+**解法分析：**
+
+| 解法               | 优点                                   | 缺点                               | 时间复杂度 | 空间复杂度 |
+| ------------------ | -------------------------------------- | ---------------------------------- | -------- | -------- |
+| 1. 两次遍历         | 简单易懂                               | 需要遍历两次链表                     | O(L)     | O(1)     |
+| 2. 快慢指针（一趟扫描） | 只需遍历一次链表，效率高                     | 稍微复杂，需要理解快慢指针的移动关系 | O(L)     | O(1)     |
+
+L 是链表的长度。
+
+*   **时间复杂度评估：**  遍历链表的时间复杂度是 O(L)，其中 L 是链表的长度。
+*   **空间复杂度评估：**  所有解法都只使用了常量级的额外空间，因此空间复杂度是 O(1)。
+
+**推荐解法：**  快慢指针（一趟扫描）。  它在保证时间效率的同时，只需要一次遍历，更符合题目进阶要求，且空间复杂度最低。
+
+**Python 代码实现：**
+
+**版本一：包含详细注释**
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
+    """
+    删除链表的倒数第 N 个节点
+
+    Args:
+        head: 链表的头节点
+        n: 要删除的倒数第 N 个节点
+
+    Returns:
+        删除节点后的链表的头节点
+    """
+
+    # 创建一个哑节点，指向头节点，方便处理删除头节点的情况
+    dummy = ListNode(0)
+    dummy.next = head
+
+    # 初始化快慢指针都指向哑节点
+    slow = dummy
+    fast = dummy
+
+    # 快指针先走 n+1 步
+    for _ in range(n + 1):
+        # 如果快指针已经到达链表末尾，说明 n 大于链表长度，直接返回头节点
+        if not fast:
+            return head
+        fast = fast.next
+
+    # 快慢指针同时移动，直到快指针到达链表末尾
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    # 此时慢指针指向要删除节点的前一个节点
+    # 删除节点
+    slow.next = slow.next.next
+
+    # 返回哑节点的下一个节点，即删除节点后的链表的头节点
+    return dummy.next
+```
+
+**版本二：去除所有注释**
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def removeNthFromEnd(head: ListNode, n: int) -> ListNode:
+    dummy = ListNode(0)
+    dummy.next = head
+
+    slow = dummy
+    fast = dummy
+
+    for _ in range(n + 1):
+        if not fast:
+            return head
+        fast = fast.next
+
+    while fast:
+        slow = slow.next
+        fast = fast.next
+
+    slow.next = slow.next.next
+
+    return dummy.next
+```
+
+**代码运行过程详细描述：**
+
+1.  **初始化：**  创建一个哑节点 `dummy`，`dummy.next` 指向链表的头节点 `head`。设置快慢指针 `fast` 和 `slow` 都指向 `dummy`。
+2.  **快指针先行：**  `fast` 指针向前移动 `n + 1` 步。  之所以是 `n + 1` 步，是为了让 `slow` 指针最终指向要删除节点 *前一个* 节点。
+3.  **快慢指针同步移动：**  `fast` 和 `slow` 指针同时向前移动，直到 `fast` 指针到达链表末尾（`fast` 变为 `None`）。  此时，`slow` 指针指向的节点就是倒数第 `n + 1` 个节点，也就是要删除的节点的前一个节点。
+4.  **删除节点：**  通过 `slow.next = slow.next.next`  删除目标节点。
+5.  **返回结果：**  返回 `dummy.next`，即修改后的链表的头节点。  因为 `head` 有可能被删除，所以需要返回 `dummy.next`。
+
+希望这个解答对你有帮助！

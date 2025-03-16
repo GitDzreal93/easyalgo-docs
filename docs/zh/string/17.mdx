@@ -1,0 +1,193 @@
+---
+title: 17. 电话号码的字母组合
+description: 给定数字字符串，返回所有可能的字母组合。使用回溯法解决问题。
+date: 2024-03-14
+tag: [中等, 字符串, 回溯]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 题目
+
+> leetcode 链接： [电话号码的字母组合](https://leetcode.cn/problems/letter-combinations-of-a-phone-number/)
+
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+**示例 1：**
+```
+输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+```
+
+**示例 2：**
+```
+输入：digits = ""
+输出：[]
+```
+
+**示例 3：**
+```
+输入：digits = "2"
+输出：["a","b","c"]
+```
+
+**提示：**
+```
+0 <= digits.length <= 4
+digits[i] 是范围 ['2', '9'] 的一个数字。
+
+注意：每个数字对应的字母与电话按键相同，具体如下：
+2: "abc"
+3: "def"
+4: "ghi"
+5: "jkl"
+6: "mno"
+7: "pqrs"
+8: "tuv"
+9: "wxyz"
+```
+
+## 题解
+
+**题意简化：**
+
+想象一下你有一部老式电话，每个数字键上都有几个字母。题目就是给你一串数字，让你列出所有可能的字母组合。比如，输入 "23"，2 对应 "abc"，3 对应 "def"，那么可能的组合就是 "ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"。 如果没有输入数字，就返回一个空列表。
+
+**边界值与测试用例：**
+
+*   **空输入：** `digits = ""`， 预期输出 `[]`
+*   **单数字输入：** `digits = "2"`，预期输出 `["a", "b", "c"]`
+*   **多数字输入：** `digits = "23"`，预期输出 `["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]`
+*   **包含最大数字的输入：** `digits = "79"`，预期输出 `["pw", "px", "py", "pz", "qw", "qx", "qy", "qz", "rw", "rx", "ry", "rz", "sw", "sx", "sy", "sz"]`
+
+**解法分析：**
+
+| 解法     | 优点                                                                                                                                                                                                                                                                                                                       | 缺点                                                                                                                                                                                                                                                                                                                                                        | 时间复杂度 | 空间复杂度 |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- |
+| 递归回溯 | 容易理解和实现，代码简洁。                                                                                                                                                                                                                                                                                             | 可能会有较多的函数调用，在某些情况下可能导致栈溢出（虽然本题数据规模较小，不用担心）。                                                                                                                                                                                                                                                                                                                             | O(4<sup>n</sup>)  | O(n)     |
+| 迭代     | 避免了递归的函数调用开销。                                                                                                                                                                                                                                                                                                 | 代码相对复杂，不易理解。                                                                                                                                                                                                                                                                                                                             | O(4<sup>n</sup>)  | O(4<sup>n</sup>)  |
+
+*复杂度评估方法：*
+
+*   时间复杂度：因为每个数字最多对应 4 个字母（比如 7 和 9），所以对于长度为 n 的数字字符串，最多有 4<sup>n</sup> 种组合。
+*   空间复杂度：递归方法主要消耗栈空间，最大深度为 n，所以是 O(n)。迭代方法需要存储所有组合，所以是 O(4<sup>n</sup>)。
+
+*推荐解法：*
+
+我推荐使用递归回溯的方法。因为它最容易理解，代码也比较简洁，很适合面试。
+
+**Python代码实现：**
+
+*版本一：包含详细注释*
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> list[str]:
+        """
+        给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。
+        :param digits: 输入的数字字符串
+        :return: 所有可能的字母组合列表
+        """
+        if not digits:  # 如果输入为空，直接返回空列表
+            return []
+
+        # 数字到字母的映射
+        digit_to_letters = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+        }
+
+        result = []  # 存储结果的列表
+
+        def backtrack(combination, next_digits):
+            """
+            递归回溯函数，生成字母组合
+            :param combination: 当前的字母组合
+            :param next_digits: 剩余的数字字符串
+            :return: None
+            """
+            if not next_digits:  # 如果没有剩余数字，说明已经生成了一个完整的组合
+                result.append(combination)  # 将组合添加到结果列表中
+                return
+
+            digit = next_digits[0]  # 获取第一个数字
+            letters = digit_to_letters[digit]  # 获取该数字对应的字母
+            for letter in letters:  # 遍历该数字对应的每个字母
+                # 递归调用，将当前字母添加到组合中，并处理剩余的数字
+                backtrack(combination + letter, next_digits[1:])
+
+        backtrack("", digits)  # 从空字符串开始，处理整个数字字符串
+        return result
+```
+
+*版本二：去除所有注释*
+
+```python
+class Solution:
+    def letterCombinations(self, digits: str) -> list[str]:
+        if not digits:
+            return []
+
+        digit_to_letters = {
+            "2": "abc",
+            "3": "def",
+            "4": "ghi",
+            "5": "jkl",
+            "6": "mno",
+            "7": "pqrs",
+            "8": "tuv",
+            "9": "wxyz",
+        }
+
+        result = []
+
+        def backtrack(combination, next_digits):
+            if not next_digits:
+                result.append(combination)
+                return
+
+            digit = next_digits[0]
+            letters = digit_to_letters[digit]
+            for letter in letters:
+                backtrack(combination + letter, next_digits[1:])
+
+        backtrack("", digits)
+        return result
+```
+
+**代码运行过程详细描述：**
+
+以输入 `digits = "23"` 为例：
+
+1.  `letterCombinations("23")` 被调用。
+2.  `digits` 不为空，进入主逻辑。
+3.  `result` 初始化为空列表 `[]`。
+4.  `backtrack("", "23")` 被调用。
+5.  `next_digits` 不为空。
+6.  `digit = "2"`，`letters = "abc"`。
+7.  循环遍历 "abc"：
+    *   `letter = "a"`，调用 `backtrack("a", "3")`。
+    *   `next_digits` 不为空。
+    *   `digit = "3"`，`letters = "def"`。
+    *   循环遍历 "def"：
+        *   `letter = "d"`，调用 `backtrack("ad", "")`。
+        *   `next_digits` 为空，将 "ad" 添加到 `result`。
+        *   `letter = "e"`，调用 `backtrack("ae", "")`。
+        *   `next_digits` 为空，将 "ae" 添加到 `result`。
+        *   `letter = "f"`，调用 `backtrack("af", "")`。
+        *   `next_digits` 为空，将 "af" 添加到 `result`。
+    *   `letter = "b"`，调用 `backtrack("b", "3")`，过程类似 "a"。
+    *   `letter = "c"`，调用 `backtrack("c", "3")`，过程类似 "a"。
+8.  `backtrack` 调用结束。
+9.  返回 `result`，其中包含 `["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]`。
+
+希望这个解答对你有所帮助！

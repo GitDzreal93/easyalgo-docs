@@ -1,0 +1,160 @@
+---
+title: 5. 最长回文子串
+description: 寻找给定字符串中的最长回文子串，使用中心扩展或动态规划方法。
+date: 2024-03-14
+tag: [中等, 字符串]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 题目
+
+> leetcode 链接：[最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/description/)
+
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+**示例 1**:
+```
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+```
+
+**示例 2**：
+```
+输入：s = "cbbd"
+输出："bb"
+```
+
+**提示:**
+```
+1 <= s.length <= 1000
+s 仅由数字和英文字母组成
+```
+## 题解
+
+**题意简化：**
+
+想象一下，你手里有一串珠子（字符串），你需要找到其中最长的一段，这段珠子从前往后看和从后往前看是一样的（回文）。例如，"aba" 就是一个回文，而 "abc" 不是。题目会给你一串珠子，让你找出最长的那段回文珠子。
+
+**边界值与测试用例：**
+
+*   空字符串：`s = ""`， 结果：`""`
+*   单个字符：`s = "a"`，结果：`"a"`
+*   全部相同字符：`s = "aaaa"`，结果：`"aaaa"`
+*   一般情况：`s = "babad"`，结果：`"bab"` 或 `"aba"`
+*   稍长字符串：`s = "cbbd"`，结果：`"bb"`
+
+**解法分析：**
+
+| 解法           | 优点                                                                 | 缺点                                                                 | 时间复杂度 | 空间复杂度 |
+| -------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------- | -------- |
+| 暴力枚举       | 简单直接，容易理解                                                         | 效率低，存在大量重复计算                                                       | O(n^3)   | O(1)     |
+| 中心扩展       | 效率较高，思路清晰                                                         | 需要考虑奇数和偶数两种情况                                                       | O(n^2)   | O(1)     |
+| 动态规划       | 效率较高，避免重复计算                                                       | 需要额外的空间存储状态                                                        | O(n^2)   | O(n^2)   |
+| Manacher算法 | 效率最高，线性时间复杂度                                                       | 实现较为复杂，不易理解                                                        | O(n)     | O(n)     |
+
+*   **复杂度评估方法：**
+    *   时间复杂度：评估算法运行所需的时间，通常用大O表示法。例如，O(n) 表示线性时间复杂度，O(n^2) 表示平方时间复杂度。
+    *   空间复杂度：评估算法运行所需的额外空间，同样用大O表示法。
+
+*   **推荐解法：**
+
+    中心扩展法。因为它相对容易理解和实现，并且在面试中也足够高效。
+
+**Python代码实现：**
+
+**版本一：带详细注释**
+
+```python
+def longestPalindrome(s: str) -> str:
+    """
+    找到字符串 s 中最长的回文子串。
+
+    Args:
+        s: 输入字符串。
+
+    Returns:
+        最长的回文子串。
+    """
+
+    def expandAroundCenter(s, left, right):
+        """
+        从中心向两边扩展，寻找回文串。
+
+        Args:
+            s: 字符串。
+            left: 左指针。
+            right: 右指针。
+
+        Returns:
+            回文串的长度。
+        """
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1  # 返回回文串的长度
+
+    if not s:  # 边界情况：空字符串
+        return ""
+
+    start = 0  # 最长回文子串的起始位置
+    max_len = 0  # 最长回文子串的长度
+
+    for i in range(len(s)):
+        # 以 i 为中心，寻找奇数长度的回文串
+        len1 = expandAroundCenter(s, i, i)
+        # 以 i 和 i+1 为中心，寻找偶数长度的回文串
+        len2 = expandAroundCenter(s, i, i + 1)
+        length = max(len1, len2)
+
+        if length > max_len:
+            max_len = length
+            start = i - (length - 1) // 2
+
+    return s[start:start + max_len]  # 返回最长回文子串
+
+
+# 代码运行过程：
+# 假设 s = "babad"
+# 1. 遍历字符串 s
+# 2. 对于 i = 0, expandAroundCenter(s, 0, 0) 返回 1, expandAroundCenter(s, 0, 1) 返回 1, length = 1, max_len = 1, start = 0
+# 3. 对于 i = 1, expandAroundCenter(s, 1, 1) 返回 3, expandAroundCenter(s, 1, 2) 返回 2, length = 3, max_len = 3, start = 0
+# 4. 对于 i = 2, expandAroundCenter(s, 2, 2) 返回 1, expandAroundCenter(s, 2, 3) 返回 1, length = 1
+# 5. 对于 i = 3, expandAroundCenter(s, 3, 3) 返回 3, expandAroundCenter(s, 3, 4) 返回 2, length = 3
+# 6. 对于 i = 4, expandAroundCenter(s, 4, 4) 返回 1, expandAroundCenter(s, 4, 5) 返回 0, length = 1
+# 7. 返回 s[0:3] = "bab"
+```
+
+**版本二：去除注释**
+
+```python
+def longestPalindrome(s: str) -> str:
+    def expandAroundCenter(s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1
+
+    if not s:
+        return ""
+
+    start = 0
+    max_len = 0
+
+    for i in range(len(s)):
+        len1 = expandAroundCenter(s, i, i)
+        len2 = expandAroundCenter(s, i, i + 1)
+        length = max(len1, len2)
+
+        if length > max_len:
+            max_len = length
+            start = i - (length - 1) // 2
+
+    return s[start:start + max_len]
+```
+
+希望这个解答能够帮助你理解这道题！

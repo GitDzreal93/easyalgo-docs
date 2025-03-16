@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
@@ -27,47 +27,54 @@ export const metadata = {
   },
 };
 
-export default async function DocumentPage(props: PageProps) {
-  const t = useTranslations('docs');
-  
-  try {
-    console.log('Processing document route:', props.params);
+// 加载状态组件
+function LoadingState() {
+  return (
+    <div className="animate-pulse bg-[var(--background)] rounded-lg shadow-sm p-6">
+      <div className="mb-8">
+        <div className="h-8 bg-[var(--primary)]/20 rounded w-3/4 mb-4"></div>
+        <div className="flex items-center space-x-4">
+          <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
+          <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
+        </div>
+      </div>
+      <div className="space-y-4">
+        <div className="h-4 bg-[var(--primary)]/10 rounded w-full"></div>
+        <div className="h-4 bg-[var(--primary)]/10 rounded w-5/6"></div>
+        <div className="h-4 bg-[var(--primary)]/10 rounded w-4/6"></div>
+      </div>
+    </div>
+  );
+}
 
+// 文档内容组件
+async function DocumentContent({ params, t }: { params: PageProps['params']; t: any }) {
+  try {
+    console.log('Processing document route:', params);
+    
+    // 等待并解构参数
+    const { locale, slug } = await Promise.resolve(params);
+    
     // Handle path
-    let slug: string;
-    if (Array.isArray(props.params.slug)) {
-      slug = props.params.slug.join('/');
+    let normalizedSlug: string;
+    if (Array.isArray(slug)) {
+      normalizedSlug = slug.join('/').replace(/^\/+|\/+$/g, '');
     } else {
-      slug = props.params.slug;
+      normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
     }
 
-    if (!slug) {
+    if (!normalizedSlug) {
       console.log('Missing slug parameter');
       notFound();
     }
 
-    // Normalize path
-    const normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
     console.log('Normalized path:', {
-      originalSlug: props.params.slug,
-      processedSlug: slug,
+      originalSlug: slug,
       normalizedSlug
     });
     
     // Find document
-    const docs = await getDocsData(props.params.locale);
-    console.log('Retrieved document data:', docs.map((d: DocNode) => ({
-      title: d.title,
-      slug: d.slug,
-      hasChildren: d.children?.length > 0,
-      children: d.children?.map((c: DocNode) => ({ 
-        title: c.title, 
-        slug: c.slug,
-        filename: c.filename
-      }))
-    })));
-
-    const doc = await findDocBySlug(normalizedSlug, props.params.locale);
+    const doc = await findDocBySlug(normalizedSlug, locale);
     console.log('Document search result:', doc ? {
       title: doc.title,
       slug: doc.slug,
@@ -97,7 +104,7 @@ export default async function DocumentPage(props: PageProps) {
       isChildDoc
     });
     
-    const content = await getDocContent(normalizedPath, props.params.locale);
+    const content = await getDocContent(normalizedPath, locale);
     console.log('Document content read result:', {
       path: normalizedPath,
       hasContent: !!content,
@@ -110,7 +117,7 @@ export default async function DocumentPage(props: PageProps) {
           <header className="mb-8">
             {isChildDoc && (
               <div className="flex items-center text-sm text-[var(--text)] mb-4">
-                <Link href={`/${props.params.locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
+                <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                   <ChevronRightIcon className="h-4 w-4 mr-1" />
                   {t('backToParent')}
                 </Link>
@@ -120,7 +127,7 @@ export default async function DocumentPage(props: PageProps) {
             <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(props.params.locale)}
+                {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
               </span>
             </div>
           </header>
@@ -132,78 +139,71 @@ export default async function DocumentPage(props: PageProps) {
       );
     }
 
-    try {
-      return (
-        <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
-          <header className="mb-8">
-            {isChildDoc && (
-              <div className="flex items-center text-sm text-[var(--text)] mb-4">
-                <Link href={`/${props.params.locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
-                  <ChevronRightIcon className="h-4 w-4 mr-1" />
-                  {t('backToParent')}
-                </Link>
-              </div>
-            )}
-            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
-            <div className="flex items-center text-sm text-[var(--text)]">
-              <span className="flex items-center">
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(props.params.locale)}
-              </span>
-              <span className="mx-2 text-[var(--text)]">·</span>
-              <span className="flex items-center">
-                <ClockIcon className="mr-2 h-4 w-4" />
-                {t('estimatedReadingTime', { minutes: Math.ceil((content?.length || 0) / 500) })}
-              </span>
+    return (
+      <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
+        <header className="mb-8">
+          {isChildDoc && (
+            <div className="flex items-center text-sm text-[var(--text)] mb-4">
+              <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
+                <ChevronRightIcon className="h-4 w-4 mr-1" />
+                {t('backToParent')}
+              </Link>
             </div>
-          </header>
+          )}
+          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+          <div className="flex items-center text-sm text-[var(--text)]">
+            <span className="flex items-center">
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
+            </span>
+            <span className="mx-2 text-[var(--text)]">·</span>
+            <span className="flex items-center">
+              <ClockIcon className="mr-2 h-4 w-4" />
+              {t('estimatedReadingTime', { minutes: Math.ceil(content.length / 500) })}
+            </span>
+          </div>
+        </header>
 
-          <div className="max-w-none">
-            {content ? (
-              <div className="mdx-content">
-                <ClientBytemdViewer 
-                  content={content} 
-                  className={getMarkdownClassName()} 
-                />
-              </div>
-            ) : (
-              <p className="text-gray-600">{t('renderError')}</p>
-            )}
+        <div className="max-w-none">
+          <div className="mdx-content">
+            <ClientBytemdViewer 
+              content={content} 
+              className={getMarkdownClassName()} 
+            />
           </div>
-        </article>
-      );
-    } catch (renderError) {
-      console.error('Error rendering MDX content:', renderError);
-      console.error('Error details:', {
-        name: renderError instanceof Error ? renderError.name : 'Unknown',
-        message: renderError instanceof Error ? renderError.message : String(renderError)
-      });
-      return (
-        <article className="bg-white rounded-lg shadow-sm p-6">
-          <header className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('renderErrorTitle')}</h1>
-          </header>
-          <div className="prose max-w-none">
-            <p className="text-gray-600">{t('renderErrorMessage')}</p>
-          </div>
-        </article>
-      );
-    }
+        </div>
+      </article>
+    );
   } catch (error) {
-    console.error('Document page render error:', {
+    console.error('Document content error:', {
       name: error instanceof Error ? error.name : 'Unknown',
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack?.split('\n').slice(0, 3).join('\n') : undefined
     });
+    
     return (
-      <article className="bg-white rounded-lg shadow-sm p-6">
+      <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
         <header className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('loadErrorTitle')}</h1>
+          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{t('errorTitle')}</h1>
         </header>
         <div className="prose max-w-none">
-          <p className="text-gray-600">{t('loadErrorMessage')}</p>
+          <p className="text-[var(--text)]">{t('errorMessage')}</p>
+          <p className="text-[var(--text)] opacity-75">
+            {error instanceof Error ? error.message : String(error)}
+          </p>
         </div>
       </article>
     );
   }
+}
+
+export default function DocumentPage(props: PageProps) {
+  const t = useTranslations('docs');
+
+  return (
+    <Suspense fallback={<LoadingState />}>
+      {/* @ts-expect-error Async Server Component */}
+      <DocumentContent params={props.params} t={t} />
+    </Suspense>
+  );
 } 

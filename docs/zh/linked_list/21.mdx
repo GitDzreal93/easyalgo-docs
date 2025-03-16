@@ -1,0 +1,174 @@
+---
+title: 21. 合并两个有序链表
+description: 合并两个升序链表为一个新的升序链表，迭代或递归方法解决。
+date: 2024-03-14
+tag: ["简单", "链表"]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 题目
+
+> leetcode 链接： [合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+
+**示例 1：**
+```
+输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+```
+
+**示例 2：**
+```
+输入：l1 = [], l2 = []
+输出：[]
+```
+
+**示例 3：**
+```
+输入：l1 = [], l2 = [0]
+输出：[0]
+```
+
+**提示：**
+```
+两个链表的节点数目范围是 [0, 50]
+-100 <= Node.val <= 100
+l1 和 l2 均按 非递减顺序 排列
+
+注意：本题中链表是单链表，没有前驱节点指向当前节点的前一个节点
+```
+
+## 题解
+
+
+**题意简化：**
+
+想象一下，你有两串已经从小到大排好队的数字，就像两队小朋友按身高排队一样。你需要把这两队小朋友合并成一队，并且合并后也要按身高从小到大排列。题目就是要把这两个排好序的链表合并成一个排好序的链表。如果其中一队没有人（链表为空），那就直接把另一队拿过来。
+
+**边界值与测试用例：**
+
+*   **空链表：** `l1 = [], l2 = []`， 预期输出：`[]`
+*   **一个链表为空：** `l1 = [], l2 = [0]`， 预期输出：`[0]`
+*   **一个链表为空：** `l1 = [1], l2 = []`， 预期输出：`[1]`
+*   **正常情况：** `l1 = [1,2,4], l2 = [1,3,4]`， 预期输出：`[1,1,2,3,4,4]`
+*   **一个链表的所有节点都比另一个小：** `l1 = [1,2,3], l2 = [4,5,6]`， 预期输出：`[1,2,3,4,5,6]`
+*   **一个链表的所有节点都比另一个大：** `l1 = [4,5,6], l2 = [1,2,3]`， 预期输出：`[1,2,3,4,5,6]`
+*   **包含负数：** `l1 = [-1,0,1], l2 = [-2,2]`， 预期输出：`[-2,-1,0,1,2]`
+
+**解法分析：**
+
+| 解法       | 优点                               | 缺点                               | 时间复杂度 | 空间复杂度 |
+| ---------- | ---------------------------------- | ---------------------------------- | -------- | -------- |
+| 递归       | 代码简洁，易于理解                   | 递归深度可能导致栈溢出，效率稍低             | O(m+n)   | O(m+n)   |
+| 迭代（循环） | 效率较高，避免栈溢出                 | 代码稍复杂                         | O(m+n)   | O(1)     |
+| 原地修改   | 空间复杂度最低                       | 修改了原链表结构，可能不符合某些场景的要求 | O(m+n)   | O(1)     |
+
+*   **复杂度评估方法：**
+    *   时间复杂度：主要看每个节点被访问的次数。无论是递归还是迭代，每个节点最多被访问一次，因此时间复杂度是O(m+n)，其中m和n分别是两个链表的长度。
+    *   空间复杂度：递归的空间复杂度取决于递归调用的深度，最坏情况下是O(m+n)。迭代的空间复杂度是O(1)，因为只使用了几个额外的指针。
+
+**推荐解法：** 迭代（循环）
+
+*   **原因：**  迭代方法效率高，避免了递归可能导致的栈溢出问题，并且空间复杂度是O(1)，更易于控制。
+
+**Python代码实现：**
+
+**版本一：包含详细注释**
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        合并两个有序链表
+
+        Args:
+            list1: 第一个有序链表的头节点
+            list2: 第二个有序链表的头节点
+
+        Returns:
+            合并后的有序链表的头节点
+        """
+
+        # 创建一个虚拟头节点，方便处理合并后的链表
+        dummy = ListNode(-1)
+        # tail指针指向合并后链表的最后一个节点
+        tail = dummy
+
+        # 循环遍历两个链表，直到其中一个为空
+        while list1 and list2:
+            # 如果list1的当前节点值小于等于list2的当前节点值
+            if list1.val <= list2.val:
+                # 将list1的当前节点添加到合并后的链表中
+                tail.next = list1
+                # list1指针后移
+                list1 = list1.next
+            else:
+                # 将list2的当前节点添加到合并后的链表中
+                tail.next = list2
+                # list2指针后移
+                list2 = list2.next
+            # tail指针后移
+            tail = tail.next
+
+        # 如果list1还有剩余节点，直接添加到合并后的链表中
+        if list1:
+            tail.next = list1
+        # 如果list2还有剩余节点，直接添加到合并后的链表中
+        if list2:
+            tail.next = list2
+
+        # 返回合并后的链表的头节点（虚拟头节点的下一个节点）
+        return dummy.next
+```
+
+**版本二：去除所有注释**
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        tail = dummy
+
+        while list1 and list2:
+            if list1.val <= list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+
+        if list1:
+            tail.next = list1
+        if list2:
+            tail.next = list2
+
+        return dummy.next
+```
+
+**代码运行过程详细描述：**
+
+1.  **初始化：** 创建一个虚拟头节点`dummy`，以及一个尾指针`tail`指向`dummy`，用于构建合并后的链表。
+2.  **循环比较：** 当`list1`和`list2`都不为空时，循环比较它们当前节点的值。
+    *   如果`list1`的当前节点值较小或相等，则将`list1`的当前节点添加到`tail`的后面，并将`list1`的指针移动到下一个节点。
+    *   否则，将`list2`的当前节点添加到`tail`的后面，并将`list2`的指针移动到下一个节点。
+    *   无论哪个节点被添加到`tail`后面，都需要将`tail`指针移动到新添加的节点。
+3.  **处理剩余节点：** 循环结束后，如果`list1`或`list2`中还有剩余节点，则直接将剩余节点添加到`tail`的后面。
+4.  **返回结果：** 返回虚拟头节点`dummy`的下一个节点，即合并后的链表的头节点。
+
+希望这个解答对你有帮助！

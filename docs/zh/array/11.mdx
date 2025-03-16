@@ -1,0 +1,173 @@
+---
+title: 11. 盛最多水的容器
+description: 使用双指针法寻找最大盛水容器的面积，时间复杂度为O(n)。
+date: 2024-03-14
+tag: [中等, 数组, 双指针]
+author: Easy Algo
+premium: false
+percentage: 30
+---
+
+## 题目
+
+> leetcode 链接：[盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+
+![image.png](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/2f3c024367b34fe0916a8d46d39e849e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg56iL5bqP5ZGY6Ie75Y-U:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMjI0MjY1OTQ0OTMxODkwNCJ9&rk3s=e9ecf3d6&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1742058337&x-orig-sign=Pan%2BvIzCOuwW%2BBsVApRZ1%2FD4t%2Fw%3D)
+
+给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+
+返回容器可以储存的最大水量。
+
+说明：你不能倾斜容器。
+
+ 
+
+**示例 1：**
+```
+输入：[1,8,6,2,5,4,8,3,7]
+输出：49 
+解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
+```
+
+**示例 2：**
+
+```
+输入：height = [1,1]
+输出：1
+```
+ 
+
+**提示：**
+
+```
+n == height.length
+2 <= n <= 10^5
+0 <= height[i] <= 10^4
+```
+
+## 题解
+
+**题意简化：**
+
+想象一下，你有一排高低不同的柱子，你需要从中选出两根柱子，让它们之间形成一个水桶。水桶的容量取决于较短的柱子的高度以及两根柱子之间的距离。目标是找到能装最多水的两根柱子，并返回这个最大的装水量。柱子的高度由一个数组 `height` 给出。
+
+**边界值与测试用例：**
+
+*   **边界值：**
+    *   `height` 数组为空或长度小于 2：题目已说明 `2 <= n <= 10^5`，因此这种情况不需要考虑。
+    *   `height` 数组中所有元素都相同：例如 `[5, 5, 5, 5]`。
+    *   `height` 数组中存在 0：例如 `[0, 2, 3, 0]`。
+    *   `height` 数组单调递增或递减：例如 `[1, 2, 3, 4]` 或 `[4, 3, 2, 1]`。
+
+*   **测试用例：**
+
+    | 输入 `height`      | 输出 |
+    | ------------------ | ---- |
+    | `[1, 8, 6, 2, 5, 4, 8, 3, 7]` | 49   |
+    | `[1, 1]`           | 1    |
+    | `[4, 3, 2, 1]`     | 4    |
+    | `[1, 2, 3, 4, 5]` | 6    |
+    | `[5, 5, 5, 5]`     | 15   |
+    | `[0, 2, 3, 0]`     | 0    |
+
+**解法分析：**
+
+| 解法       | 优点                               | 缺点                               | 时间复杂度 | 空间复杂度 |
+| ---------- | ---------------------------------- | ---------------------------------- | -------- | -------- |
+| 暴力法     | 简单易懂                           | 时间复杂度高                       | O(n^2)   | O(1)     |
+| 双指针法   | 时间复杂度低，效率高                 | 理解起来稍微需要思考                 | O(n)     | O(1)     |
+
+*   **复杂度评估方法**
+    *   时间复杂度：评估算法运行时间随输入规模增长的趋势。
+    *   空间复杂度：评估算法占用内存空间随输入规模增长的趋势。
+
+*   **推荐解法：双指针法**
+    *   原因：双指针法在时间和空间复杂度上都优于暴力法，并且实现起来也相对简单。
+
+**Python 代码实现：**
+
+**版本一：包含详细注释**
+
+```python
+def max_area(height):
+    """
+    计算由 height 数组表示的柱子所能构成的最大水容量。
+
+    Args:
+    height: 一个整数数组，表示柱子的高度。
+
+    Returns:
+    一个整数，表示最大水容量。
+    """
+
+    left = 0  # 左指针，指向数组的起始位置
+    right = len(height) - 1  # 右指针，指向数组的末尾位置
+    max_water = 0  # 用于保存最大水容量
+
+    # 当左指针小于右指针时，循环继续
+    while left < right:
+        # 计算当前两根柱子之间的水容量
+        current_water = min(height[left], height[right]) * (right - left)
+        # 更新最大水容量
+        max_water = max(max_water, current_water)
+
+        # 移动指针：总是移动较短的柱子，因为移动较长的柱子不可能使水容量更大
+        if height[left] < height[right]:
+            left += 1  # 左指针右移
+        else:
+            right -= 1  # 右指针左移
+
+    # 返回最大水容量
+    return max_water
+```
+
+**版本二：去除所有注释**
+
+```python
+def max_area(height):
+    left = 0
+    right = len(height) - 1
+    max_water = 0
+
+    while left < right:
+        current_water = min(height[left], height[right]) * (right - left)
+        max_water = max(max_water, current_water)
+
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+
+    return max_water
+```
+
+**代码运行过程详细描述：**
+
+以输入 `height = [1, 8, 6, 2, 5, 4, 8, 3, 7]` 为例：
+
+1.  **初始化：**
+    *   `left = 0`，指向 `height[0] = 1`
+    *   `right = 8`，指向 `height[8] = 7`
+    *   `max_water = 0`
+
+2.  **循环：**
+
+    *   **第一次迭代：**
+        *   `current_water = min(1, 7) * (8 - 0) = 1 * 8 = 8`
+        *   `max_water = max(0, 8) = 8`
+        *   因为 `height[left] < height[right]` (1 < 7)，所以 `left += 1`，`left` 变为 1
+
+    *   **第二次迭代：**
+        *   `current_water = min(8, 7) * (8 - 1) = 7 * 7 = 49`
+        *   `max_water = max(8, 49) = 49`
+        *   因为 `height[left] > height[right]` (8 > 7)，所以 `right -= 1`，`right` 变为 7
+
+    *   **后续迭代：**  循环继续，`left` 和 `right` 逐渐靠近，每次都计算当前的水容量，并更新 `max_water`。
+
+    *   **直到 `left >= right`：**  循环结束。
+
+3.  **返回：**  返回 `max_water`，最终结果为 49。
+
+希望这个解答对你有所帮助！
