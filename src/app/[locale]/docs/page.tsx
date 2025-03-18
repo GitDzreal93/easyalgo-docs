@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 import { getDocsData } from '@/lib/docs';
 import type { DocNode } from '@/lib/docs';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 interface PageProps {
   params: {
@@ -17,7 +17,12 @@ export const metadata: Metadata = {
 };
 
 // 分离文档列表组件
-async function DocsList({ locale, t }: { locale: string; t: any }) {
+async function DocsList({ locale }: { locale: string }) {
+  const t = await getTranslations({
+    locale: locale,
+    namespace: 'docs'
+  });
+
   console.log('开始加载文档页面数据...', { locale });
   const docs = await getDocsData(locale);
   console.log('文档数据加载完成', { docsCount: docs.length });
@@ -25,7 +30,7 @@ async function DocsList({ locale, t }: { locale: string; t: any }) {
   if (!docs || docs.length === 0) {
     console.log('没有找到文档数据');
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <p className="text-[var(--foreground)]">{t('noDocuments')}</p>
       </div>
     );
@@ -54,7 +59,7 @@ async function DocsList({ locale, t }: { locale: string; t: any }) {
   console.log('文档排序完成，准备渲染');
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {sortedDocs.map((doc) => {
         const normalizedSlug = doc.slug.replace(/^\/+|\/+$/g, '');
         const docPath = normalizedSlug;
@@ -65,7 +70,7 @@ async function DocsList({ locale, t }: { locale: string; t: any }) {
             <div className="text-[var(--foreground)] opacity-75 mb-4">
               <p>{t('lastUpdated', { date: new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale) })}</p>
             </div>
-            <div className="flex items-center justify-between mt-auto">
+            <div className="flex justify-between items-center mt-auto">
               <Link
                 href={`/${locale}/docs/${docPath}`}
                 className="text-[var(--primary)] hover:text-[var(--accent)] font-medium inline-flex items-center transition-colors"
@@ -83,7 +88,7 @@ async function DocsList({ locale, t }: { locale: string; t: any }) {
 // 加载状态组件
 function LoadingState() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {[1, 2, 3].map((i) => (
         <div key={i} className="border rounded-lg p-6 bg-[var(--background)] h-full border-[var(--primary)] animate-pulse">
           <div className="h-6 bg-[var(--primary)]/20 rounded w-3/4 mb-4"></div>
@@ -96,25 +101,30 @@ function LoadingState() {
 }
 
 // 错误边界组件
-function ErrorDisplay({ error, t }: { error: Error; t: any }) {
+function ErrorDisplay({ error }: { error: Error }) {
   return (
-    <div className="text-center py-12">
-      <p className="text-[var(--foreground)] text-red-500">{t('error')}</p>
+    <div className="py-12 text-center">
+      <p className="text-[var(--foreground)] text-red-500">发生错误</p>
       <p className="text-[var(--foreground)] mt-2 opacity-75">{error.message}</p>
     </div>
   );
 }
 
-export default function DocsPage({ params }: PageProps) {
-  const t = useTranslations('docs');
+export default async function DocsPage({ params }: PageProps) {
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: 'docs'
+  });
+
+  console.log("=========== hdz ===DocsPage=> " + params.locale)
+  console.log("=========== hdz ==DocsPage==> " + t('readMore'))
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container px-4 py-8 mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-[var(--text)]">{t('title')}</h1>
       <div className="bg-[var(--background)] border border-[var(--primary)] p-6 rounded-lg">
         <Suspense fallback={<LoadingState />}>
-          {/* @ts-expect-error Async Server Component */}
-          <DocsList locale={params.locale} t={t} />
+          <DocsList locale={params.locale} />
         </Suspense>
       </div>
     </div>

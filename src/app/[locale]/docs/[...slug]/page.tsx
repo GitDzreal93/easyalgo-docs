@@ -6,7 +6,6 @@ import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/docs';
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
 import { getMarkdownClassName } from '@/components/bytemd/styles/markdown';
-import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 
@@ -57,7 +56,12 @@ function LoadingState() {
 }
 
 // 文档内容组件
-async function DocumentContent({ params, t }: { params: PageProps['params']; t: any }) {
+async function DocumentContent({ params }: { params: PageProps['params'] }) {
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: 'docs'
+  });
+  
   try {
     console.log('Processing document route:', params);
     
@@ -206,12 +210,10 @@ async function DocumentContent({ params, t }: { params: PageProps['params']; t: 
   }
 }
 
-export default function DocumentPage(props: PageProps) {
-  const t = useTranslations('docs');
-
+export default async function DocumentPage(props: PageProps) {
   return (
     <Suspense fallback={<LoadingState />}>
-      <DocumentContent params={props.params} t={t} />
+      <DocumentContent params={props.params} />
     </Suspense>
   );
 } 
