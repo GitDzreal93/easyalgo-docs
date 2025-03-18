@@ -109,11 +109,13 @@ export function useAuth() {
     setError(null);
     
     try {
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      console.log('Signup redirect URL:', redirectUrl);
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: redirectUrl
         }
       });
       
@@ -131,10 +133,12 @@ export function useAuth() {
 
   const signInWithProvider = async (provider: Provider) => {
     try {
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      console.log('OAuth redirect URL:', redirectUrl);
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`
+          redirectTo: redirectUrl
         }
       });
       if (error) throw error;
