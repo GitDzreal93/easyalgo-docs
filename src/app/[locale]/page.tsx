@@ -1,10 +1,19 @@
 import Link from 'next/link';
 import { DocumentTextIcon, LightBulbIcon, AcademicCapIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 import { TypedTitle } from '@/components/home/TypedTitle';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
-export default function Home() {
-  const t = useTranslations('home');
+export default async function Home({
+  params,
+}: {
+  params: { locale: string }
+}) {
+  const { locale } = await params;
+  
+  const t = await getTranslations({
+    locale,
+    namespace: 'home'
+  });
   
   return (
     <>
@@ -110,156 +119,6 @@ export default function Home() {
                 </div>
               </div>
             </main>
-          </div>
-        </div>
-      </div>
-
-      {/* Latest Documents */}
-      <div className="bg-[#8ECAE6]/5 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#023047]">{t('documents.title')}</h2>
-            <p className="mt-4 max-w-2xl text-xl text-[#023047]/70 mx-auto">
-              {t('documents.subtitle')}
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {/* Document Card 1 */}
-            <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-[#8ECAE6]/10 hover:border-[#8ECAE6]/30 transition-colors duration-200">
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.binaryTree.title')}</h3>
-                    <p className="mt-1 text-sm text-[#023047]/70">
-                      {t('documents.cards.binaryTree.description')}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <Link href="/docs/binary-tree" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    {t('documents.startLearning')}
-                    <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Document Card 2 */}
-            <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-[#8ECAE6]/10 hover:border-[#8ECAE6]/30 transition-colors duration-200">
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.dp.title')}</h3>
-                    <p className="mt-1 text-sm text-[#023047]/70">
-                      {t('documents.cards.dp.description')}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <Link href="/docs/dynamic-programming" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    {t('documents.startLearning')}
-                    <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Document Card 3 */}
-            <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-[#8ECAE6]/10 hover:border-[#8ECAE6]/30 transition-colors duration-200">
-              <div className="p-6">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <DocumentTextIcon className="h-8 w-8 text-[#8ECAE6]" />
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-[#023047]">{t('documents.cards.leetcode.title')}</h3>
-                    <p className="mt-1 text-sm text-[#023047]/70">
-                      {t('documents.cards.leetcode.description')}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <Link href="/docs/leetcode-solutions" className="text-sm font-medium text-[#8ECAE6] hover:text-[#8ECAE6]/80 flex items-center">
-                    {t('documents.startLearning')}
-                    <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features */}
-      <div className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-[#023047]">{t('features.title')}</h2>
-          </div>
-
-          <div className="mt-12">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="pt-6">
-                <div className="flow-root rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div>
-                      <span className="inline-flex items-center justify-center p-3 bg-[#8ECAE6] rounded-md shadow-lg">
-                        <LightBulbIcon className="h-6 w-6 text-white" />
-                      </span>
-                    </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.easy.title')}</h3>
-                    <p className="mt-5 text-base text-[#023047]/70">
-                      {t('features.cards.easy.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-6">
-                <div className="flow-root rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div>
-                      <span className="inline-flex items-center justify-center p-3 bg-[#FFB703] rounded-md shadow-lg">
-                        <AcademicCapIcon className="h-6 w-6 text-[#023047]" />
-                      </span>
-                    </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.step.title')}</h3>
-                    <p className="mt-5 text-base text-[#023047]/70">
-                      {t('features.cards.step.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-6">
-                <div className="flow-root rounded-lg px-6 pb-8">
-                  <div className="-mt-6">
-                    <div>
-                      <span className="inline-flex items-center justify-center p-3 bg-[#8ECAE6] rounded-md shadow-lg">
-                        <CodeBracketIcon className="h-6 w-6 text-white" />
-                      </span>
-                    </div>
-                    <h3 className="mt-8 text-lg font-medium text-[#023047] tracking-tight">{t('features.cards.practice.title')}</h3>
-                    <p className="mt-5 text-base text-[#023047]/70">
-                      {t('features.cards.practice.description')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

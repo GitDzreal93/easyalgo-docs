@@ -114,7 +114,7 @@ export async function generateMetadata(
     keywords: meta.keywords,
     openGraph: {
       type: 'website',
-      url: 'https://easyalgo.com',
+      url: 'https://easyalgo.dev',
       siteName: 'Easy Algo',
       images: [
         {
