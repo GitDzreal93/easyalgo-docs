@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { useTranslations } from 'next-intl';
 
 interface TocItem {
   id: string;
@@ -14,6 +15,7 @@ export default function DocsTableOfContents() {
   const [headings, setHeadings] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const pathname = usePathname();
+  const t = useTranslations('docs');
 
   useEffect(() => {
     // 打印调试信息
@@ -156,7 +158,7 @@ export default function DocsTableOfContents() {
     <nav className="h-full">
       <div className="bg-white/50 backdrop-blur-sm rounded-xl border border-[var(--primary)]/20 shadow-lg shadow-[var(--primary)]/5 p-5 dark:bg-[var(--background)]/50 dark:border-[var(--primary)]/10">
         <h3 className="text-base font-semibold text-[var(--text)] mb-6 pb-3 border-b border-[var(--primary)]/10">
-          本页目录
+          {t('tocTitle')}
         </h3>
         <ul className="relative space-y-2.5">
           {headings.map((heading, index) => (
