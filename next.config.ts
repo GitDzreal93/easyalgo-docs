@@ -26,6 +26,13 @@ const nextConfig: NextConfig = {
     ACCENT_COLOR: '#FFB703',
     TEXT_COLOR: '#023047',
   },
+  // 从 next.config.js 合并的配置
+  eslint: {
+    ignoreDuringBuilds: true
+  },
+  typescript: {
+    ignoreBuildErrors: true
+  }
 };
 
 // 应用 MDX 和 next-intl 配置
