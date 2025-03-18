@@ -35,6 +35,14 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
-  return <DocsLayout>{children}</DocsLayout>;
+export default async function Layout({ 
+  children,
+  params 
+}: { 
+  children: React.ReactNode;
+  params: {
+    locale: string;
+  };
+}) {
+  return <DocsLayout locale={params.locale}>{children}</DocsLayout>;
 } 

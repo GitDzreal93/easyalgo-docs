@@ -76,11 +76,6 @@ export const getDocsData = cache(async (locale: string = 'zh'): Promise<DocNode[
     // 检查文件是否存在
     if (!fs.existsSync(docsPath)) {
       console.error('docs.json 文件不存在:', docsPath);
-      // 如果当前语言的文档不存在，尝试使用默认语言（中文）
-      if (locale !== 'zh') {
-        console.log('尝试加载默认语言（中文）文档');
-        return getDocsData('zh');
-      }
       console.log('返回空数组，因为文档不存在');
       return [];
     }
@@ -165,12 +160,6 @@ export const getDocContent = cache(async (filename: string, locale: string = 'zh
 
     // 检查文件是否存在
     if (!fs.existsSync(filePath)) {
-      // 如果当前语言的文档不存在，尝试使用默认语言（中文）
-      if (locale !== 'zh') {
-        console.log('文档在当前语言中不存在，尝试加载默认语言（中文）版本');
-        return getDocContent(filename, 'zh');
-      }
-
       console.error('文件不存在:', {
         originalFilename: filename,
         normalizedFilename,
@@ -268,9 +257,9 @@ export const findDocBySlug = cache(async (slug: string, locale: string = 'zh'): 
   
   const doc = findDoc(docs, normalizedTargetSlug);
   
-  if (!doc && locale !== 'zh') {
-    console.log('在当前语言中未找到文档，尝试在默认语言（中文）中查找');
-    return findDocBySlug(slug, 'zh');
+  if (!doc) {
+    console.log('未找到文档');
+    return null;
   }
   
   return doc;

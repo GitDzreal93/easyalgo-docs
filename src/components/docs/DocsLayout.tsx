@@ -7,11 +7,12 @@ import { ClientDocsLayout } from './ClientDocsLayout';
 
 interface DocsLayoutProps {
   children: React.ReactNode;
+  locale: string;
 }
 
-export async function DocsLayout({ children }: DocsLayoutProps) {
-  // Get the docs data directly from the server
-  const docs = await getDocsData();
+export async function DocsLayout({ children, locale }: DocsLayoutProps) {
+  // Get the docs data directly from the server with the current locale
+  const docs = await getDocsData(locale);
   
   return (
     <ClientDocsLayout>
