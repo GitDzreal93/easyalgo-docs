@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import type { DocNode } from '@/lib/docs';
 import { Search } from 'lucide-react';
 import { SearchPopover } from './SearchPopover';
 import { createPortal } from 'react-dom';
+import { useLocale } from 'next-intl';
 
 interface DocsSearchProps {
   docs: DocNode[];
+  placeholder?: string;
 }
 
 interface SearchResult {
@@ -19,8 +21,10 @@ interface SearchResult {
   isParent?: boolean;
 }
 
-export function DocsSearch(_docs: DocsSearchProps) {
+export function DocsSearch({ docs, placeholder = "搜索文档..." }: DocsSearchProps) {
   const router = useRouter();
+  const locale = useLocale();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -78,7 +82,7 @@ export function DocsSearch(_docs: DocsSearchProps) {
   // 处理文档选择
   const handleSelect = (result: SearchResult) => {
     const normalizedSlug = result.slug.replace(/^\/+|\/+$/g, '');
-    router.push(`/docs/${normalizedSlug}`);
+    router.push(`/${locale}/docs/${normalizedSlug}`);
     setIsOpen(false);
     setQuery('');
   };
@@ -118,7 +122,7 @@ export function DocsSearch(_docs: DocsSearchProps) {
           type="text"
           readOnly
           onClick={handleOpenSearch}
-          placeholder="搜索文档..."
+          placeholder={placeholder}
           className="w-full pl-8 pr-3 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer hover:border-gray-300 focus:outline-none"
         />
         <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" />

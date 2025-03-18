@@ -18,8 +18,9 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const resolvedParams = await Promise.resolve(params);
   const t = await getTranslations({
-    locale: params.locale,
+    locale: resolvedParams.locale,
     namespace: 'layout.metadata'
   });
   
@@ -57,16 +58,17 @@ function LoadingState() {
 
 // 文档内容组件
 async function DocumentContent({ params }: { params: PageProps['params'] }) {
+  const resolvedParams = await Promise.resolve(params);
   const t = await getTranslations({
-    locale: params.locale,
+    locale: resolvedParams.locale,
     namespace: 'docs'
   });
   
   try {
-    console.log('Processing document route:', params);
+    console.log('Processing document route:', resolvedParams);
     
     // 等待并解构参数
-    const { locale, slug } = await Promise.resolve(params);
+    const { locale, slug } = resolvedParams;
     
     // Handle path
     let normalizedSlug: string;

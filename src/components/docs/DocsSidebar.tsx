@@ -7,19 +7,21 @@ import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { DocNode } from '@/lib/docs';
 import { DocsSearch } from './DocsSearch';
+import { useTranslations, useLocale } from 'next-intl';
 
 // 提取通用的排序函数
 const sortByPosition = (items: DocNode[]) => [...items].sort((a, b) => a.position - b.position);
 
 // 提取通用的文档链接组件
 const DocLink = ({ doc, isActive, depth = 0 }: { doc: DocNode; isActive: boolean; depth?: number }) => {
+  const locale = useLocale();
   const normalizedSlug = doc.slug.replace(/^\/+|\/+$/g, '');
-  const href = `/docs/${normalizedSlug}`;
+  const href = `/${locale}/docs/${normalizedSlug}`;
   
   // 获取当前路径，用于精确匹配当前文档
   const pathname = usePathname();
   const normalizedPathname = pathname?.replace(/^\/+|\/+$/g, '');
-  const normalizedDocPath = `docs/${doc.slug}`.replace(/^\/+|\/+$/g, '');
+  const normalizedDocPath = `${locale}/docs/${doc.slug}`.replace(/^\/+|\/+$/g, '');
   const isExactMatch = normalizedPathname === normalizedDocPath;
   
   return (
@@ -53,6 +55,7 @@ const DocLink = ({ doc, isActive, depth = 0 }: { doc: DocNode; isActive: boolean
 // 分类目录组件
 const CategorySection = ({ doc, isActive }: { doc: DocNode; isActive: boolean }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const t = useTranslations('docs');
   
   return (
     <div className="space-y-0.5">
@@ -66,6 +69,7 @@ const CategorySection = ({ doc, isActive }: { doc: DocNode; isActive: boolean })
               'transition-transform duration-200',
               isExpanded ? 'transform rotate-180' : ''
             )}
+            title={isExpanded ? t('collapse') : t('expand')}
           >
             <ChevronDownIcon className="w-4 h-4" />
           </button>
@@ -86,6 +90,9 @@ const CategorySection = ({ doc, isActive }: { doc: DocNode; isActive: boolean })
 
 export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
   const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations('docs');
+  
   console.log('当前路径:', pathname);
   
   // Sort docs by position to ensure correct order
@@ -114,7 +121,7 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
 
     // 规范化路径，移除开头和结尾的斜杠
     const normalizedPathname = pathname.replace(/^\/+|\/+$/g, '');
-    const normalizedDocPath = `docs/${doc.slug}`.replace(/^\/+|\/+$/g, '');
+    const normalizedDocPath = `${locale}/docs/${doc.slug}`.replace(/^\/+|\/+$/g, '');
     
     console.log('检查文档:', {
       title: doc.title,
@@ -134,7 +141,7 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
     // 检查子文档
     if (doc.children?.length) {
       for (const child of doc.children) {
-        const normalizedChildPath = `docs/${child.slug}`.replace(/^\/+|\/+$/g, '');
+        const normalizedChildPath = `${locale}/docs/${child.slug}`.replace(/^\/+|\/+$/g, '');
         const isChildMatch = normalizedPathname === normalizedChildPath;
         
         console.log('检查子文档:', {
@@ -163,7 +170,7 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
     <div className="h-[calc(100vh-4rem)] flex flex-col bg-white dark:bg-[var(--color-navy)] rounded-lg border border-[var(--color-sky)]/30 dark:border-[var(--color-sky)]/20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
       {/* 搜索区域 */}
       <div className="shrink-0 px-4 py-4 border-b border-[var(--color-sky)]/20">
-        <DocsSearch docs={docs} />
+        <DocsSearch docs={docs} placeholder={t('search')} />
       </div>
       
       {/* 导航区域 */}

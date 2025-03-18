@@ -273,6 +273,8 @@
     "lastUpdated": "最后更新：{date}",
     "readMore": "阅读更多",
     "search": "搜索文档...",
+    "collapse": "折叠",
+    "expand": "展开",
     "toc": "目录",
     "edit": "编辑此页",
     "previous": "上一页",
