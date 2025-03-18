@@ -7,7 +7,7 @@ export default createMiddleware({
   // 配置支持的语言
   locales: locales,
   // 添加 localePrefix 配置
-  localePrefix: 'always'
+  localePrefix: 'as-needed'
 });
 
 export const config = {

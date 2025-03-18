@@ -9,7 +9,6 @@ import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 
 const languages = [
-  { code: 'zh', label: '中文' },
   { code: 'en', label: 'English' }
 ];
 
