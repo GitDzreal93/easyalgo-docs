@@ -270,10 +270,15 @@
     "filePath": "文件路径",
     "errorTitle": "加载错误",
     "errorMessage": "加载文档时发生错误",
+    "error": {
+      "searchFailed": "搜索请求失败",
+      "searchError": "搜索出错"
+    },
     "estimatedReadingTime": "预计阅读时间：{minutes} 分钟",
     "lastUpdated": "最后更新：{date}",
     "readMore": "阅读更多",
     "search": "搜索文档...",
+    "found": "找到",
     "collapse": "折叠",
     "expand": "展开",
     "toc": "目录",

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTranslations } from 'next-intl';
+import { isPaymentEnabled } from '@/components/paywall/config';
 
 function ProfileContent() {
   const { user, loading: authLoading, error: authError, getSession } = useAuth();
@@ -117,40 +118,42 @@ function ProfileContent() {
       </div>
 
       {/* 会员状态 */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
-          <h2 className="text-2xl font-bold text-[var(--color-navy)]">{t('membershipStatus')}</h2>
-          {subscription ? (
-            <div className="mt-6">
-              <div className="flex items-center">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-[var(--color-teal)] bg-opacity-10 text-[var(--color-teal)]">
-                  {t('lifetimeMember')}
-                </span>
+      {isPaymentEnabled() && (
+        <div className="bg-white shadow rounded-lg">
+          <div className="px-4 py-5 sm:p-6">
+            <h2 className="text-2xl font-bold text-[var(--color-navy)]">{t('membershipStatus')}</h2>
+            {subscription ? (
+              <div className="mt-6">
+                <div className="flex items-center">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-[var(--color-teal)] bg-opacity-10 text-[var(--color-teal)]">
+                    {t('lifetimeMember')}
+                  </span>
+                </div>
+                <p className="mt-4 text-sm text-[var(--color-navy)] opacity-60">
+                  {t('lifetimeMemberMessage')}
+                </p>
               </div>
-              <p className="mt-4 text-sm text-[var(--color-navy)] opacity-60">
-                {t('lifetimeMemberMessage')}
-              </p>
-            </div>
-          ) : (
-            <div className="mt-6">
-              <div className="flex items-center">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-[var(--color-navy)] bg-opacity-10 text-[var(--color-navy)]">
-                  {t('freeUser')}
-                </span>
+            ) : (
+              <div className="mt-6">
+                <div className="flex items-center">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-[var(--color-navy)] bg-opacity-10 text-[var(--color-navy)]">
+                    {t('freeUser')}
+                  </span>
+                </div>
+                <p className="text-[var(--color-navy)] opacity-60 mt-4 mb-4">
+                  {t('upgradeMessage')}
+                </p>
+                <a
+                  href="/pricing"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[var(--color-teal)] hover:opacity-90 transition-opacity duration-200"
+                >
+                  {t('viewPlans')}
+                </a>
               </div>
-              <p className="text-[var(--color-navy)] opacity-60 mt-4 mb-4">
-                {t('upgradeMessage')}
-              </p>
-              <a
-                href="/pricing"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[var(--color-teal)] hover:opacity-90 transition-opacity duration-200"
-              >
-                {t('viewPlans')}
-              </a>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

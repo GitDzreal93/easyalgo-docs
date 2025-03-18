@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { DocumentTextIcon, LightBulbIcon, AcademicCapIcon, CodeBracketIcon } from '@heroicons/react/24/outline';
 import { TypedTitle } from '@/components/home/TypedTitle';
 import { getTranslations } from 'next-intl/server';
+import { isPaymentEnabled } from '@/components/paywall/config';
 
 export default async function Home({
   params,
@@ -53,12 +54,14 @@ export default async function Home({
                         <span className="ml-2 w-1.5 h-1.5 bg-[#023047] rounded-full group-hover:animate-ping relative z-10"></span>
                       </Link>
                     </div>
-                    <div className="mt-3 sm:mt-0 sm:ml-3">
-                      <Link href="/pricing" className="w-full flex items-center justify-center px-8 py-3 border border-[#8ECAE6] text-base font-medium rounded-md text-[#023047] bg-white hover:bg-[#8ECAE6]/10 transition-colors duration-200 md:py-4 md:text-lg md:px-10 group">
-                        {t('hero.membershipButton')}
-                        <span className="ml-2 w-1.5 h-1.5 border border-[#8ECAE6] rounded-full group-hover:bg-[#8ECAE6] transition-colors duration-200"></span>
-                      </Link>
-                    </div>
+                    {isPaymentEnabled() && (
+                      <div className="mt-3 sm:mt-0 sm:ml-3">
+                        <Link href="/pricing" className="w-full flex items-center justify-center px-8 py-3 border border-[#8ECAE6] text-base font-medium rounded-md text-[#023047] bg-white hover:bg-[#8ECAE6]/10 transition-colors duration-200 md:py-4 md:text-lg md:px-10 group">
+                          {t('hero.membershipButton')}
+                          <span className="ml-2 w-1.5 h-1.5 border border-[#8ECAE6] rounded-full group-hover:bg-[#8ECAE6] transition-colors duration-200"></span>
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* Code Preview Card */}

@@ -246,8 +246,13 @@
   "docs": {
     "title": "Documentation",
     "search": "Search docs...",
+    "found": "Found",
     "collapse": "Collapse",
     "expand": "Expand",
+    "error": {
+      "searchFailed": "Search request failed",
+      "searchError": "Search error"
+    },
     "toc": "Table of Contents",
     "tocTitle": "Page Contents",
     "edit": "Edit this page",

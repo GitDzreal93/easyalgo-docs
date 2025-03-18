@@ -20,20 +20,47 @@ export function useAuth() {
 
   const getUser = async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      // 先尝试从本地存储获取会话信息
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+      }
     } catch (error) {
       console.error('Error getting user:', error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    // 立即从localStorage检查会话状态
+    const localSession = localStorage.getItem('supabase.auth.token');
+    if (localSession) {
+      try {
+        const parsedSession = JSON.parse(localSession);
+        if (parsedSession?.currentSession?.user) {
+          setUser(parsedSession.currentSession.user);
+        }
+      } catch (e) {
+        console.error('Error parsing local session:', e);
+      }
+    }
+
+    // 然后再获取最新的用户信息
+    getUser();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event: AuthChangeEvent, session: Session | null) => {
         if (event === 'SIGNED_IN') {
-          await getUser();
+          if (session?.user) {
+            setUser(session.user);
+          } else {
+            await getUser();
+          }
           router.refresh();
         } else if (event === 'SIGNED_OUT') {
           setUser(null);
@@ -41,8 +68,6 @@ export function useAuth() {
         }
       }
     );
-
-    getUser();
 
     return () => {
       subscription.unsubscribe();

@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 import { useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface SearchResult {
   title: string;
@@ -27,6 +28,7 @@ export function SearchPopover({
   isLoading,
 }: SearchPopoverProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('docs');
   
   // 自动聚焦输入框
   useEffect(() => {
@@ -71,7 +73,7 @@ export function SearchPopover({
                 type="text"
                 value={query}
                 onChange={(e) => onQueryChange(e.target.value)}
-                placeholder="输入关键词搜索..."
+                placeholder={t('search')}
                 className="w-full pl-10 pr-4 py-3 text-sm
                   bg-[var(--background)]/50 
                   text-[var(--text)]
@@ -119,7 +121,7 @@ export function SearchPopover({
                             <span className="px-2 py-0.5 text-xs font-medium 
                               text-[var(--accent)] bg-[var(--accent)]/10 
                               rounded-full border border-[var(--accent)]/20">
-                              主文档
+                              {t('backToParent')}
                             </span>
                           )}
                         </div>
@@ -130,7 +132,7 @@ export function SearchPopover({
                         )}
                         {result.preview && (
                           <div className="text-sm text-[var(--text)]/80 line-clamp-2">
-                            <span className="text-[var(--primary)] font-medium">找到：</span>
+                            <span className="text-[var(--primary)] font-medium">{t('found')}：</span>
                             {result.preview}
                           </div>
                         )}
@@ -142,7 +144,7 @@ export function SearchPopover({
             ) : (
               query && (
                 <div className="px-5 py-8 text-center text-sm text-[var(--text)]/60">
-                  未找到相关文档
+                  {t('noResults')}
                 </div>
               )
             )}

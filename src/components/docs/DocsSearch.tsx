@@ -6,7 +6,7 @@ import type { DocNode } from '@/lib/docs';
 import { Search } from 'lucide-react';
 import { SearchPopover } from './SearchPopover';
 import { createPortal } from 'react-dom';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 interface DocsSearchProps {
   docs: DocNode[];
@@ -21,9 +21,10 @@ interface SearchResult {
   isParent?: boolean;
 }
 
-export function DocsSearch({ docs, placeholder = "搜索文档..." }: DocsSearchProps) {
+export function DocsSearch({ docs, placeholder }: DocsSearchProps) {
   const router = useRouter();
   const locale = useLocale();
+  const t = useTranslations('docs');
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -51,17 +52,20 @@ export function DocsSearch({ docs, placeholder = "搜索文档..." }: DocsSearch
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: searchQuery }),
+        body: JSON.stringify({ 
+          query: searchQuery,
+          locale: locale
+        }),
       });
 
       if (!response.ok) {
-        throw new Error('搜索请求失败');
+        throw new Error(t('error.searchFailed'));
       }
 
       const searchResults = await response.json();
       setResults(searchResults);
     } catch (error) {
-      console.error('搜索出错:', error);
+      console.error(t('error.searchError'), error);
       setResults([]);
     } finally {
       setIsLoading(false);
@@ -122,7 +126,7 @@ export function DocsSearch({ docs, placeholder = "搜索文档..." }: DocsSearch
           type="text"
           readOnly
           onClick={handleOpenSearch}
-          placeholder={placeholder}
+          placeholder={placeholder || t('search')}
           className="w-full pl-8 pr-3 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-md cursor-pointer hover:border-gray-300 focus:outline-none"
         />
         <Search className="absolute left-2.5 top-2.5 w-4 h-4 text-gray-400" />
