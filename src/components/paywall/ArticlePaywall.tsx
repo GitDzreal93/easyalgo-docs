@@ -3,18 +3,24 @@
 import React from 'react';
 import { usePaywall } from './context';
 import { useSubscription } from '@/hooks/useSubscription';
+import { isPaymentEnabled } from './config';
 
 interface ArticlePaywallProps {
   source?: string;
+  children: React.ReactNode;
+  preview?: boolean;
 }
 
 /**
  * 文章底部付费墙组件
  * 显示在文章预览内容底部，提示用户升级会员
  */
-export const ArticlePaywall: React.FC<ArticlePaywallProps> = ({ 
-  source = 'article'
-}) => {
+export function ArticlePaywall({ children, preview = true }: ArticlePaywallProps) {
+  // 如果支付功能关闭，直接显示完整内容
+  if (!isPaymentEnabled()) {
+    return <>{children}</>;
+  }
+
   const { 
     currentPromotion, 
     navigateToPricing,
@@ -31,7 +37,7 @@ export const ArticlePaywall: React.FC<ArticlePaywallProps> = ({
   
   const handleClick = () => {
     navigateToPricing(
-      source, 
+      'article', 
       currentPromotion?.couponCode
     );
   };
@@ -100,4 +106,4 @@ export const ArticlePaywall: React.FC<ArticlePaywallProps> = ({
       </div>
     </div>
   );
-};
+}

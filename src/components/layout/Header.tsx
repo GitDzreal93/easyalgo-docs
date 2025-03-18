@@ -10,12 +10,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
+import { isPaymentEnabled } from '@/components/paywall';
 
 export default function Header() {
   const pathname = usePathname();
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const t = useTranslations();
+  const paymentEnabled = isPaymentEnabled();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,17 +69,19 @@ export default function Header() {
               >
                 {t('nav.courses')}
               </Link>
-              <Link 
-                href="/pricing" 
-                className={clsx(
-                  'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200',
-                  pathname === '/pricing'
-                    ? 'border-[#FFB703] text-[#023047] font-semibold'
-                    : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
-                )}
-              >
-                {t('nav.members')}
-              </Link>
+              {paymentEnabled && (
+                <Link 
+                  href="/pricing" 
+                  className={clsx(
+                    'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200',
+                    pathname === '/pricing'
+                      ? 'border-[#FFB703] text-[#023047] font-semibold'
+                      : 'border-transparent text-[#023047]/70 hover:border-[#8ECAE6] hover:text-[#023047]'
+                  )}
+                >
+                  {t('nav.members')}
+                </Link>
+              )}
             </div>
           </div>
           <div className="flex items-center space-x-4">

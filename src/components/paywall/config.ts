@@ -158,3 +158,7 @@ export function getContentPreview(
   
   return content.substring(0, previewLength);
 }
+
+export const isPaymentEnabled = () => {
+  return process.env.PAYMENT_SWITCH === 'true';
+};

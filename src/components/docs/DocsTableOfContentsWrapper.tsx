@@ -3,6 +3,7 @@
 import React from 'react';
 import DocsTableOfContents from './DocsTableOfContents';
 import { SidebarPromotion } from '../paywall';
+import { isPaymentEnabled } from '../paywall';
 
 /**
  * 文档目录包装组件
@@ -11,8 +12,8 @@ import { SidebarPromotion } from '../paywall';
 export default function DocsTableOfContentsWrapper() {
   return (
     <div className="flex flex-col gap-4 h-full">
-      {/* 侧边栏促销组件 */}
-      <SidebarPromotion source="toc_sidebar" />
+      {/* 仅在支付功能开启时显示侧边栏促销组件 */}
+      {isPaymentEnabled() && <SidebarPromotion source="toc_sidebar" />}
       
       {/* 原始文档目录组件 */}
       <DocsTableOfContents />
