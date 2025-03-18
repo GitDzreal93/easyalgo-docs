@@ -271,6 +271,7 @@
     "errorMessage": "加载文档时发生错误",
     "estimatedReadingTime": "预计阅读时间：{minutes} 分钟",
     "lastUpdated": "最后更新：{date}",
+    "readMore": "阅读更多",
     "search": "搜索文档...",
     "toc": "目录",
     "edit": "编辑此页",

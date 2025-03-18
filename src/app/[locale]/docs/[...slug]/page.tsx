@@ -7,6 +7,8 @@ import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/d
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
 import { getMarkdownClassName } from '@/components/bytemd/styles/markdown';
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import { Metadata } from 'next';
 
 // Define simple page props interface that matches what Next.js provides
 interface PageProps {
@@ -16,16 +18,23 @@ interface PageProps {
   };
 }
 
-export const metadata = {
-  title: 'Easy Algo - Document Center',
-  description: 'The simplest algorithm learning platform, providing detailed algorithm analysis, code implementation, and practice problems.',
-  keywords: 'algorithm learning, programming tutorial, Easy Algo, data structures, algorithm analysis, programming basics, code implementation',
-  openGraph: {
-    title: 'Easy Algo - Document Center',
-    description: 'The simplest algorithm learning platform',
-    type: 'article',
-  },
-};
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const t = await getTranslations({
+    locale: params.locale,
+    namespace: 'layout.metadata'
+  });
+  
+  return {
+    title: t('title.default'),
+    description: t('description'),
+    keywords: t.raw('keywords').join(','),
+    openGraph: {
+      title: t('openGraph.title'),
+      description: t('openGraph.description'),
+      type: 'article',
+    },
+  };
+}
 
 // 加载状态组件
 function LoadingState() {
@@ -60,7 +69,7 @@ async function DocumentContent({ params, t }: { params: PageProps['params']; t: 
     if (Array.isArray(slug)) {
       normalizedSlug = slug.join('/').replace(/^\/+|\/+$/g, '');
     } else {
-      normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
+      normalizedSlug = String(slug).replace(/^\/+|\/+$/g, '');
     }
 
     if (!normalizedSlug) {
@@ -202,7 +211,6 @@ export default function DocumentPage(props: PageProps) {
 
   return (
     <Suspense fallback={<LoadingState />}>
-      {/* @ts-expect-error Async Server Component */}
       <DocumentContent params={props.params} t={t} />
     </Suspense>
   );
