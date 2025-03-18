@@ -216,6 +216,7 @@
     "lifetimeMemberMessage": "You are a lifetime member and have permanent access to all content. Thank you for your support!",
     "upgradeMessage": "Become a lifetime member to unlock all premium features and enjoy a complete learning experience.",
     "viewPlans": "View Membership Plans",
+    "signOut": "Sign Out",
     "paymentSuccess": {
       "title": "Payment Successful!",
       "message": "Thank you for your purchase! You now have access to all member content."

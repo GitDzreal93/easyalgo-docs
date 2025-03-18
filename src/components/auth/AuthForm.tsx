@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslations } from 'next-intl'
 
 interface AuthFormProps {
   type: 'login' | 'register'
@@ -12,6 +13,7 @@ export default function AuthForm({ type }: AuthFormProps) {
   const { signIn, signUp, signInWithProvider, loading, error } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const t = useTranslations(`auth.${type}`)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +42,7 @@ export default function AuthForm({ type }: AuthFormProps) {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-[var(--color-navy)]">
-            邮箱地址
+            {t('email')}
           </label>
           <div className="mt-1 relative">
             <input
@@ -56,7 +58,7 @@ export default function AuthForm({ type }: AuthFormProps) {
         </div>
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-[var(--color-navy)]">
-            密码
+            {t('password')}
           </label>
           <div className="mt-1 relative">
             <input
@@ -77,7 +79,7 @@ export default function AuthForm({ type }: AuthFormProps) {
                 href="/auth/reset-password" 
                 className="font-medium text-[var(--color-sky)] hover:text-[var(--color-sky)]/80 transition-colors duration-200"
               >
-                忘记密码？
+                {t('forgotPassword')}
               </Link>
             )}
           </div>
@@ -86,7 +88,7 @@ export default function AuthForm({ type }: AuthFormProps) {
               href={type === 'login' ? '/auth/register' : '/auth/login'} 
               className="font-medium text-[var(--color-sky)] hover:text-[var(--color-sky)]/80 transition-colors duration-200"
             >
-              {type === 'login' ? '没有账号？注册' : '已有账号？登录'}
+              {type === 'login' ? t('noAccount') : t('hasAccount')}
             </Link>
           </div>
         </div>
@@ -104,7 +106,7 @@ export default function AuthForm({ type }: AuthFormProps) {
             )}
           </span>
           <span className={loading ? 'opacity-0' : 'opacity-100'}>
-            {type === 'login' ? '登录' : '注册'}
+            {t('submit')}
           </span>
         </button>
       </form>
@@ -116,7 +118,7 @@ export default function AuthForm({ type }: AuthFormProps) {
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-2 bg-white text-[var(--color-navy)]/60">
-              或使用以下方式{type === 'login' ? '登录' : '注册'}
+              {t('or')}
             </span>
           </div>
         </div>

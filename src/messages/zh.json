@@ -235,6 +235,7 @@
     "lifetimeMemberMessage": "您已经是我们的终身会员，可以永久访问所有内容。感谢您的支持！",
     "upgradeMessage": "成为终身会员，即可解锁所有高级功能，享受完整的学习体验。",
     "viewPlans": "查看会员方案",
+    "signOut": "退出登录",
     "paymentSuccess": {
       "title": "支付成功！",
       "message": "感谢您的购买！您现在可以访问所有会员内容了。"

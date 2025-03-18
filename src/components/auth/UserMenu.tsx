@@ -4,10 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslations } from 'next-intl'
 
 export default function UserMenu({ user }: { user: any }) {
   const [isOpen, setIsOpen] = useState(false)
   const { signOut } = useAuth()
+  const t = useTranslations('profile')
 
   const handleSignOut = async () => {
     await signOut()
@@ -32,13 +34,13 @@ export default function UserMenu({ user }: { user: any }) {
             href="/profile"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
-            账户设置
+            {t('title')}
           </Link>
           <button
             onClick={handleSignOut}
             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
-            退出登录
+            {t('signOut')}
           </button>
         </div>
       )}
