@@ -96,19 +96,19 @@ const CategorySection = ({ doc, isActive }: { doc: DocNode; isActive: boolean })
   
   return (
     <div className="space-y-0.5">
-      <div className="flex items-center">
+      <div className="flex items-center justify-between group">
         <DocLink doc={doc} isActive={isCurrentDoc} depth={0} />
         {doc.children?.length > 0 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className={clsx(
-              'p-1 rounded-md ml-1 text-[var(--color-navy)]/50 hover:text-[var(--color-navy)] dark:text-[var(--color-sky)]/50 dark:hover:text-[var(--color-sky)]',
-              'transition-transform duration-200',
+              'p-1 rounded-md text-[var(--color-navy)]/30 group-hover:text-[var(--color-navy)]/70 dark:text-[var(--color-sky)]/30 dark:group-hover:text-[var(--color-sky)]/70',
+              'transition-all duration-200 opacity-0 group-hover:opacity-100',
               isExpanded ? 'transform rotate-180' : ''
             )}
             title={isExpanded ? t('collapse') : t('expand')}
           >
-            <ChevronDownIcon className="w-4 h-4" />
+            <ChevronDownIcon className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
@@ -159,7 +159,17 @@ export default function DocsSidebar({ docs }: { docs: DocNode[] }) {
       </div>
       
       {/* 导航区域 */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 min-h-0 scrollbar-thin scrollbar-thumb-[var(--color-sky)]/20 hover:scrollbar-thumb-[var(--color-sky)]/30 scrollbar-track-transparent">
+      <nav 
+        className="flex-1 overflow-y-auto px-3 py-4 min-h-0 
+          [&::-webkit-scrollbar]:hidden
+          hover:[&::-webkit-scrollbar]:block
+          [&::-webkit-scrollbar]:w-1.5
+          [&::-webkit-scrollbar-thumb]:rounded-full
+          [&::-webkit-scrollbar-thumb]:bg-[var(--color-sky)]/20
+          hover:[&::-webkit-scrollbar-thumb]:bg-[var(--color-sky)]/30
+          [&::-webkit-scrollbar-track]:bg-transparent
+          transition-all duration-300"
+      >
         <ul className="space-y-2">
           {sortedDocs.map(doc => {
             // 检查当前文档或其子文档是否被选中
