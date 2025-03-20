@@ -7,6 +7,7 @@ import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/d
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
 import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
+import matter from 'gray-matter';
 
 // Define simple page props interface that matches what Next.js provides
 interface PageProps {
@@ -39,8 +40,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function LoadingState() {
   return (
     <div className="animate-pulse bg-[var(--background)] rounded-lg shadow-sm p-6">
-      <div className="mb-8">
-        <div className="h-8 bg-[var(--primary)]/20 rounded w-3/4 mb-4"></div>
+      <div className="mb-4">
+        <div className="h-8 bg-[var(--primary)]/20 rounded w-3/4 mb-2"></div>
+        <div className="flex gap-2 mb-2">
+          <div className="h-6 bg-[var(--primary)]/10 rounded w-16"></div>
+          <div className="h-6 bg-[var(--primary)]/10 rounded w-16"></div>
+        </div>
         <div className="flex items-center space-x-4">
           <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
           <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
@@ -128,16 +133,16 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
     if (!content) {
       return (
         <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
-          <header className="mb-8">
+          <header className="mb-4">
             {isChildDoc && (
-              <div className="flex items-center text-sm text-[var(--text)] mb-4">
+              <div className="flex items-center text-sm text-[var(--text)] mb-2">
                 <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                   <ChevronRightIcon className="mr-1 w-4 h-4" />
                   {t('backToParent')}
                 </Link>
               </div>
             )}
-            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
             <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
                 <CalendarIcon className="mr-2 w-4 h-4" />
@@ -153,24 +158,35 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
       );
     }
 
+    // 解析 frontmatter
+    const { data: frontmatter, content: mdContent } = matter(content);
+    console.log('Frontmatter data:', frontmatter);
+    // 确保 tag 是数组
+    const tags = Array.isArray(frontmatter.tag) ? frontmatter.tag : [];
+    console.log('Tags:', tags);
+
     return (
       <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
-        <header className="mb-8">
+        <header className="mb-4">
           {isChildDoc && (
-            <div className="flex items-center text-sm text-[var(--text)] mb-4">
+            <div className="flex items-center text-sm text-[var(--text)] mb-2">
               <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                 <ChevronRightIcon className="mr-1 w-4 h-4" />
                 {t('backToParent')}
               </Link>
             </div>
           )}
-          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
-          {doc.tag && Array.isArray(doc.tag) && doc.tag.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {doc.tag.map((tag: string, index: number) => (
+          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
+          {tags && tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              {tags.map((tag: string, index: number) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-[var(--color-sky)] bg-opacity-10 text-[var(--color-sky)]"
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium"
+                  style={{
+                    backgroundColor: 'var(--color-sky)',
+                    color: 'var(--color-navy)',
+                  }}
                 >
                   {tag}
                 </span>
@@ -180,12 +196,12 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
           <div className="flex items-center text-sm text-[var(--text)]">
             <span className="flex items-center">
               <CalendarIcon className="mr-2 w-4 h-4" />
-              {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
+              {frontmatter.date ? new Date(frontmatter.date).toLocaleDateString(locale) : new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
             </span>
             <span className="mx-2 text-[var(--text)]">·</span>
             <span className="flex items-center">
               <ClockIcon className="mr-2 w-4 h-4" />
-              {t('estimatedReadingTime', { minutes: Math.ceil(content.length / 500) })}
+              {t('estimatedReadingTime', { minutes: Math.ceil(mdContent.length / 500) })}
             </span>
           </div>
         </header>
@@ -193,7 +209,7 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
         <div className="max-w-none">
           <div className="mdx-content">
             <ClientBytemdViewer 
-              content={content} 
+              content={mdContent} 
             />
           </div>
         </div>

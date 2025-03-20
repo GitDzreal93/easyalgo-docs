@@ -1,5 +1,5 @@
 /* 代码块容器样式 */
-pre {
+.markdown-theme pre {
   position: relative;
   margin: 1em 0;
   padding: 1em;
@@ -13,36 +13,36 @@ pre {
 }
 
 /* Webkit 滚动条样式 */
-pre::-webkit-scrollbar {
+.markdown-theme pre::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-pre::-webkit-scrollbar-track {
+.markdown-theme pre::-webkit-scrollbar-track {
   background: transparent;
 }
 
-pre::-webkit-scrollbar-thumb {
+.markdown-theme pre::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 3px;
 }
 
 /* 鼠标悬停时显示滚动条 */
-pre:hover::-webkit-scrollbar-thumb {
+.markdown-theme pre:hover::-webkit-scrollbar-thumb {
   background: rgba(142, 202, 230, 0.2);  /* 使用 --color-sky 带透明度 */
 }
 
-pre:hover::-webkit-scrollbar-thumb:hover {
+.markdown-theme pre:hover::-webkit-scrollbar-thumb:hover {
   background: rgba(142, 202, 230, 0.4);  /* 悬停时加深颜色 */
 }
 
 /* Firefox 滚动条悬停样式 */
-pre:hover {
+.markdown-theme pre:hover {
   scrollbar-color: rgba(142, 202, 230, 0.2) transparent;  /* Firefox */
 }
 
 /* 代码文本样式 */
-pre code {
+.markdown-theme pre code {
   font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
   font-size: 0.9em;
   line-height: 1.5;
@@ -54,7 +54,7 @@ pre code {
 }
 
 /* 语言标记样式 */
-pre[data-lang]::before {
+.markdown-theme pre[data-lang]::before {
   content: attr(data-lang);
   position: absolute;
   top: 0;
@@ -71,7 +71,7 @@ pre[data-lang]::before {
 }
 
 /* 复制按钮样式 */
-.copy-code-button {
+.markdown-theme .copy-code-button {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
@@ -86,18 +86,18 @@ pre[data-lang]::before {
 }
 
 /* 鼠标悬停时显示复制按钮 */
-pre:hover .copy-code-button {
+.markdown-theme pre:hover .copy-code-button {
   opacity: 0.9;
 }
 
 /* 复制按钮悬停效果 */
-.copy-code-button:hover {
+.markdown-theme .copy-code-button:hover {
   opacity: 1;
   background: #8ECAE6;  /* 使用 --color-sky */
 }
 
 /* 行内代码样式 */
-:not(pre) > code {
+.markdown-theme :not(pre) > code {
   padding: 0.2em 0.4em;
   margin: 0 0.2em;
   font-size: 0.85em;
@@ -108,71 +108,71 @@ pre:hover .copy-code-button {
 }
 
 /* 代码高亮基础样式 */
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-built_in,
-.hljs-name,
-.hljs-tag {
+.markdown-theme .hljs-keyword,
+.markdown-theme .hljs-selector-tag,
+.markdown-theme .hljs-built_in,
+.markdown-theme .hljs-name,
+.markdown-theme .hljs-tag {
   color: #8ECAE6;  /* 使用 --color-sky */
 }
 
-.hljs-string,
-.hljs-title,
-.hljs-section,
-.hljs-attribute,
-.hljs-literal,
-.hljs-template-tag,
-.hljs-template-variable,
-.hljs-type,
-.hljs-addition {
+.markdown-theme .hljs-string,
+.markdown-theme .hljs-title,
+.markdown-theme .hljs-section,
+.markdown-theme .hljs-attribute,
+.markdown-theme .hljs-literal,
+.markdown-theme .hljs-template-tag,
+.markdown-theme .hljs-template-variable,
+.markdown-theme .hljs-type,
+.markdown-theme .hljs-addition {
   color: #FFB703;  /* 使用 --color-yellow */
 }
 
-.hljs-comment,
-.hljs-quote,
-.hljs-deletion,
-.hljs-meta {
+.markdown-theme .hljs-comment,
+.markdown-theme .hljs-quote,
+.markdown-theme .hljs-deletion,
+.markdown-theme .hljs-meta {
   color: #219EBC;  /* 使用 --color-teal */
 }
 
-.hljs-number,
-.hljs-regexp,
-.hljs-symbol,
-.hljs-variable,
-.hljs-template-variable,
-.hljs-link,
-.hljs-selector-attr,
-.hljs-selector-pseudo {
+.markdown-theme .hljs-number,
+.markdown-theme .hljs-regexp,
+.markdown-theme .hljs-symbol,
+.markdown-theme .hljs-variable,
+.markdown-theme .hljs-template-variable,
+.markdown-theme .hljs-link,
+.markdown-theme .hljs-selector-attr,
+.markdown-theme .hljs-selector-pseudo {
   color: #FB8500;  /* 使用 --color-orange */
 }
 
-.hljs-doctag,
-.hljs-attr,
-.hljs-selector-id,
-.hljs-selector-class,
-.hljs-selector-attr,
-.hljs-selector-pseudo {
+.markdown-theme .hljs-doctag,
+.markdown-theme .hljs-attr,
+.markdown-theme .hljs-selector-id,
+.markdown-theme .hljs-selector-class,
+.markdown-theme .hljs-selector-attr,
+.markdown-theme .hljs-selector-pseudo {
   color: #8ECAE6;  /* 使用 --color-sky */
 }
 
-.hljs-function,
-.hljs-params {
+.markdown-theme .hljs-function,
+.markdown-theme .hljs-params {
   color: #e5e5e5;  /* 浅色文本 */
 }
 
-.hljs-operator {
+.markdown-theme .hljs-operator {
   color: #219EBC;  /* 使用 --color-teal */
 }
 
 /* 暗色主题适配 */
 @media (prefers-color-scheme: dark) {
-  pre {
+  .markdown-theme pre {
     background-color: #0d1117;  /* 深黑色背景 */
     color: #e5e5e5;
     border: 1px solid #30363d;  /* 添加细边框 */
   }
 
-  :not(pre) > code {
+  .markdown-theme :not(pre) > code {
     background-color: rgba(142, 202, 230, 0.1);  /* 使用 --color-sky 带透明度 */
     color: #FB8500;  /* 使用 --color-orange */
   }

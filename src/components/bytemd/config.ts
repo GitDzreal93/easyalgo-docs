@@ -8,9 +8,6 @@ import { codeBlockPlugin } from './plugins/code-block'
 import type { Schema } from 'hast-util-sanitize'
 import { merge } from 'lodash-es'
 
-// 导入代码高亮主题
-import 'highlight.js/styles/github-dark.css'
-
 // 配置插件
 export const plugins = [
   gfm(),

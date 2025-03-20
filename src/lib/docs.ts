@@ -16,6 +16,7 @@ export interface DocNode {
   slug: string;
   position: number;
   filename: string;
+  tag?: string[];
 }
 
 export interface PageParams {

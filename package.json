@@ -39,6 +39,7 @@
     "fumadocs": "^0.0.0",
     "fumadocs-ui": "^15.0.15",
     "github-markdown-css": "^5.8.1",
+    "gray-matter": "^4.0.3",
     "hast-util-from-html-isomorphic": "^2.0.0",
     "highlight.js": "^11.11.1",
     "install": "^0.13.0",
