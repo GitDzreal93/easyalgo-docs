@@ -20,7 +20,7 @@
 /* 标题样式 */
 .markdown-theme h1 {
   font-size: 2em;
-  margin: 1em 0;
+  margin: 0.6em 0;
   font-weight: bold;
   padding-bottom: 0.3em;
   border-bottom: 1px solid rgba(33, 158, 188, 0.2);
@@ -29,7 +29,7 @@
 
 .markdown-theme h2 {
   font-size: 1.5em;
-  margin: 0.8em 0;
+  margin: 0.4em 0;
   font-weight: bold;
   padding-bottom: 0.3em;
   border-bottom: 1px solid rgba(33, 158, 188, 0.2);
@@ -38,7 +38,7 @@
 
 .markdown-theme h3 {
   font-size: 1.25em;
-  margin: 0.6em 0;
+  margin: 0.3em 0;
   font-weight: bold;
   color: var(--theme-teal);
 }
