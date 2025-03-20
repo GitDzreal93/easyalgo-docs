@@ -1,7 +1,7 @@
 @import './code-block.css';
 
-/* 掘金主题 */
-.juejin-theme {
+/* 自定义主题 */
+.markdown-theme {
   color: #252933;
   font-family: -apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial;
   font-size: 16px;
@@ -12,7 +12,7 @@
 }
 
 /* 标题样式 */
-.juejin-theme h1 {
+.markdown-theme h1 {
   font-size: 2em;
   margin: 1em 0;
   font-weight: bold;
@@ -20,7 +20,7 @@
   border-bottom: 1px solid #eaecef;
 }
 
-.juejin-theme h2 {
+.markdown-theme h2 {
   font-size: 1.5em;
   margin: 0.8em 0;
   font-weight: bold;
@@ -28,54 +28,61 @@
   border-bottom: 1px solid #eaecef;
 }
 
-.juejin-theme h3 {
+.markdown-theme h3 {
   font-size: 1.25em;
   margin: 0.6em 0;
   font-weight: bold;
 }
 
 /* 段落样式 */
-.juejin-theme p {
+.markdown-theme p {
   margin: 1em 0;
   line-height: 1.75;
 }
 
-/* 代码块样式 */
-.juejin-theme pre {
-  background-color: #282c34;
-  border-radius: 5px;
-  padding: 1em;
-  margin: 1em 0;
-  overflow: auto;
-}
-
-.juejin-theme code {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  font-size: 0.87em;
-  background-color: rgba(27,31,35,.05);
-  padding: 0.2em 0.4em;
-  border-radius: 3px;
-}
-
-.juejin-theme pre code {
-  background-color: transparent;
-  color: #abb2bf;
-  padding: 0;
-}
-
 /* 列表样式 */
-.juejin-theme ul,
-.juejin-theme ol {
+.markdown-theme ul,
+.markdown-theme ol {
   padding-left: 2em;
   margin: 1em 0;
+  list-style-position: outside;
 }
 
-.juejin-theme li {
+.markdown-theme ul {
+  list-style: disc;
+}
+
+.markdown-theme ul ul {
+  list-style: circle;
+}
+
+.markdown-theme ul ul ul {
+  list-style: square;
+}
+
+.markdown-theme ol {
+  list-style: decimal;
+}
+
+.markdown-theme ol ol {
+  list-style: lower-alpha;
+}
+
+.markdown-theme ol ol ol {
+  list-style: lower-roman;
+}
+
+.markdown-theme li {
   margin: 0.5em 0;
+  display: list-item;
+}
+
+.markdown-theme li::marker {
+  color: #666;
 }
 
 /* 引用块样式 */
-.juejin-theme blockquote {
+.markdown-theme blockquote {
   margin: 1em 0;
   padding: 0.5em 1em;
   color: #666;
@@ -84,86 +91,60 @@
 }
 
 /* 链接样式 */
-.juejin-theme a {
+.markdown-theme a {
   color: #1e80ff;
   text-decoration: none;
 }
 
-.juejin-theme a:hover {
+.markdown-theme a:hover {
   text-decoration: underline;
 }
 
 /* 表格样式 */
-.juejin-theme table {
+.markdown-theme table {
   border-collapse: collapse;
   margin: 1em 0;
   width: 100%;
 }
 
-.juejin-theme th,
-.juejin-theme td {
+.markdown-theme th,
+.markdown-theme td {
   border: 1px solid #dfe2e5;
   padding: 0.6em 1em;
 }
 
-.juejin-theme th {
+.markdown-theme th {
   background-color: #f6f8fa;
   font-weight: bold;
 }
 
-/* 代码高亮 */
-.juejin-theme pre .token.keyword {
-  color: #c678dd;
-}
-
-.juejin-theme pre .token.function {
-  color: #61afef;
-}
-
-.juejin-theme pre .token.string {
-  color: #98c379;
-}
-
-.juejin-theme pre .token.number {
-  color: #d19a66;
-}
-
-.juejin-theme pre .token.operator {
-  color: #56b6c2;
-}
-
-.juejin-theme pre .token.comment {
-  color: #5c6370;
-  font-style: italic;
-}
-
 /* 暗色主题支持 */
 @media (prefers-color-scheme: dark) {
-  .juejin-theme {
+  .markdown-theme {
     background-color: #1a1a1a;
     color: #e5e5e5;
   }
 
-  .juejin-theme code {
-    background-color: rgba(200,200,200,.05);
-  }
-
-  .juejin-theme blockquote {
+  .markdown-theme blockquote {
     border-left-color: #4a4a4a;
     background-color: #2a2a2a;
     color: #999;
   }
 
-  .juejin-theme a {
+  .markdown-theme a {
     color: #3b9cff;
   }
 
-  .juejin-theme th,
-  .juejin-theme td {
+  .markdown-theme th,
+  .markdown-theme td {
     border-color: #4a4a4a;
   }
 
-  .juejin-theme th {
+  .markdown-theme th {
     background-color: #2a2a2a;
+  }
+
+  .markdown-theme li::marker {
+    color: #999;
   }
 } 

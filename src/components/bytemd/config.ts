@@ -1,50 +1,34 @@
 import gfm from '@bytemd/plugin-gfm'
-import highlight from '@bytemd/plugin-highlight-ssr'
 import frontmatter from '@bytemd/plugin-frontmatter'
 import mediumZoom from '@bytemd/plugin-medium-zoom'
+import highlight from '@bytemd/plugin-highlight'
 import { prettyLinkPlugin } from './plugins/pretty-link'
 import { headingPlugin } from './plugins/heading'
 import { codeBlockPlugin } from './plugins/code-block'
+import type { Schema } from 'hast-util-sanitize'
+import { merge } from 'lodash-es'
 
-// 导入 highlight.js 核心和语言包
-import hljs from 'highlight.js/lib/core'
-import javascript from 'highlight.js/lib/languages/javascript'
-import typescript from 'highlight.js/lib/languages/typescript'
-import python from 'highlight.js/lib/languages/python'
-import bash from 'highlight.js/lib/languages/bash'
-import json from 'highlight.js/lib/languages/json'
-import markdown from 'highlight.js/lib/languages/markdown'
-import css from 'highlight.js/lib/languages/css'
-import sql from 'highlight.js/lib/languages/sql'
-
-// 导入语法高亮的主题样式
-import 'highlight.js/styles/atom-one-dark.css'
+// 导入代码高亮主题
+import 'highlight.js/styles/github-dark.css'
 
 // 配置插件
 export const plugins = [
   gfm(),
-  highlight({
-    init: (highlightjs: typeof hljs) => {
-      // 注册常用语言
-      highlightjs.registerLanguage('javascript', javascript)
-      highlightjs.registerLanguage('typescript', typescript)
-      highlightjs.registerLanguage('python', python)
-      highlightjs.registerLanguage('bash', bash)
-      highlightjs.registerLanguage('json', json)
-      highlightjs.registerLanguage('markdown', markdown)
-      highlightjs.registerLanguage('css', css)
-      highlightjs.registerLanguage('sql', sql)
-    }
-  }),
   frontmatter(),
   mediumZoom(),
+  highlight({
+    init: (hljs) => {
+      // 可以在这里添加自定义语言支持
+    },
+    detect: true // 自动检测语言
+  }),
   prettyLinkPlugin(),
   headingPlugin(),
   codeBlockPlugin()
 ]
 
 // HTML 标签和属性的白名单配置
-export const sanitize = {
+const sanitizeSchema = {
   allowedTags: [
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
     'p', 'div', 'span',
@@ -54,17 +38,17 @@ export const sanitize = {
     'br', 'strong', 'em',
     'pre', 'code',
     'table', 'thead', 'tbody', 'tr', 'th', 'td',
-    'svg', 'path', 'rect' // 允许 SVG 相关标签，用于图标
+    'svg', 'path', 'rect'
   ],
   allowedAttributes: {
-    '*': ['class', 'id', 'style', 'data-lang'], // 添加 data-lang 属性支持
+    '*': ['class', 'id', 'style', 'data-lang'],
     'a': ['href', 'target', 'rel'],
     'img': ['src', 'alt', 'title'],
     'svg': ['xmlns', 'width', 'height', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin'],
     'path': ['d', 'fill', 'stroke'],
     'rect': ['width', 'height', 'x', 'y', 'rx', 'ry'],
-    'pre': ['class', 'data-lang'], // 添加 pre 标签的属性支持
-    'code': ['class', 'data-lang'] // 添加 code 标签的属性支持
+    'pre': ['class', 'data-lang'],
+    'code': ['class', 'data-lang']
   },
   allowedStyles: {
     '*': {
@@ -85,7 +69,10 @@ export const sanitize = {
       'border': [/.*/],
       'border-bottom': [/.*/],
       'padding-bottom': [/.*/],
-      'border-radius': [/.*/] // 添加圆角支持
+      'border-radius': [/.*/]
     }
   }
 }
+
+// 导出 sanitize 函数
+export const sanitize = (schema: Schema) => merge({}, schema, sanitizeSchema)

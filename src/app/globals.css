@@ -1,12 +1,7 @@
 @import "tailwindcss";
-/* 掘金主题（暂时注释） */
-/* @import 'juejin-markdown-themes/dist/juejin.css'; */
 
-/* Notion 主题 */
-@import '../components/bytemd/styles/notion-theme.css';
-
-/* GitHub 主题（暂时注释） */
-/* @import 'github-markdown-css/github-markdown.css'; */
+/* 自定义 Markdown 主题 */
+@import '../components/bytemd/styles/custom-theme.css';
 
 /* 暗色模式支持 */
 .markdown-body {
