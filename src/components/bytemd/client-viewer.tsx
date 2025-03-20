@@ -33,8 +33,8 @@ export const ClientBytemdViewer = ({ content, className = '' }: ClientBytemdView
         // Apply strong styling to ensure h1 is properly rendered
         h1.style.fontSize = '1.75em';
         h1.style.fontWeight = 'bold';
-        h1.style.marginTop = '1em';
-        h1.style.marginBottom = '0.5em';
+        h1.style.marginTop = '0.3em';
+        h1.style.marginBottom = '0.3em';
         h1.style.borderBottom = '1px solid #eaecef';
         h1.style.paddingBottom = '0.2em';
         h1.style.display = 'block';

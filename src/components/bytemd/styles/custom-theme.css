@@ -20,9 +20,9 @@
 /* 标题样式 */
 .markdown-theme h1 {
   font-size: 2em;
-  margin: 0.6em 0;
+  margin: 0.3em 0;
   font-weight: bold;
-  padding-bottom: 0.3em;
+  padding-bottom: 0.2em;
   border-bottom: 1px solid rgba(33, 158, 188, 0.2);
   color: var(--theme-navy);
 }
