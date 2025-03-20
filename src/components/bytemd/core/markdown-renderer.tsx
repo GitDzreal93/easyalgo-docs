@@ -23,7 +23,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   // 主题相关类名
   const themeClass = useMemo(() => {
-    return theme === 'dark' ? 'markdown-theme-dark' : 'markdown-theme';
+    return theme === 'dark' ? 'notion-theme notion-theme-dark' : 'notion-theme';
   }, [theme]);
 
   // 内容预处理

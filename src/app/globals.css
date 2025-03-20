@@ -1,6 +1,9 @@
 @import "tailwindcss";
-/* 掘金主题 */
-@import 'juejin-markdown-themes/dist/juejin.css';
+/* 掘金主题（暂时注释） */
+/* @import 'juejin-markdown-themes/dist/juejin.css'; */
+
+/* Notion 主题 */
+@import '../components/bytemd/styles/notion-theme.css';
 
 /* GitHub 主题（暂时注释） */
 /* @import 'github-markdown-css/github-markdown.css'; */
@@ -91,43 +94,19 @@ body {
 }
 
 @keyframes glitch-animation-1 {
-  0% {
-    clip: rect(34px, 9999px, 36px, 0);
-  }
-  20% {
-    clip: rect(32px, 9999px, 35px, 0);
-  }
-  40% {
-    clip: rect(36px, 9999px, 34px, 0);
-  }
-  60% {
-    clip: rect(35px, 9999px, 36px, 0);
-  }
-  80% {
-    clip: rect(33px, 9999px, 35px, 0);
-  }
-  100% {
-    clip: rect(34px, 9999px, 33px, 0);
-  }
+  0% { clip: rect(34px, 9999px, 36px, 0); }
+  20% { clip: rect(32px, 9999px, 35px, 0); }
+  40% { clip: rect(36px, 9999px, 34px, 0); }
+  60% { clip: rect(35px, 9999px, 36px, 0); }
+  80% { clip: rect(33px, 9999px, 35px, 0); }
+  100% { clip: rect(34px, 9999px, 33px, 0); }
 }
 
 @keyframes glitch-animation-2 {
-  0% {
-    clip: rect(34px, 9999px, 33px, 0);
-  }
-  20% {
-    clip: rect(33px, 9999px, 35px, 0);
-  }
-  40% {
-    clip: rect(35px, 9999px, 36px, 0);
-  }
-  60% {
-    clip: rect(36px, 9999px, 34px, 0);
-  }
-  80% {
-    clip: rect(32px, 9999px, 35px, 0);
-  }
-  100% {
-    clip: rect(34px, 9999px, 36px, 0);
-  }
+  0% { clip: rect(34px, 9999px, 33px, 0); }
+  20% { clip: rect(33px, 9999px, 35px, 0); }
+  40% { clip: rect(35px, 9999px, 36px, 0); }
+  60% { clip: rect(36px, 9999px, 34px, 0); }
+  80% { clip: rect(32px, 9999px, 35px, 0); }
+  100% { clip: rect(34px, 9999px, 36px, 0); }
 }

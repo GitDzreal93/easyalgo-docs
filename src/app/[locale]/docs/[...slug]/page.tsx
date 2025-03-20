@@ -5,7 +5,6 @@ import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/docs';
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
-import { getMarkdownClassName } from '@/components/bytemd/styles/markdown';
 import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
 
@@ -195,7 +194,6 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
           <div className="mdx-content">
             <ClientBytemdViewer 
               content={content} 
-              className={getMarkdownClassName()} 
             />
           </div>
         </div>
