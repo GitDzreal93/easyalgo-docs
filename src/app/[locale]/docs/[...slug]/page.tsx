@@ -133,7 +133,7 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
             {isChildDoc && (
               <div className="flex items-center text-sm text-[var(--text)] mb-4">
                 <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
-                  <ChevronRightIcon className="h-4 w-4 mr-1" />
+                  <ChevronRightIcon className="mr-1 w-4 h-4" />
                   {t('backToParent')}
                 </Link>
               </div>
@@ -141,12 +141,12 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
             <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
             <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
-                <CalendarIcon className="mr-2 h-4 w-4" />
+                <CalendarIcon className="mr-2 w-4 h-4" />
                 {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
               </span>
             </div>
           </header>
-          <div className="prose max-w-none">
+          <div className="max-w-none prose">
             <p className="text-[var(--text)]">{t('contentNotAvailable')}</p>
             <p className="text-[var(--text)] opacity-75">{t('filePath')}: {normalizedPath}</p>
           </div>
@@ -160,20 +160,32 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
           {isChildDoc && (
             <div className="flex items-center text-sm text-[var(--text)] mb-4">
               <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
-                <ChevronRightIcon className="h-4 w-4 mr-1" />
+                <ChevronRightIcon className="mr-1 w-4 h-4" />
                 {t('backToParent')}
               </Link>
             </div>
           )}
           <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+          {doc.tag && Array.isArray(doc.tag) && doc.tag.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {doc.tag.map((tag: string, index: number) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-[var(--color-sky)] bg-opacity-10 text-[var(--color-sky)]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="flex items-center text-sm text-[var(--text)]">
             <span className="flex items-center">
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 w-4 h-4" />
               {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
             </span>
             <span className="mx-2 text-[var(--text)]">·</span>
             <span className="flex items-center">
-              <ClockIcon className="mr-2 h-4 w-4" />
+              <ClockIcon className="mr-2 w-4 h-4" />
               {t('estimatedReadingTime', { minutes: Math.ceil(content.length / 500) })}
             </span>
           </div>
@@ -201,7 +213,7 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{t('errorTitle')}</h1>
         </header>
-        <div className="prose max-w-none">
+        <div className="max-w-none prose">
           <p className="text-[var(--text)]">{t('errorMessage')}</p>
           <p className="text-[var(--text)] opacity-75">
             {error instanceof Error ? error.message : String(error)}
@@ -218,4 +230,4 @@ export default async function DocumentPage(props: PageProps) {
       <DocumentContent params={props.params} />
     </Suspense>
   );
-} 
+}

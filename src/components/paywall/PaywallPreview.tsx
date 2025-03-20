@@ -3,9 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePaywall } from './context';
 import { ArticlePaywall } from './ArticlePaywall';
-import { Viewer } from '@bytemd/react';
-import { plugins, sanitize } from '../bytemd/config';
-import { getMarkdownClassName } from '../bytemd/styles/markdown';
+import { MarkdownRenderer } from '../bytemd/core/markdown-renderer';
 import { useSubscription } from '@/hooks/useSubscription';
 
 interface PaywallPreviewProps {
@@ -25,10 +23,8 @@ export const PaywallPreview: React.FC<PaywallPreviewProps> = ({
 }) => {
   const { 
     isArticlePremium,
-    checkIsPremiumContent,
     setContent,
     previewContent,
-    fullContent,
     config
   } = usePaywall();
   
@@ -45,35 +41,16 @@ export const PaywallPreview: React.FC<PaywallPreviewProps> = ({
   
   // 非付费内容或订阅用户，显示完整内容
   if (!isArticlePremium || subscription) {
-    return (
-      <div className={getMarkdownClassName()}>
-        <Viewer 
-          value={content} 
-          plugins={plugins} 
-          sanitize={sanitize}
-        />
-      </div>
-    );
+    return <MarkdownRenderer content={content} />;
   }
   
-  // 直接使用预览内容作为显示内容
-  const contentToShow = previewContent || '';
-  
-  // 付费内容且非会员，只显示预览内容和付费墙
+  // 付费内容且非会员，显示预览内容和付费墙
   return (
     <div className="relative">
-      {/* 预览内容区域 - 只显示预览部分 */}
       <div className="preview-content relative">
-        {/* 直接渲染预览内容 */}
-        <div className={getMarkdownClassName()}>
-          <Viewer 
-            value={contentToShow} 
-            plugins={plugins} 
-            sanitize={sanitize}
-          />
-        </div>
+        <MarkdownRenderer content={previewContent || ''} />
         
-        {/* 模糊遮罩层 - 在预览内容底部添加渐变效果 */}
+        {/* 模糊遮罩层 */}
         <div 
           className="absolute bottom-0 left-0 right-0"
           style={{
