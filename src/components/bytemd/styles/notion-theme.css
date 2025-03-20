@@ -52,21 +52,76 @@
   list-style-position: outside;
 }
 
+/* 无序列表样式 */
 .notion-theme ul {
   list-style-type: disc;
 }
 
+/* 二级列表 */
+.notion-theme ul ul {
+  list-style-type: circle;
+}
+
+/* 三级列表 */
+.notion-theme ul ul ul {
+  list-style-type: square;
+}
+
+/* 四级及以后的列表 */
+.notion-theme ul ul ul ul {
+  list-style-type: '–';
+  padding-left: 1.8em;
+}
+
+/* 有序列表样式 */
 .notion-theme ol {
   list-style-type: decimal;
 }
 
+/* 二级有序列表 */
+.notion-theme ol ol {
+  list-style-type: lower-alpha;
+}
+
+/* 三级有序列表 */
+.notion-theme ol ol ol {
+  list-style-type: lower-roman;
+}
+
+/* 列表项基本样式 */
 .notion-theme li {
   padding: 0.25em 0;
   color: rgb(55, 53, 47);
 }
 
+/* 列表标记颜色 */
 .notion-theme li::marker {
-  color: rgb(55, 53, 47);
+  color: rgba(55, 53, 47, 0.8);
+}
+
+.notion-theme ul ul li::marker {
+  color: rgba(55, 53, 47, 0.6);
+}
+
+.notion-theme ul ul ul li::marker {
+  color: rgba(55, 53, 47, 0.4);
+}
+
+/* 暗色主题列表样式 */
+.notion-theme-dark li {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.notion-theme-dark li::marker {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.notion-theme-dark ul ul li::marker {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.notion-theme-dark ul ul ul li::marker {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 /* 代码块样式 */
