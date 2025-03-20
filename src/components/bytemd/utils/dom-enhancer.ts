@@ -1,29 +1,10 @@
 /**
  * 增强Markdown渲染后的DOM结构
+ * 现在我们完全依赖bytemd的内置渲染
  */
 export const enhanceMarkdownRendering = (): void => {
-  try {
-    console.log('BytemdViewer: 开始增强渲染效果');
-    
-    // 增强代码块样式和添加语言标记
-    enhanceCodeBlocks();
-    
-    // 优化列表项显示
-    enhanceLists();
-    
-    // 增强标题显示和锚点生成
-    enhanceHeadings();
-    
-    // 优化链接样式
-    enhanceLinks();
-    
-    // 处理代码块内容结构
-    optimizeCodeBlockContent();
-    
-    console.log('BytemdViewer: 渲染增强完成');
-  } catch (error) {
-    console.error('BytemdViewer: 渲染增强过程中出现错误', error);
-  }
+  // 不执行任何DOM操作
+  return;
 };
 
 /**

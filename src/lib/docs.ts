@@ -179,12 +179,11 @@ export const getDocContent = cache(async (filename: string, locale: string = 'zh
     
     // 对 MDX 内容进行预处理，确保其能正确渲染
     const processedSource = source
-      // 确保代码块的格式正确，如果没有指定语言，则添加空语言标识符
-      .replace(/```(\s*)(\n|\r\n)/g, '```text$2')
-      // 解决可能的空行在代码块中的问题
-      .replace(/```(\w+)\s*\n\s*\n/g, '```$1\n')
-      // 确保换行符一致性
-      .replace(/\r\n/g, '\n');
+      // 只处理换行符一致性
+      .replace(/\r\n/g, '\n')
+      // 确保代码块前后有空行
+      .replace(/\n```(\w*)\n/g, '\n\n```$1\n')
+      .replace(/\n```\n/g, '\n\n```\n');
       
     console.log('内容预处理完成:', {
       originalLength: source.length,

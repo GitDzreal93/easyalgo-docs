@@ -1,0 +1,167 @@
+/* 掘金主题 */
+.juejin-theme {
+  color: #252933;
+  font-family: -apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial;
+  font-size: 16px;
+  line-height: 1.75;
+  max-width: 100%;
+  padding: 25px;
+  background-color: #ffffff;
+}
+
+/* 标题样式 */
+.juejin-theme h1 {
+  font-size: 2em;
+  margin: 1em 0;
+  font-weight: bold;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.juejin-theme h2 {
+  font-size: 1.5em;
+  margin: 0.8em 0;
+  font-weight: bold;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+}
+
+.juejin-theme h3 {
+  font-size: 1.25em;
+  margin: 0.6em 0;
+  font-weight: bold;
+}
+
+/* 段落样式 */
+.juejin-theme p {
+  margin: 1em 0;
+  line-height: 1.75;
+}
+
+/* 代码块样式 */
+.juejin-theme pre {
+  background-color: #282c34;
+  border-radius: 5px;
+  padding: 1em;
+  margin: 1em 0;
+  overflow: auto;
+}
+
+.juejin-theme code {
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 0.87em;
+  background-color: rgba(27,31,35,.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.juejin-theme pre code {
+  background-color: transparent;
+  color: #abb2bf;
+  padding: 0;
+}
+
+/* 列表样式 */
+.juejin-theme ul,
+.juejin-theme ol {
+  padding-left: 2em;
+  margin: 1em 0;
+}
+
+.juejin-theme li {
+  margin: 0.5em 0;
+}
+
+/* 引用块样式 */
+.juejin-theme blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  color: #666;
+  border-left: 4px solid #cbcbcb;
+  background-color: #f8f8f8;
+}
+
+/* 链接样式 */
+.juejin-theme a {
+  color: #1e80ff;
+  text-decoration: none;
+}
+
+.juejin-theme a:hover {
+  text-decoration: underline;
+}
+
+/* 表格样式 */
+.juejin-theme table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  width: 100%;
+}
+
+.juejin-theme th,
+.juejin-theme td {
+  border: 1px solid #dfe2e5;
+  padding: 0.6em 1em;
+}
+
+.juejin-theme th {
+  background-color: #f6f8fa;
+  font-weight: bold;
+}
+
+/* 代码高亮 */
+.juejin-theme pre .token.keyword {
+  color: #c678dd;
+}
+
+.juejin-theme pre .token.function {
+  color: #61afef;
+}
+
+.juejin-theme pre .token.string {
+  color: #98c379;
+}
+
+.juejin-theme pre .token.number {
+  color: #d19a66;
+}
+
+.juejin-theme pre .token.operator {
+  color: #56b6c2;
+}
+
+.juejin-theme pre .token.comment {
+  color: #5c6370;
+  font-style: italic;
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .juejin-theme {
+    background-color: #1a1a1a;
+    color: #e5e5e5;
+  }
+
+  .juejin-theme code {
+    background-color: rgba(200,200,200,.05);
+  }
+
+  .juejin-theme blockquote {
+    border-left-color: #4a4a4a;
+    background-color: #2a2a2a;
+    color: #999;
+  }
+
+  .juejin-theme a {
+    color: #3b9cff;
+  }
+
+  .juejin-theme th,
+  .juejin-theme td {
+    border-color: #4a4a4a;
+  }
+
+  .juejin-theme th {
+    background-color: #2a2a2a;
+  }
+} 

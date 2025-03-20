@@ -1,93 +1,51 @@
 "use client";
 
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Viewer } from '@bytemd/react';
 import { useTheme } from 'next-themes';
 import { plugins, sanitize } from "../config";
-import { preprocessMarkdown } from '../utils/content-formatter';
-import { enhanceMarkdownRendering } from '../utils/dom-enhancer';
-import { analyzeHeadingStructure, optimizeHeadingDisplay } from '../utils/heading-manager';
+import { ThemeSwitcher } from './theme-switcher';
+
+// 导入主题样式
+import '../styles/notion-theme.css';
+import '../styles/juejin-theme.css';
 
 interface MarkdownRendererProps {
   content: string;
-  className?: string;
 }
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
-  content,
-  className = ''
+  content
 }) => {
   const { theme } = useTheme();
-  const [processedContent, setProcessedContent] = useState(content);
-  const [renderError, setRenderError] = useState<string | null>(null);
+  const [markdownTheme, setMarkdownTheme] = useState<string>('juejin');
 
-  // 主题相关类名
+  // 根据当前主题和 Markdown 主题选择合适的类名
   const themeClass = useMemo(() => {
-    return theme === 'dark' ? 'notion-theme notion-theme-dark' : 'notion-theme';
-  }, [theme]);
-
-  // 内容预处理
-  useEffect(() => {
-    try {
-      let contentToProcess = content;
-      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
-      
-      if (frontmatterMatch) {
-        contentToProcess = content.replace(frontmatterMatch[0], '');
-      }
-      
-      const processed = preprocessMarkdown(contentToProcess);
-      setProcessedContent(processed);
-      setRenderError(null);
-    } catch (error) {
-      console.error('MarkdownRenderer: 内容预处理错误', error);
-      setRenderError(error instanceof Error ? error.message : String(error));
-      setProcessedContent(content);
+    const isDark = theme === 'dark';
+    
+    switch (markdownTheme) {
+      case 'notion':
+        return isDark ? 'notion-theme notion-theme-dark' : 'notion-theme';
+      case 'juejin':
+      default:
+        return 'juejin-theme';
     }
-  }, [content]);
+  }, [theme, markdownTheme]);
 
-  // DOM增强
-  useEffect(() => {
-    const timers = [100, 300, 500, 1000].map(delay => 
-      setTimeout(() => {
-        enhanceMarkdownRendering();
-      }, delay)
-    );
-    
-    return () => timers.forEach(clearTimeout);
-  }, [processedContent]);
-
-  // 标题优化
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    const timer1 = setTimeout(analyzeHeadingStructure, 100);
-    const timer2 = setTimeout(optimizeHeadingDisplay, 300);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, [processedContent]);
-
-  if (renderError) {
-    return (
-      <div className="p-4 border border-red-300 bg-red-50 rounded">
-        <h3 className="text-red-600 font-medium">渲染错误</h3>
-        <p className="text-red-500 mt-2">{renderError}</p>
-      </div>
-    );
-  }
-
-  const combinedClassName = `${themeClass} ${className}`;
-  
   return (
-    <div className={combinedClassName}>
-      <Viewer 
-        value={processedContent} 
-        plugins={plugins} 
-        sanitize={sanitize}
+    <div className="w-full max-w-5xl mx-auto px-4">
+      <ThemeSwitcher 
+        currentTheme={markdownTheme}
+        onThemeChange={setMarkdownTheme}
       />
+      <div className={themeClass}>
+        <Viewer 
+          value={content} 
+          plugins={plugins} 
+          sanitize={sanitize}
+        />
+      </div>
     </div>
   );
 }; 
