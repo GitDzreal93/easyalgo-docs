@@ -167,10 +167,36 @@
   text-decoration: underline;
   text-decoration-color: rgba(35, 131, 226, 0.4);
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  white-space: nowrap;
+}
+
+.notion-theme a:has(svg) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+}
+
+.notion-theme a svg {
+  width: 0.9em;
+  height: 0.9em;
+  flex-shrink: 0;
 }
 
 .notion-theme a:hover {
   text-decoration-color: rgb(35, 131, 226);
+}
+
+/* 允许链接文本换行，但保持图标在同一行 */
+.notion-theme p a {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.notion-theme p a span {
+  white-space: normal;
 }
 
 /* 表格样式 */
@@ -281,6 +307,10 @@
 }
 
 .notion-theme-dark a {
+  color: #2997ff;
+}
+
+.notion-theme-dark a svg {
   color: #2997ff;
 }
 
