@@ -1,0 +1,78 @@
+/* 代码块容器样式 */
+pre {
+  position: relative;
+  margin: 1em 0;
+  padding: 1em;
+  border-radius: 8px;
+  background-color: #282c34 !important;
+  overflow-x: auto;
+}
+
+/* 代码文本样式 */
+pre code {
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+/* 语言标记样式 */
+pre[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2em 0.5em;
+  font-size: 0.8em;
+  background: #3e4451;
+  color: #abb2bf;
+  border-bottom-left-radius: 4px;
+  border-top-right-radius: 8px;
+  text-transform: uppercase;
+}
+
+/* 复制按钮样式 */
+.copy-code-button {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  padding: 0.4em;
+  background: #3e4451;
+  border: none;
+  border-radius: 4px;
+  color: #abb2bf;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+/* 鼠标悬停时显示复制按钮 */
+pre:hover .copy-code-button {
+  opacity: 1;
+}
+
+/* 复制按钮悬停效果 */
+.copy-code-button:hover {
+  background: #4b5363;
+}
+
+/* 代码高亮主题自定义调整 */
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* 行内代码样式 */
+:not(pre) > code {
+  padding: 0.2em 0.4em;
+  margin: 0 0.2em;
+  font-size: 0.85em;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* 暗色模式下的行内代码样式 */
+[data-theme='dark'] :not(pre) > code {
+  background-color: #2d333b;
+  color: #adbac7;
+} 

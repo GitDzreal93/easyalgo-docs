@@ -177,14 +177,9 @@ export const getDocContent = cache(async (filename: string, locale: string = 'zh
       firstLine: source.split('\n')[0]
     });
     
-    // 对 MDX 内容进行预处理，确保其能正确渲染
-    const processedSource = source
-      // 只处理换行符一致性
-      .replace(/\r\n/g, '\n')
-      // 确保代码块前后有空行
-      .replace(/\n```(\w*)\n/g, '\n\n```$1\n')
-      .replace(/\n```\n/g, '\n\n```\n');
-      
+    // 只处理换行符一致性
+    const processedSource = source.replace(/\r\n/g, '\n');
+    
     console.log('内容预处理完成:', {
       originalLength: source.length,
       processedLength: processedSource.length,
