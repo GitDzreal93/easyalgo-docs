@@ -2,7 +2,13 @@
 
 /* 自定义主题 */
 .markdown-theme {
-  color: #252933;
+  --theme-sky: #8ECAE6;
+  --theme-teal: #219EBC;
+  --theme-navy: #023047;
+  --theme-yellow: #FFB703;
+  --theme-orange: #FB8500;
+
+  color: var(--theme-navy);
   font-family: -apple-system,system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial;
   font-size: 16px;
   line-height: 1.75;
@@ -17,7 +23,8 @@
   margin: 1em 0;
   font-weight: bold;
   padding-bottom: 0.3em;
-  border-bottom: 1px solid #eaecef;
+  border-bottom: 1px solid rgba(33, 158, 188, 0.2);
+  color: var(--theme-navy);
 }
 
 .markdown-theme h2 {
@@ -25,13 +32,15 @@
   margin: 0.8em 0;
   font-weight: bold;
   padding-bottom: 0.3em;
-  border-bottom: 1px solid #eaecef;
+  border-bottom: 1px solid rgba(33, 158, 188, 0.2);
+  color: var(--theme-navy);
 }
 
 .markdown-theme h3 {
   font-size: 1.25em;
   margin: 0.6em 0;
   font-weight: bold;
+  color: var(--theme-teal);
 }
 
 /* 段落样式 */
@@ -78,26 +87,48 @@
 }
 
 .markdown-theme li::marker {
-  color: #666;
+  color: var(--theme-teal);
 }
 
 /* 引用块样式 */
 .markdown-theme blockquote {
   margin: 1em 0;
   padding: 0.5em 1em;
-  color: #666;
-  border-left: 4px solid #cbcbcb;
-  background-color: #f8f8f8;
+  color: var(--theme-teal);
+  border-left: 4px solid var(--theme-sky);
+  background-color: rgba(142, 202, 230, 0.1);
 }
 
 /* 链接样式 */
 .markdown-theme a {
-  color: #1e80ff;
+  color: var(--theme-orange);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  vertical-align: baseline;
+  line-height: 1;
+  transition: color 0.2s;
 }
 
 .markdown-theme a:hover {
-  text-decoration: underline;
+  color: var(--theme-yellow);
+  text-decoration: none;
+}
+
+.markdown-theme a svg {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+}
+
+/* 允许链接文本换行，但保持图标在同一行 */
+.markdown-theme p a {
+  display: inline;
+}
+
+.markdown-theme p a svg {
+  display: inline-block;
+  vertical-align: text-bottom;
 }
 
 /* 表格样式 */
@@ -109,42 +140,58 @@
 
 .markdown-theme th,
 .markdown-theme td {
-  border: 1px solid #dfe2e5;
+  border: 1px solid rgba(33, 158, 188, 0.2);
   padding: 0.6em 1em;
 }
 
 .markdown-theme th {
-  background-color: #f6f8fa;
+  background-color: rgba(142, 202, 230, 0.1);
   font-weight: bold;
+  color: var(--theme-teal);
 }
 
 /* 暗色主题支持 */
 @media (prefers-color-scheme: dark) {
   .markdown-theme {
-    background-color: #1a1a1a;
+    background-color: var(--theme-navy);
     color: #e5e5e5;
   }
 
+  .markdown-theme h1,
+  .markdown-theme h2 {
+    color: var(--theme-sky);
+    border-bottom-color: rgba(142, 202, 230, 0.2);
+  }
+
+  .markdown-theme h3 {
+    color: var(--theme-sky);
+  }
+
   .markdown-theme blockquote {
-    border-left-color: #4a4a4a;
-    background-color: #2a2a2a;
-    color: #999;
+    border-left-color: var(--theme-teal);
+    background-color: rgba(33, 158, 188, 0.1);
+    color: var(--theme-sky);
   }
 
   .markdown-theme a {
-    color: #3b9cff;
+    color: var(--theme-orange);
+  }
+
+  .markdown-theme a:hover {
+    color: var(--theme-yellow);
   }
 
   .markdown-theme th,
   .markdown-theme td {
-    border-color: #4a4a4a;
+    border-color: rgba(142, 202, 230, 0.2);
   }
 
   .markdown-theme th {
-    background-color: #2a2a2a;
+    background-color: rgba(33, 158, 188, 0.1);
+    color: var(--theme-sky);
   }
 
   .markdown-theme li::marker {
-    color: #999;
+    color: var(--theme-teal);
   }
 } 

@@ -19,8 +19,7 @@ export const plugins = [
   highlight({
     init: (hljs) => {
       // 可以在这里添加自定义语言支持
-    },
-    detect: true // 自动检测语言
+    }
   }),
   prettyLinkPlugin(),
   headingPlugin(),

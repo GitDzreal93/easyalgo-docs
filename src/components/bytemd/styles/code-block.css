@@ -5,6 +5,40 @@ pre {
   padding: 1em;
   border-radius: 6px;
   overflow-x: auto;
+  background-color: #0d1117;  /* 深黑色背景 */
+  color: #e5e5e5;
+  border: 1px solid #30363d;  /* 添加细边框 */
+  scrollbar-width: thin;  /* Firefox */
+  scrollbar-color: transparent transparent;  /* Firefox */
+}
+
+/* Webkit 滚动条样式 */
+pre::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+}
+
+/* 鼠标悬停时显示滚动条 */
+pre:hover::-webkit-scrollbar-thumb {
+  background: rgba(142, 202, 230, 0.2);  /* 使用 --color-sky 带透明度 */
+}
+
+pre:hover::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 202, 230, 0.4);  /* 悬停时加深颜色 */
+}
+
+/* Firefox 滚动条悬停样式 */
+pre:hover {
+  scrollbar-color: rgba(142, 202, 230, 0.2) transparent;  /* Firefox */
 }
 
 /* 代码文本样式 */
@@ -15,6 +49,8 @@ pre code {
   padding: 0;
   margin: 0;
   background: none;
+  color: inherit;
+  tab-size: 2;
 }
 
 /* 语言标记样式 */
@@ -29,7 +65,9 @@ pre[data-lang]::before {
   border-top-right-radius: 6px;
   text-transform: uppercase;
   font-weight: 500;
-  opacity: 0.7;
+  opacity: 0.9;
+  background: #219EBC;  /* 使用 --color-teal */
+  color: #ffffff;
 }
 
 /* 复制按钮样式 */
@@ -43,16 +81,19 @@ pre[data-lang]::before {
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.2s;
+  color: #ffffff;
+  background: #219EBC;  /* 使用 --color-teal */
 }
 
 /* 鼠标悬停时显示复制按钮 */
 pre:hover .copy-code-button {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 /* 复制按钮悬停效果 */
 .copy-code-button:hover {
   opacity: 1;
+  background: #8ECAE6;  /* 使用 --color-sky */
 }
 
 /* 行内代码样式 */
@@ -62,4 +103,77 @@ pre:hover .copy-code-button {
   font-size: 0.85em;
   border-radius: 3px;
   font-family: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background-color: rgba(142, 202, 230, 0.1);  /* 使用 --color-sky 带透明度 */
+  color: #FB8500;  /* 使用 --color-orange */
+}
+
+/* 代码高亮基础样式 */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #8ECAE6;  /* 使用 --color-sky */
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #FFB703;  /* 使用 --color-yellow */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #219EBC;  /* 使用 --color-teal */
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-link,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #FB8500;  /* 使用 --color-orange */
+}
+
+.hljs-doctag,
+.hljs-attr,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo {
+  color: #8ECAE6;  /* 使用 --color-sky */
+}
+
+.hljs-function,
+.hljs-params {
+  color: #e5e5e5;  /* 浅色文本 */
+}
+
+.hljs-operator {
+  color: #219EBC;  /* 使用 --color-teal */
+}
+
+/* 暗色主题适配 */
+@media (prefers-color-scheme: dark) {
+  pre {
+    background-color: #0d1117;  /* 深黑色背景 */
+    color: #e5e5e5;
+    border: 1px solid #30363d;  /* 添加细边框 */
+  }
+
+  :not(pre) > code {
+    background-color: rgba(142, 202, 230, 0.1);  /* 使用 --color-sky 带透明度 */
+    color: #FB8500;  /* 使用 --color-orange */
+  }
 } 
