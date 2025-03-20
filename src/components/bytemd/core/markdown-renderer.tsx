@@ -4,11 +4,9 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { Viewer } from '@bytemd/react';
 import { useTheme } from 'next-themes';
 import { plugins, sanitize } from "../config";
-import { customStyles } from '../styles/theme';
 import { preprocessMarkdown } from '../utils/content-formatter';
 import { enhanceMarkdownRendering } from '../utils/dom-enhancer';
 import { analyzeHeadingStructure, optimizeHeadingDisplay } from '../utils/heading-manager';
-import { getMarkdownClassName } from '../styles/markdown';
 
 interface MarkdownRendererProps {
   content: string;
@@ -25,7 +23,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
   // 主题相关类名
   const themeClass = useMemo(() => {
-    return theme === 'dark' ? 'markdown-body-dark' : 'markdown-body';
+    return theme === 'dark' ? 'markdown-theme-dark' : 'markdown-theme';
   }, [theme]);
 
   // 内容预处理
@@ -81,11 +79,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     );
   }
 
-  const combinedClassName = getMarkdownClassName(`${themeClass} ${className}`);
+  const combinedClassName = `${themeClass} ${className}`;
   
   return (
     <div className={combinedClassName}>
-      <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       <Viewer 
         value={processedContent} 
         plugins={plugins} 
