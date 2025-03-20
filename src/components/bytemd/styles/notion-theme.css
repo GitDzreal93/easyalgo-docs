@@ -9,6 +9,12 @@
   padding: 0;
 }
 
+/* 加粗文本样式 */
+.notion-theme strong {
+  font-weight: 600;
+  color: rgb(35, 35, 35);
+}
+
 /* 标题样式 */
 .notion-theme h1 {
   font-size: 2.5em;
@@ -122,6 +128,11 @@
 
 .notion-theme-dark ul ul ul li::marker {
   color: rgba(255, 255, 255, 0.4);
+}
+
+/* 暗色主题加粗文本 */
+.notion-theme-dark strong {
+  color: rgba(255, 255, 255, 0.96);
 }
 
 /* 代码块样式 */
