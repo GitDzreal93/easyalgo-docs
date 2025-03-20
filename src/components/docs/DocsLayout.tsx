@@ -17,23 +17,23 @@ export async function DocsLayout({ children, locale }: DocsLayoutProps) {
   return (
     <ClientDocsLayout>
       <div className="max-w-[90rem] mx-auto">
-        <div className="flex gap-8 py-8">
+        <div className="flex gap-4 py-4">
           {/* 左侧边栏 */}
-          <aside className="w-72 flex-shrink-0">
+          <aside className="w-64 flex-shrink-0">
             {docs.length > 0 && <DocsSidebar docs={docs} />}
           </aside>
 
           {/* 主内容区 */}
           <main className="flex-1 min-w-0">
-            <div className="max-w-4xl mx-auto">
-              <div className="pb-8">
+            <div className="max-w-3xl mx-auto">
+              <div className="pb-4">
                 {children}
               </div>
             </div>
           </main>
 
           {/* 右侧目录 */}
-          <aside className="w-64 hidden xl:block flex-shrink-0">
+          <aside className="w-56 hidden xl:block flex-shrink-0">
             <DocsTableOfContentsWrapper />
           </aside>
         </div>

@@ -166,23 +166,23 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
     console.log('Tags:', tags);
 
     return (
-      <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
-        <header className="mb-4">
+      <article className="bg-[var(--background)] rounded-lg shadow-sm p-4">
+        <header className="mb-3">
           {isChildDoc && (
-            <div className="flex items-center text-sm text-[var(--text)] mb-2">
+            <div className="flex items-center text-sm text-[var(--text)] mb-1">
               <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
                 <ChevronRightIcon className="mr-1 w-4 h-4" />
                 {t('backToParent')}
               </Link>
             </div>
           )}
-          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
+          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
           {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-2">
+            <div className="flex flex-wrap gap-1.5 mb-2">
               {tags.map((tag: string, index: number) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium"
+                  className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium"
                   style={{
                     backgroundColor: 'var(--color-sky)',
                     color: 'var(--color-navy)',
@@ -195,12 +195,12 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
           )}
           <div className="flex items-center text-sm text-[var(--text)]">
             <span className="flex items-center">
-              <CalendarIcon className="mr-2 w-4 h-4" />
+              <CalendarIcon className="mr-1.5 w-4 h-4" />
               {frontmatter.date ? new Date(frontmatter.date).toLocaleDateString(locale) : new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
             </span>
             <span className="mx-2 text-[var(--text)]">·</span>
             <span className="flex items-center">
-              <ClockIcon className="mr-2 w-4 h-4" />
+              <ClockIcon className="mr-1.5 w-4 h-4" />
               {t('estimatedReadingTime', { minutes: Math.ceil(mdContent.length / 500) })}
             </span>
           </div>

@@ -31,12 +31,12 @@ export const ClientBytemdViewer = ({ content, className = '' }: ClientBytemdView
       const h1Elements = container.querySelectorAll('h1');
       h1Elements.forEach((h1) => {
         // Apply strong styling to ensure h1 is properly rendered
-        h1.style.fontSize = '2em';
+        h1.style.fontSize = '1.75em';
         h1.style.fontWeight = 'bold';
-        h1.style.marginTop = '1.5em';
-        h1.style.marginBottom = '0.8em';
+        h1.style.marginTop = '1em';
+        h1.style.marginBottom = '0.5em';
         h1.style.borderBottom = '1px solid #eaecef';
-        h1.style.paddingBottom = '0.3em';
+        h1.style.paddingBottom = '0.2em';
         h1.style.display = 'block';
         
         // Add a class to make it easier to target with CSS
