@@ -268,8 +268,8 @@
     "backToParent": "返回上级",
     "contentNotAvailable": "文档内容不可用",
     "filePath": "文件路径",
-    "errorTitle": "加载错误",
-    "errorMessage": "加载文档时发生错误",
+    "errorTitle": "出错了",
+    "errorMessage": "加载文档时发生错误，请重试或返回首页。",
     "error": {
       "searchFailed": "搜索请求失败",
       "searchError": "搜索出错"
@@ -289,7 +289,9 @@
       "title": "这篇文档对您有帮助吗？",
       "yes": "有帮助",
       "no": "需要改进"
-    }
+    },
+    "backToHome": "返回首页",
+    "retry": "重试"
   },
   "common": {
     "loading": "加载中...",

@@ -264,14 +264,16 @@
     "noDocuments": "No documents available",
     "contentNotAvailable": "Document content not available",
     "filePath": "File path",
-    "errorTitle": "Loading Error",
-    "errorMessage": "An error occurred while loading the document",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "An error occurred while loading the document. Please try again or return to the home page.",
     "estimatedReadingTime": "Estimated reading time: {minutes} min",
     "feedback": {
       "title": "Was this page helpful?",
       "yes": "Yes",
       "no": "No"
-    }
+    },
+    "backToHome": "Back to Home",
+    "retry": "Try Again"
   },
   "common": {
     "loading": "Loading...",

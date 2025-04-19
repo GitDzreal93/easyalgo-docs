@@ -7,7 +7,9 @@ import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/d
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
 import { getMarkdownClassName } from '@/components/bytemd/styles/markdown';
 import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import { Metadata } from 'next';
+import { ClientDocumentWrapper } from '@/components/ClientDocumentWrapper';
 
 // Define simple page props interface that matches what Next.js provides
 interface PageProps {
@@ -215,7 +217,9 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
 export default async function DocumentPage(props: PageProps) {
   return (
     <Suspense fallback={<LoadingState />}>
-      <DocumentContent params={props.params} />
+      <ClientDocumentWrapper>
+        <DocumentContent {...props} />
+      </ClientDocumentWrapper>
     </Suspense>
   );
 } 
