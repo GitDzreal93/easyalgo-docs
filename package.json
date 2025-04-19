@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-docs": "ts-node --project scripts/tsconfig.json scripts/generate-docs-json.ts"
   },
   "dependencies": {
     "@bytemd/plugin-breaks": "^1.22.0",
@@ -79,6 +80,7 @@
     "eslint-config-next": "15.2.1",
     "tailwind-scrollbar": "^4.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "ts-node": "^10.9.2"
   }
 }

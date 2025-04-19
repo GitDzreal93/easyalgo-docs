@@ -16,6 +16,7 @@ export interface DocNode {
   slug: string;
   position: number;
   filename: string;
+  filepath: string;
   tag?: string[];
 }
 
@@ -139,64 +140,30 @@ export const getDocsData = cache(async (locale: string = 'zh'): Promise<DocNode[
   }
 });
 
-export const getDocContent = cache(async (filename: string, locale: string = 'zh'): Promise<string | null> => {
+export const getDocContent = cache(async (filepath: string, locale: string = 'zh'): Promise<string | null> => {
   try {
-    if (!filename) {
-      console.error('文件名为空');
-      return null;
-    }
-
-    // 规范化文件名
-    const normalizedFilename = filename.replace(/^\/+|\/+$/g, '');
-    const docsDir = path.join(process.cwd(), 'docs', locale);
-    const filePath = path.join(docsDir, normalizedFilename);
-
     console.log('尝试读取文件:', {
-      originalFilename: filename,
-      normalizedFilename,
+      filepath,
       locale,
-      docsDir,
-      fullPath: filePath
+      docsDir: path.join(process.cwd(), 'docs', locale),
     });
 
-    // 检查文件是否存在
-    if (!fs.existsSync(filePath)) {
-      console.error('文件不存在:', {
-        originalFilename: filename,
-        normalizedFilename,
-        fullPath: filePath,
+    const docsDir = path.join(process.cwd(), 'docs', locale);
+    const fullPath = path.join(docsDir, filepath);
+
+    if (!fs.existsSync(fullPath)) {
+      console.log('文件不存在:', {
+        filepath,
+        fullPath,
         docsDir
       });
       return null;
     }
-    
-    console.log('开始读取文件内容...');
-    const source = await readFile(filePath, 'utf8');
-    console.log('文件内容读取成功:', {
-      path: filePath,
-      contentLength: source.length,
-      firstLine: source.split('\n')[0]
-    });
-    
-    // 只处理换行符一致性
-    const processedSource = source.replace(/\r\n/g, '\n');
-    
-    console.log('内容预处理完成:', {
-      originalLength: source.length,
-      processedLength: processedSource.length,
-      firstLine: processedSource.split('\n')[0]
-    });
-    
-    return processedSource;
+
+    const content = fs.readFileSync(fullPath, 'utf-8');
+    return content;
   } catch (error) {
-    console.error('读取文档内容错误:', {
-      filename,
-      error: error instanceof Error ? {
-        name: error.name,
-        message: error.message,
-        stack: error.stack?.split('\n').slice(0, 3).join('\n')
-      } : String(error)
-    });
+    console.error('读取文档内容时出错:', error);
     return null;
   }
 });
@@ -256,6 +223,39 @@ export const findDocBySlug = cache(async (slug: string, locale: string = 'zh'): 
     console.log('未找到文档');
     return null;
   }
+  
+  return doc;
+});
+
+export const findDocByNumber = cache(async (number: string, locale: string = 'zh'): Promise<DocNode | null> => {
+  console.log('开始根据题号查找文档:', { number, locale });
+  const docs = await getDocsData(locale);
+  
+  // 递归查找文档
+  const findDoc = (nodes: DocNode[]): DocNode | null => {
+    for (const node of nodes) {
+      // 检查当前节点的文件名是否匹配题号
+      if (node.filename === `${number}.mdx`) {
+        return node;
+      }
+      
+      // 如果有子节点，递归查找
+      if (node.children && node.children.length > 0) {
+        const found = findDoc(node.children);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  };
+  
+  const doc = findDoc(docs);
+  console.log('查找结果:', doc ? {
+    title: doc.title,
+    filepath: doc.filepath,
+    filename: doc.filename
+  } : '未找到文档');
   
   return doc;
 });

@@ -5,9 +5,9 @@ import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { findDocBySlug, getDocContent, getDocsData, type DocNode } from '@/lib/docs';
 import ClientBytemdViewer from '@/components/bytemd/client-viewer';
+import { getMarkdownClassName } from '@/components/bytemd/styles/markdown';
 import { getTranslations } from 'next-intl/server';
 import { Metadata } from 'next';
-import matter from 'gray-matter';
 
 // Define simple page props interface that matches what Next.js provides
 interface PageProps {
@@ -40,12 +40,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function LoadingState() {
   return (
     <div className="animate-pulse bg-[var(--background)] rounded-lg shadow-sm p-6">
-      <div className="mb-4">
-        <div className="h-8 bg-[var(--primary)]/20 rounded w-3/4 mb-2"></div>
-        <div className="flex gap-2 mb-2">
-          <div className="h-6 bg-[var(--primary)]/10 rounded w-16"></div>
-          <div className="h-6 bg-[var(--primary)]/10 rounded w-16"></div>
-        </div>
+      <div className="mb-8">
+        <div className="h-8 bg-[var(--primary)]/20 rounded w-3/4 mb-4"></div>
         <div className="flex items-center space-x-4">
           <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
           <div className="h-4 bg-[var(--primary)]/10 rounded w-24"></div>
@@ -99,7 +95,7 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
       slug: doc.slug,
       filename: doc.filename,
       hasChildren: doc.children?.length > 0,
-      path: doc.filename.replace(/^\/+|\/+$/g, '')
+      path: doc.filepath
     } : 'Document not found');
     
     if (!doc) {
@@ -108,17 +104,17 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
     }
     
     // Check document type
-    const isChildDoc = doc.filename.includes('/');
+    const isChildDoc = doc.filepath.includes('/');
     console.log('Checking document type:', {
-      filename: doc.filename,
+      filepath: doc.filepath,
       isChildDoc,
-      path: doc.filename.replace(/^\/+|\/+$/g, '')
+      path: doc.filepath.replace(/^\/+|\/+$/g, '')
     });
     
     // Normalize file path
-    const normalizedPath = doc.filename.replace(/^\/+|\/+$/g, '');
+    const normalizedPath = doc.filepath.replace(/^\/+|\/+$/g, '');
     console.log('Attempting to read document content:', {
-      filename: doc.filename,
+      filepath: doc.filepath,
       normalizedPath,
       isChildDoc
     });
@@ -133,24 +129,24 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
     if (!content) {
       return (
         <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
-          <header className="mb-4">
+          <header className="mb-8">
             {isChildDoc && (
-              <div className="flex items-center text-sm text-[var(--text)] mb-2">
+              <div className="flex items-center text-sm text-[var(--text)] mb-4">
                 <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
-                  <ChevronRightIcon className="mr-1 w-4 h-4" />
+                  <ChevronRightIcon className="h-4 w-4 mr-1" />
                   {t('backToParent')}
                 </Link>
               </div>
             )}
-            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
+            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
             <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
-                <CalendarIcon className="mr-2 w-4 h-4" />
+                <CalendarIcon className="mr-2 h-4 w-4" />
                 {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
               </span>
             </div>
           </header>
-          <div className="max-w-none prose">
+          <div className="prose max-w-none">
             <p className="text-[var(--text)]">{t('contentNotAvailable')}</p>
             <p className="text-[var(--text)] opacity-75">{t('filePath')}: {normalizedPath}</p>
           </div>
@@ -158,50 +154,27 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
       );
     }
 
-    // 解析 frontmatter
-    const { data: frontmatter, content: mdContent } = matter(content);
-    console.log('Frontmatter data:', frontmatter);
-    // 确保 tag 是数组
-    const tags = Array.isArray(frontmatter.tag) ? frontmatter.tag : [];
-    console.log('Tags:', tags);
-
     return (
-      <article className="bg-[var(--background)] rounded-lg shadow-sm p-4">
-        <header className="mb-3">
+      <article className="bg-[var(--background)] rounded-lg shadow-sm p-6">
+        <header className="mb-8">
           {isChildDoc && (
-            <div className="flex items-center text-sm text-[var(--text)] mb-1">
+            <div className="flex items-center text-sm text-[var(--text)] mb-4">
               <Link href={`/${locale}/docs/${doc.slug.split('/')[0]}`} className="hover:text-[var(--primary)] flex items-center">
-                <ChevronRightIcon className="mr-1 w-4 h-4" />
+                <ChevronRightIcon className="h-4 w-4 mr-1" />
                 {t('backToParent')}
               </Link>
             </div>
           )}
-          <h1 className="text-2xl font-bold text-[var(--foreground)] mb-2">{doc.title}</h1>
-          {tags && tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mb-2">
-              {tags.map((tag: string, index: number) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-2 py-0.5 rounded text-sm font-medium"
-                  style={{
-                    backgroundColor: 'var(--color-sky)',
-                    color: 'var(--color-navy)',
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
+          <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
           <div className="flex items-center text-sm text-[var(--text)]">
             <span className="flex items-center">
-              <CalendarIcon className="mr-1.5 w-4 h-4" />
-              {frontmatter.date ? new Date(frontmatter.date).toLocaleDateString(locale) : new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
             </span>
             <span className="mx-2 text-[var(--text)]">·</span>
             <span className="flex items-center">
-              <ClockIcon className="mr-1.5 w-4 h-4" />
-              {t('estimatedReadingTime', { minutes: Math.ceil(mdContent.length / 500) })}
+              <ClockIcon className="mr-2 h-4 w-4" />
+              {t('estimatedReadingTime', { minutes: Math.ceil(content.length / 500) })}
             </span>
           </div>
         </header>
@@ -209,7 +182,8 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
         <div className="max-w-none">
           <div className="mdx-content">
             <ClientBytemdViewer 
-              content={mdContent} 
+              content={content} 
+              className={getMarkdownClassName()} 
             />
           </div>
         </div>
@@ -227,7 +201,7 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
         <header className="mb-8">
           <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{t('errorTitle')}</h1>
         </header>
-        <div className="max-w-none prose">
+        <div className="prose max-w-none">
           <p className="text-[var(--text)]">{t('errorMessage')}</p>
           <p className="text-[var(--text)] opacity-75">
             {error instanceof Error ? error.message : String(error)}
@@ -244,4 +218,4 @@ export default async function DocumentPage(props: PageProps) {
       <DocumentContent params={props.params} />
     </Suspense>
   );
-}
+} 
