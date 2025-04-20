@@ -100,6 +100,21 @@
       },
       {
         "depth": 1,
+        "title": "27. 移除元素",
+        "node_token": "27",
+        "parent_node_token": "array",
+        "obj_create_time": "1745133101",
+        "obj_edit_time": "1745133106",
+        "obj_token": "27_token",
+        "children": [],
+        "has_child": false,
+        "slug": "27",
+        "position": 6,
+        "filename": "27.mdx",
+        "filepath": "array/27.mdx"
+      },
+      {
+        "depth": 1,
         "title": "88. 合并两个有序数组",
         "node_token": "88",
         "parent_node_token": "array",
@@ -109,7 +124,7 @@
         "children": [],
         "has_child": false,
         "slug": "88",
-        "position": 6,
+        "position": 7,
         "filename": "88.mdx",
         "filepath": "array/88.mdx"
       }
