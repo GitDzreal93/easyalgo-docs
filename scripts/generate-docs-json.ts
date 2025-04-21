@@ -16,6 +16,7 @@ interface DocNode {
   position: number;
   filename: string;
   filepath: string;
+  tag?: string[];
 }
 
 function getFileStats(filePath: string) {
@@ -72,7 +73,8 @@ function processDirectory(basePath: string, currentPath: string, parentToken: st
           slug,
           position: position++,
           filename: item,
-          filepath: relativePath.replace(/\\/g, '/')
+          filepath: relativePath.replace(/\\/g, '/'),
+          tag: frontMatter.tag || []
         };
         nodes.push(node);
       } catch (error) {

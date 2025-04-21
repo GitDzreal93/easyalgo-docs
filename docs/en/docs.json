@@ -21,7 +21,11 @@
         "slug": "1",
         "position": 0,
         "filename": "1.mdx",
-        "filepath": "array/1.mdx"
+        "filepath": "array/1.mdx",
+        "tag": [
+          "Easy",
+          "Array"
+        ]
       },
       {
         "depth": 1,
@@ -36,7 +40,12 @@
         "slug": "4",
         "position": 1,
         "filename": "4.mdx",
-        "filepath": "array/4.mdx"
+        "filepath": "array/4.mdx",
+        "tag": [
+          "Hard",
+          "Array",
+          "Binary Search"
+        ]
       },
       {
         "depth": 1,
@@ -51,7 +60,12 @@
         "slug": "11",
         "position": 2,
         "filename": "11.mdx",
-        "filepath": "array/11.mdx"
+        "filepath": "array/11.mdx",
+        "tag": [
+          "Medium",
+          "Array",
+          "Two Pointers"
+        ]
       },
       {
         "depth": 1,
@@ -66,7 +80,11 @@
         "slug": "15",
         "position": 3,
         "filename": "15.mdx",
-        "filepath": "array/15.mdx"
+        "filepath": "array/15.mdx",
+        "tag": [
+          "Medium",
+          "Array"
+        ]
       },
       {
         "depth": 1,
@@ -81,14 +99,20 @@
         "slug": "16",
         "position": 4,
         "filename": "16.mdx",
-        "filepath": "array/16.mdx"
+        "filepath": "array/16.mdx",
+        "tag": [
+          "Medium",
+          "Array",
+          "Two Pointers"
+        ]
       }
     ],
     "has_child": true,
     "slug": "array",
     "position": 0,
     "filename": "array.mdx",
-    "filepath": "array.mdx"
+    "filepath": "array.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -103,7 +127,8 @@
     "slug": "graph",
     "position": 1,
     "filename": "graph.mdx",
-    "filepath": "graph.mdx"
+    "filepath": "graph.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -127,7 +152,8 @@
         "slug": "17.14",
         "position": 0,
         "filename": "17.14.mdx",
-        "filepath": "heap/17.14.mdx"
+        "filepath": "heap/17.14.mdx",
+        "tag": []
       },
       {
         "depth": 1,
@@ -142,14 +168,20 @@
         "slug": "23",
         "position": 1,
         "filename": "23.mdx",
-        "filepath": "heap/23.mdx"
+        "filepath": "heap/23.mdx",
+        "tag": [
+          "Hard",
+          "Linked List",
+          "Heap"
+        ]
       }
     ],
     "has_child": true,
     "slug": "heap",
     "position": 2,
     "filename": "heap.mdx",
-    "filepath": "heap.mdx"
+    "filepath": "heap.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -173,7 +205,11 @@
         "slug": "2",
         "position": 0,
         "filename": "2.mdx",
-        "filepath": "linked_list/2.mdx"
+        "filepath": "linked_list/2.mdx",
+        "tag": [
+          "Medium",
+          "Linked List"
+        ]
       },
       {
         "depth": 1,
@@ -188,7 +224,11 @@
         "slug": "19",
         "position": 1,
         "filename": "19.mdx",
-        "filepath": "linked_list/19.mdx"
+        "filepath": "linked_list/19.mdx",
+        "tag": [
+          "Medium",
+          "Linked List"
+        ]
       },
       {
         "depth": 1,
@@ -203,14 +243,19 @@
         "slug": "21",
         "position": 2,
         "filename": "21.mdx",
-        "filepath": "linked_list/21.mdx"
+        "filepath": "linked_list/21.mdx",
+        "tag": [
+          "Easy",
+          "Linked List"
+        ]
       }
     ],
     "has_child": true,
     "slug": "linked_list",
     "position": 3,
     "filename": "linked_list.mdx",
-    "filepath": "linked_list.mdx"
+    "filepath": "linked_list.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -234,14 +279,19 @@
         "slug": "7",
         "position": 0,
         "filename": "7.mdx",
-        "filepath": "math/7.mdx"
+        "filepath": "math/7.mdx",
+        "tag": [
+          "Medium",
+          "Math"
+        ]
       }
     ],
     "has_child": true,
     "slug": "math",
     "position": 4,
     "filename": "math.mdx",
-    "filepath": "math.mdx"
+    "filepath": "math.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -256,7 +306,8 @@
     "slug": "quickstart",
     "position": 5,
     "filename": "quickstart.mdx",
-    "filepath": "quickstart.mdx"
+    "filepath": "quickstart.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -280,14 +331,19 @@
         "slug": "20",
         "position": 0,
         "filename": "20.mdx",
-        "filepath": "stack/20.mdx"
+        "filepath": "stack/20.mdx",
+        "tag": [
+          "Easy",
+          "Stack"
+        ]
       }
     ],
     "has_child": true,
     "slug": "stack",
     "position": 6,
     "filename": "stack.mdx",
-    "filepath": "stack.mdx"
+    "filepath": "stack.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -311,7 +367,11 @@
         "slug": "3",
         "position": 0,
         "filename": "3.mdx",
-        "filepath": "string/3.mdx"
+        "filepath": "string/3.mdx",
+        "tag": [
+          "Medium",
+          "String"
+        ]
       },
       {
         "depth": 1,
@@ -326,7 +386,11 @@
         "slug": "5",
         "position": 1,
         "filename": "5.mdx",
-        "filepath": "string/5.mdx"
+        "filepath": "string/5.mdx",
+        "tag": [
+          "Medium",
+          "String"
+        ]
       },
       {
         "depth": 1,
@@ -341,7 +405,11 @@
         "slug": "8",
         "position": 2,
         "filename": "8.mdx",
-        "filepath": "string/8.mdx"
+        "filepath": "string/8.mdx",
+        "tag": [
+          "Medium",
+          "String"
+        ]
       },
       {
         "depth": 1,
@@ -356,7 +424,11 @@
         "slug": "13",
         "position": 3,
         "filename": "13.mdx",
-        "filepath": "string/13.mdx"
+        "filepath": "string/13.mdx",
+        "tag": [
+          "Easy",
+          "String"
+        ]
       },
       {
         "depth": 1,
@@ -371,7 +443,11 @@
         "slug": "14",
         "position": 4,
         "filename": "14.mdx",
-        "filepath": "string/14.mdx"
+        "filepath": "string/14.mdx",
+        "tag": [
+          "Easy",
+          "String"
+        ]
       },
       {
         "depth": 1,
@@ -386,7 +462,12 @@
         "slug": "17",
         "position": 5,
         "filename": "17.mdx",
-        "filepath": "string/17.mdx"
+        "filepath": "string/17.mdx",
+        "tag": [
+          "Medium",
+          "String",
+          "Backtracking"
+        ]
       },
       {
         "depth": 1,
@@ -401,14 +482,20 @@
         "slug": "22",
         "position": 6,
         "filename": "22.mdx",
-        "filepath": "string/22.mdx"
+        "filepath": "string/22.mdx",
+        "tag": [
+          "Medium",
+          "String",
+          "Backtracking"
+        ]
       }
     ],
     "has_child": true,
     "slug": "string",
     "position": 7,
     "filename": "string.mdx",
-    "filepath": "string.mdx"
+    "filepath": "string.mdx",
+    "tag": []
   },
   {
     "depth": 0,
@@ -423,6 +510,7 @@
     "slug": "tree",
     "position": 8,
     "filename": "tree.mdx",
-    "filepath": "tree.mdx"
+    "filepath": "tree.mdx",
+    "tag": []
   }
 ]

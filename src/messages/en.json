@@ -273,7 +273,22 @@
       "no": "No"
     },
     "backToHome": "Back to Home",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "tags": {
+      "title": "Tags",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "array": "Array",
+      "string": "String",
+      "linkedList": "Linked List",
+      "tree": "Tree",
+      "graph": "Graph",
+      "dp": "Dynamic Programming",
+      "math": "Math",
+      "stack": "Stack",
+      "heap": "Heap"
+    }
   },
   "common": {
     "loading": "Loading...",

@@ -1,0 +1,245 @@
+---
+title: 141. 环形链表
+description: 判断一个单链表中是否存在循环，使用 O(1) 额外空间。
+date: 2024-03-15
+tag: ["简单", "链表", "双指针"]
+author: Easy Algo-臻叔
+premium: false
+percentage: 70
+---
+
+## 题目
+
+> leetcode 链接： [环形链表](https://leetcode.cn/problems/linked-list-cycle/)
+
+给你一个链表的头节点 `head` ，判断链表中是否有环。
+
+如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：`pos` 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+
+如果链表中存在环 ，则返回 `true` 。 否则，返回 `false` 。
+
+**示例 1**：
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：true
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+**示例 2**：
+```
+输入：head = [1,2], pos = 0
+输出：true
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+**示例 3**：
+```
+输入：head = [1], pos = -1
+输出：false
+解释：链表中没有环。
+```
+
+**提示**：
+```
+链表中节点的数目范围是 [0, 104]
+-105 <= Node.val <= 105
+pos 为 -1 或者链表中的一个 有效索引 。
+```
+
+**进阶**：你能用 O(1)（即，常量）内存解决此问题吗？
+
+## 题解
+
+**题意简化：**
+
+想象你有一串火车轨道，由很多节轨道（节点）连接起来，每节轨道都有一个指向下一节的箭头。通常，轨道会走到头。但是，有时最后一节轨道的箭头会指回前面某一个轨道节，形成一个圈。你的任务就是检查一下，这串轨道是不是形成了这样一个圈。你只需要告诉我“有”或“没有”。
+
+**边界值与测试用例：**
+
+*   **边界值：**
+    *   链表是空的 (`head` 为 `None`)。
+    *   链表只有一个节点。
+    *   链表有两个节点，没有环。
+    *   链表有两个节点，尾部指向头部形成环。
+    *   环从链表的第一个节点开始。
+    *   环从链表的中间某个节点开始。
+    *   链表非常长（多达 10^4 个节点）。
+
+*   **测试用例：**
+
+    | 输入 (head, pos)             | 预期输出 | 说明                             |
+    | :--------------------------- | :------- | :------------------------------- |
+    | `([3, 2, 0, -4], pos = 1)`   | `true`   | 标准示例，有环                   |
+    | `([1, 2], pos = 0)`          | `true`   | 标准示例，尾部指向头部           |
+    | `([1], pos = -1)`            | `false`  | 标准示例，单个节点，无环         |
+    | `([], pos = -1)`             | `false`  | 空链表                           |
+    | `([1, 2], pos = -1)`         | `false`  | 两个节点，无环                   |
+    | `([1, 2, 3, 4], pos = -1)`   | `false`  | 多个节点，无环                   |
+    | `([1, 2, 3, 4], pos = 1)`    | `true`   | 多个节点，尾部指向中间节点       |
+    | `([-10^5, 10^5], pos = -1)` | `false`  | 数值边界，无环                   |
+
+**解法分析：**
+
+检测链表是否存在环，有两种常见方法：
+
+| 解法         | 优点                 | 缺点                       | 时间复杂度 | 空间复杂度 |
+| :----------- | :------------------- | :------------------------- | :--------- | :--------- |
+| 哈希集合     | 容易理解，实现简单   | 需要额外 O(n) 空间存储节点 | O(n)       | O(n)       |
+| 快慢指针     | 高效，O(1) 额外空间  | 需要理解快慢指针追赶的原理 | O(n)       | O(1)       |
+
+*   **复杂度评估方法：**
+    *   时间复杂度：衡量算法执行所需的计算操作数量随链表长度 (n) 增长的速度。O(n) 表示算法的运行时间与链表中的节点数量成正比。
+    *   空间复杂度：衡量算法运行时占用的额外内存空间（不包括输入链表本身）随链表长度 (n) 增长的速度。O(n) 表示额外空间与节点数量成正比（例如存储所有节点的哈希集合）；O(1) 表示只使用了固定数量的几个变量，额外空间是常数。
+
+*   **推荐解法：**
+
+    快慢指针（又称 Floyd's Cycle-Finding Algorithm）。这个方法非常经典且巧妙，它只需要两个指针，一个慢指针每次走一步，一个快指针每次走两步。如果链表中存在环，快指针最终一定会追上慢指针；如果链表中没有环，快指针会先到达链表的末尾。这种方法只使用了常数额外空间（O(1) 空间），并且在一次遍历中完成检测（O(n) 时间），完美满足题目的进阶要求，非常适合在面试中使用。
+
+**Python 代码实现：**
+
+首先需要定义链表节点的结构（在 LeetCode 环境中通常已提供）：
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+```
+
+*   **版本一：包含详细注释 (快慢指针)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+from typing import Optional # 导入 Optional 用于类型提示，表示节点可能为 None
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """
+        使用快慢指针检测链表中是否存在环。
+
+        Args:
+            head: 链表的头节点。
+
+        Returns:
+            如果链表中存在环则返回 True，否则返回 False。
+        """
+        # 初始化慢指针 slow 和快指针 fast，都指向链表的头节点
+        # 慢指针每次移动一步
+        slow = head
+        # 快指针每次移动两步
+        fast = head
+
+        # 循环条件：确保快指针 fast 及其下一个节点 fast.next 都不为 None
+        # 只有 fast 和 fast.next 都存在时，快指针才能安全地向前移动两步 (fast.next.next)
+        # 如果 fast 或 fast.next 变成 None，说明快指针到达了链表的末尾 (或者末尾的下一个位置)
+        # 此时链表中不存在环。
+        while fast is not None and fast.next is not None:
+            # 慢指针向前移动一步
+            slow = slow.next
+            # 快指针向前移动两步
+            fast = fast.next.next
+
+            # 在移动指针后，检查快指针和慢指针是否相遇
+            # 如果相遇，说明链表中存在环
+            if slow == fast:
+                return True
+
+        # 如果循环正常结束，即快指针到达了链表的末尾，说明链表中没有环
+        return False
+
+# # Helper function to create a linked list with a cycle for testing
+# # Note: This helper is for local testing and not part of the solution submitted to LeetCode
+# def create_linked_list_with_cycle(arr, pos):
+#     if not arr:
+#         return None
+#     nodes = [ListNode(x) for x in arr]
+#     for i in range len(nodes) - 1):
+#         nodes[i].next = nodes[i+1]
+#     if pos != -1 and 0 <= pos < len(nodes):
+#         nodes[-1].next = nodes[pos]
+#     return nodes[0]
+#
+# # ## 测试用例
+# sol = Solution()
+#
+# # Example 1
+# head1 = create_linked_list_with_cycle([3, 2, 0, -4], 1)
+# print(f"Input: [3, 2, 0, -4], pos = 1\nOutput: {sol.hasCycle(head1)}") # Expected: True
+#
+# # Example 2
+# head2 = create_linked_list_with_cycle([1, 2], 0)
+# print(f"Input: [1, 2], pos = 0\nOutput: {sol.hasCycle(head2)}") # Expected: True
+#
+# # Example 3
+# head3 = create_linked_list_with_cycle([1], -1)
+# print(f"Input: [1], pos = -1\nOutput: {sol.hasCycle(head3)}") # Expected: False
+#
+# # Other Test Cases
+# head4 = create_linked_list_with_cycle([], -1)
+# print(f"Input: [], pos = -1\nOutput: {sol.hasCycle(head4)}") # Expected: False
+#
+# head5 = create_linked_list_with_cycle([1, 2], -1)
+# print(f"Input: [1, 2], pos = -1\nOutput: {sol.hasCycle(head5)}") # Expected: False
+#
+# head6 = create_linked_list_with_cycle([1, 2, 3, 4], -1)
+# print(f"Input: [1, 2, 3, 4], pos = -1\nOutput: {sol.hasCycle(head6)}") # Expected: False
+#
+# head7 = create_linked_list_with_cycle([1, 2, 3, 4], 1)
+# print(f"Input: [1, 2, 3, 4], pos = 1\nOutput: {sol.hasCycle(head7)}") # Expected: True
+```
+
+*   **版本二：去除所有注释 (快慢指针)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+from typing import Optional
+
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        slow = head
+        fast = head
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+        return False
+```
+
+**代码运行过程详细描述：**
+
+以输入 `head = [3, 2, 0, -4]`，其中尾部 `-4` 的 `next` 指向 `2` (pos = 1) 为例：
+
+链表结构： `3 -> 2 -> 0 -> -4 -> (指向 2)`
+
+1.  初始化：`slow` 指向节点 3, `fast` 指向节点 3.
+2.  进入 `while fast is not None and fast.next is not None` 循环：
+    *   `fast` 是节点 3 (非 None)，`fast.next` 是节点 2 (非 None)。条件满足。
+    *   `slow` 从节点 3 移动一步到节点 2. (`slow` 指向 2)
+    *   `fast` 从节点 3 移动两步：先到节点 2，再到节点 0. (`fast` 指向 0)
+    *   检查 `slow == fast`: 节点 2 == 节点 0? 不相等。
+3.  循环继续：
+    *   `fast` 是节点 0 (非 None)，`fast.next` 是节点 -4 (非 None)。条件满足。
+    *   `slow` 从节点 2 移动一步到节点 0. (`slow` 指向 0)
+    *   `fast` 从节点 0 移动两步：先到节点 -4，再到节点 2. (`fast` 指向 2)
+    *   检查 `slow == fast`: 节点 0 == 节点 2? 不相等。
+4.  循环继续：
+    *   `fast` 是节点 2 (非 None)，`fast.next` 是节点 0 (非 None)。条件满足。
+    *   `slow` 从节点 0 移动一步到节点 -4. (`slow` 指向 -4)
+    *   `fast` 从节点 2 移动两步：先到节点 0，再到节点 -4. (`fast` 指向 -4)
+    *   检查 `slow == fast`: 节点 -4 == 节点 -4? 相等！
+    *   发现相遇，返回 `True`.
+
+整个过程结束，输出为 `True`，表示检测到链表有环。

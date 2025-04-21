@@ -141,11 +141,24 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
               </div>
             )}
             <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+            {doc.tag && doc.tag.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {doc.tag.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--primary)]/10 text-[var(--primary)]"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
             <div className="flex items-center text-sm text-[var(--text)]">
               <span className="flex items-center">
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {new Date(parseInt(doc.obj_edit_time) * 1000).toLocaleDateString(locale)}
               </span>
+              <p className="text-[var(--text)] opacity-75">{t('filePath')}: {normalizedPath}</p>
             </div>
           </header>
           <div className="prose max-w-none">
@@ -168,6 +181,18 @@ async function DocumentContent({ params }: { params: PageProps['params'] }) {
             </div>
           )}
           <h1 className="text-3xl font-bold text-[var(--foreground)] mb-4">{doc.title}</h1>
+          {doc.tag && doc.tag.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {doc.tag.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--primary)]/10 text-[var(--primary)]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="flex items-center text-sm text-[var(--text)]">
             <span className="flex items-center">
               <CalendarIcon className="mr-2 h-4 w-4" />

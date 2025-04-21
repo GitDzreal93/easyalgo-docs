@@ -1,0 +1,267 @@
+---
+title: 83. 删除排序链表中的重复元素
+description: 在已排序的单链表中删除重复出现的节点，使每个元素只保留一个。
+date: 2024-03-15
+tag: ["简单", "链表", "双指针"]
+author: Easy Algo-臻叔
+premium: false
+percentage: 62
+---
+
+## 题目
+
+> leetcode 链接： [删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
+
+给定一个已排序的链表的头 `head` ， 删除所有重复的元素，使每个元素只出现一次 。返回 已排序的链表 。
+
+**示例 1**：
+
+```
+输入：head = [1,1,2]
+输出：[1,2]
+```
+
+**示例 2**：
+```
+输入：head = [1,1,2,3,3]
+输出：[1,2,3]
+```
+
+**提示**：
+```
+链表中节点数目在范围 [0, 300] 内
+-100 <= Node.val <= 100
+题目数据保证链表已经按升序 排列
+```
+
+## 题解
+
+**题意简化：**
+
+想象你有一串玩具火车，车厢上都写着数字，并且数字是从小到大排好的。有些车厢的数字可能一样。你的任务是把所有数字重复的车厢都拿掉，只保留第一个出现的那个，让剩下的车厢还连在一起，并且数字仍然是从小到大排好的。最后返回整理好的火车串的第一节车厢。
+
+**边界值与测试用例：**
+
+*   **边界值：**
+    *   链表是空的 (`head` 为 `None`)。
+    *   链表只有一个节点 (`head = [1]`)。
+    *   链表只有两个节点，且值相等 (`head = [1, 1]`)。
+    *   链表只有两个节点，且值不等 (`head = [1, 2]`)。
+    *   链表所有节点的值都相同。
+    *   链表所有节点的值都不同。
+    *   节点数值范围在提示的最小最大值 (-100到100)。
+
+*   **测试用例：**
+
+    | 输入 (head)      | 预期输出 (链表) | 说明                     |
+    | :--------------- | :-------------- | :----------------------- |
+    | `[1, 1, 2]`      | `[1, 2]`        | 标准示例                 |
+    | `[1, 1, 2, 3, 3]`| `[1, 2, 3]`     | 标准示例，多组重复       |
+    | `[]`             | `[]`            | 空链表                   |
+    | `[1]`            | `[1]`           | 单个节点                 |
+    | `[1, 1]`         | `[1]`           | 两个相同节点             |
+    | `[1, 2]`         | `[1, 2]`        | 两个不同节点             |
+    | `[5, 5, 5, 5]`   | `[5]`           | 所有节点相同             |
+    | `[1, 2, 3, 4]`   | `[1, 2, 3, 4]`  | 没有重复节点             |
+    | `[-10, -10, 0, 5, 5, 5]` | `[-10, 0, 5]`   | 包含负数和零，多组重复   |
+
+**解法分析：**
+
+由于链表已经排序，所有重复的元素都会相邻。这大大简化了问题。我们只需要一个指针遍历链表，比较当前节点和下一个节点的值即可。
+
+| 解法       | 优点         | 缺点           | 时间复杂度 | 空间复杂度 |
+| :--------- | :----------- | :------------- | :--------- | :--------- |
+| 单指针遍历 | 简单直观，高效 | 需要处理边界情况 | O(n)       | O(1)       |
+
+*   **复杂度评估方法：**
+    *   时间复杂度：衡量算法执行所需的计算操作数量随链表长度 (n) 增长的速度。O(n) 表示需要遍历链表一次，操作次数与节点数量成正比。
+    *   空间复杂度：衡量算法运行时占用的额外内存空间（不包括输入链表本身）随链表长度 (n) 增长的速度。O(1) 表示只使用了固定数量的几个变量。
+
+*   **推荐解法：**
+
+    单指针遍历。因为链表已排序，重复元素相邻，我们只需要一个指针 `current` 从头开始遍历。在每一步，比较 `current` 节点和 `current.next` 节点的值。如果它们相等，说明 `current.next` 是一个重复节点，应该被删除，方法是将 `current.next` 指向 `current.next.next`。如果它们不相等，说明 `current.next` 是一个新值（或者已经是链表末尾），`current` 节点应该被保留，然后将 `current` 移动到 `current.next` 继续检查。这种方法只需要一次遍历，使用常数额外空间，是解决这个问题的最简单和最优解法。
+
+**Python 代码实现：**
+
+首先需要定义链表节点的结构（在 LeetCode 环境中通常已提供）：
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+```
+
+*   **版本一：包含详细注释 (单指针遍历)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional # 导入 Optional 用于类型提示，表示节点可能为 None
+
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """
+        删除已排序链表中的重复元素。
+
+        Args:
+            head: 链表的头节点。
+
+        Returns:
+            删除重复元素后的链表的头节点。
+        """
+        # 如果链表为空或只有一个节点，不存在重复，直接返回原链表
+        if head is None or head.next is None:
+            return head
+
+        # 初始化一个指针 current，从头节点开始
+        # current 指针用于遍历链表，并代表当前我们考虑保留的节点
+        current = head
+
+        # 当 current 指针不为空，并且 current 后面还有节点时，继续循环
+        # 这里的条件是 current.next is not None，因为我们需要比较 current 和 current.next
+        while current is not None and current.next is not None:
+            # 检查当前节点的值是否与其下一个节点的值相等
+            if current.val == current.next.val:
+                # 如果相等，说明 current.next 是一个重复节点，需要删除它。
+                # 删除的方法是跳过 current.next，让 current 的 next 直接指向 current.next.next。
+                # 这样 current.next 节点就被“移除”了。
+                # 注意：此时 current 指针不移动，因为新的 current.next (原来的 current.next.next)
+                # 可能仍然与 current.val 相等 (例如 [1, 1, 1] 的情况)
+                current.next = current.next.next
+            else:
+                # 如果不相等，说明 current.next 是一个不同的元素（或者已经是链表末尾）。
+                # 当前节点 current 不需要删除，它和后面的节点值不同。
+                # 将 current 指针向前移动一步，指向下一个需要检查的节点。
+                current = current.next
+
+        # 循环结束后，所有重复节点都被删除了。
+        # 原来的 head 指针仍然指向链表的第一个节点（如果没有被删除的话），
+        # 并且后面的节点连接关系已经调整好。
+        # 返回原始头节点 head (或者说，返回修改后的链表头)。
+        return head
+
+# # Helper function to create a linked list from a list
+# def create_linked_list(arr):
+#     if not arr:
+#         return None
+#     head = ListNode(arr[0])
+#     current = head
+#     for val in arr[1:]:
+#         current.next = ListNode(val)
+#         current = current.next
+#     return head
+#
+# # Helper function to print a linked list
+# def print_linked_list(head):
+#     current = head
+#     nodes = []
+#     while current:
+#         nodes.append(current.val)
+#         current = current.next
+#     print(nodes)
+#
+# # ## 测试用例
+# sol = Solution()
+#
+# # Example 1
+# head1 = create_linked_list([1, 1, 2])
+# result1 = sol.deleteDuplicates(head1)
+# print(f"Input: [1, 1, 2]\nOutput:", end=" ")
+# print_linked_list(result1) # Expected: [1, 2]
+#
+# # Example 2
+# head2 = create_linked_list([1, 1, 2, 3, 3])
+# result2 = sol.deleteDuplicates(head2)
+# print(f"Input: [1, 1, 2, 3, 3]\nOutput:", end=" ")
+# print_linked_list(result2) # Expected: [1, 2, 3]
+#
+# # Other Test Cases
+# head3 = create_linked_list([])
+# result3 = sol.deleteDuplicates(head3)
+# print(f"Input: []\nOutput:", end=" ")
+# print_linked_list(result3) # Expected: []
+#
+# head4 = create_linked_list([1])
+# result4 = sol.deleteDuplicates(head4)
+# print(f"Input: [1]\nOutput:", end=" ")
+# print_linked_list(result4) # Expected: [1]
+#
+# head5 = create_linked_list([1, 1])
+# result5 = sol.deleteDuplicates(head5)
+# print(f"Input: [1, 1]\nOutput:", end=" ")
+# print_linked_list(result5) # Expected: [1]
+#
+# head6 = create_linked_list([5, 5, 5, 5])
+# result6 = sol.deleteDuplicates(head6)
+# print(f"Input: [5, 5, 5, 5]\nOutput:", end=" ")
+# print_linked_list(result6) # Expected: [5]
+#
+# head7 = create_linked_list([-10, -10, 0, 5, 5, 5])
+# result7 = sol.deleteDuplicates(head7)
+# print(f"Input: [-10, -10, 0, 5, 5, 5]\nOutput:", end=" ")
+# print_linked_list(result7) # Expected: [-10, 0, 5]
+```
+
+*   **版本二：去除所有注释 (单指针遍历)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional
+
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return head
+        current = head
+        while current is not None and current.next is not None:
+            if current.val == current.next.val:
+                current.next = current.next.next
+            else:
+                current = current.next
+        return head
+```
+
+**代码运行过程详细描述：**
+
+以输入 `head = [1, 1, 2, 3, 3]` 为例：
+
+链表结构： `1 -> 1 -> 2 -> 3 -> 3 -> None`
+
+1.  检查链表，非空且长度大于 1，继续。
+2.  初始化 `current` 指向节点 1 (第一个 1)。
+3.  进入 `while current is not None and current.next is not None` 循环：
+    *   `current` 是节点 1 (`val=1`), `current.next` 是节点 1 (`val=1`). 条件满足 (current 和 current.next 都不为 None)。
+    *   检查 `current.val == current.next.val`: `1 == 1`. 相等。
+        *   `current.next = current.next.next`. 节点 1 (第一个) 的 `next` 指针从指向第二个 1 变为指向节点 2.
+        *   链表现在逻辑上是 `1 -> 2 -> 3 -> 3 -> None`.
+        *   `current` 不移动，继续检查 `current` (第一个 1) 与其新的 `next` (节点 2)。
+    *   `current` 是节点 1 (`val=1`), `current.next` 是节点 2 (`val=2`). 条件满足。
+    *   检查 `current.val == current.next.val`: `1 == 2`. 不相等。
+        *   `current = current.next`. `current` 移动到节点 2.
+    *   当前状态：`current` 指向节点 2 (`val=2`). 链表： `1 -> 2 -> 3 -> 3 -> None`.
+4.  循环继续：
+    *   `current` 是节点 2 (`val=2`), `current.next` 是节点 3 (第一个) (`val=3`). 条件满足。
+    *   检查 `current.val == current.next.val`: `2 == 3`. 不相等。
+        *   `current = current.next`. `current` 移动到节点 3 (第一个).
+    *   当前状态：`current` 指向节点 3 (第一个) (`val=3`). 链表： `1 -> 2 -> 3 -> 3 -> None`.
+5.  循环继续：
+    *   `current` 是节点 3 (第一个) (`val=3`), `current.next` 是节点 3 (第二个) (`val=3`). 条件满足。
+    *   检查 `current.val == current.next.val`: `3 == 3`. 相等。
+        *   `current.next = current.next.next`. 节点 3 (第一个) 的 `next` 指针从指向第二个 3 变为指向 `None`.
+        *   链表现在逻辑上是 `1 -> 2 -> 3 -> None`.
+        *   `current` 不移动，继续检查 `current` (第一个 3) 与其新的 `next` (`None`).
+    *   `current` 是节点 3 (第一个) (`val=3`), `current.next` 是 `None`. 条件 `current.next is not None` 不满足。
+    *   退出循环。
+6.  循环结束后，返回原始头节点 `head` (指向第一个 1)。
+7.  最终链表从头开始是 `1 -> 2 -> 3 -> None`。

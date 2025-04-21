@@ -1,0 +1,256 @@
+---
+title: 876. 链表的中间结点
+description: 寻找单链表的中间节点，如果节点数为偶数，返回后一个中间节点。
+date: 2024-03-15
+tag: ["简单", "链表", "双指针"]
+author: Easy Algo-臻叔
+premium: false
+percentage: 75
+---
+
+## 题目
+
+> leetcode 链接： [链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/)
+
+给你单链表的头节点 `head` ，请你找出并返回链表的 **中间结点** 。
+
+如果有两个中间结点，则返回第二个中间结点。
+
+**示例 1**：
+
+```
+输入：head = [1,2,3,4,5]
+输出：[3,4,5]
+解释：链表只有一个中间结点，值为 3 。
+```
+
+**示例 2**：
+```
+输入：head = [1,2,3,4,5,6]
+输出：[4,5,6]
+解释：由于链表长度为偶数 n = 6，所以有两个中间结点，分别是第 3 个结点和第 4 个结点，返回第 4 个结点。
+```
+
+**提示**：
+```
+链表中节点的数目范围是 [1, 100]
+1 <= Node.val <= 100
+```
+
+## 题解
+
+**题意简化：**
+
+想象你有一串玩具火车，每个车厢（节点）都用钩子连着后面的车厢。你的任务是找到这串火车的中间那节车厢。如果火车一共有奇数节车厢，中间就是正中间那一节。如果火车是偶数节，中间有两个车厢，你要找到靠后的那一节。最后告诉我这节中间车厢是哪个（返回它以及它后面的所有车厢）。
+
+**边界值与测试用例：**
+
+*   **边界值：**
+    *   链表只有一个节点 (`head = [1]`)。
+    *   链表有两个节点 (`head = [1, 2]`)。
+    *   链表节点数是奇数（长度 3, 5, ...）。
+    *   链表节点数是偶数（长度 2, 4, ...）。
+    *   节点数值范围在提示的最小最大值 (1到100)。
+    *   （根据提示 `[1, 100]`，链表不会为空）
+
+*   **测试用例：**
+
+    | 输入 (head)      | 预期输出 (从中间节点开始的链表) | 说明                               |
+    | :--------------- | :------------------------------ | :--------------------------------- |
+    | `[1, 2, 3, 4, 5]`| `[3, 4, 5]`                     | 奇数个节点，返回正中间             |
+    | `[1, 2, 3, 4, 5, 6]`| `[4, 5, 6]`                     | 偶数个节点，返回第二个中间节点     |
+    | `[1]`            | `[1]`                           | 单个节点                           |
+    | `[1, 2]`         | `[2]`                           | 两个节点，返回第二个               |
+    | `[10, 20, 30, 40]` | `[30, 40]`                      | 偶数个节点，数值在范围内         |
+    | `[50, 60, 70]`   | `[60, 70]`                      | 奇数个节点，数值在范围内         |
+
+**解法分析：**
+
+解决寻找链表中间节点的问题，有几种常见的方法：
+
+| 解法             | 优点                 | 缺点                           | 时间复杂度 | 空间复杂度 |
+| :--------------- | :------------------- | :----------------------------- | :--------- | :--------- |
+| 两次遍历（计数法） | 简单直观             | 需要遍历链表两次，效率相对低   | O(n)       | O(1)       |
+| 数组转换         | 随机访问方便         | 需要额外 O(n) 空间存储节点     | O(n)       | O(n)       |
+| 快慢指针         | 高效，单次遍历，O(1) 空间 | 需要理解指针的相对移动逻辑     | O(n)       | O(1)       |
+
+*   **复杂度评估方法：**
+    *   时间复杂度：衡量算法执行所需的计算操作数量随链表长度 (n) 增长的速度。O(n) 表示需要遍历链表，操作次数与节点数量成正比。
+    *   空间复杂度：衡量算法运行时占用的额外内存空间（不包括输入链表本身）随链表长度 (n) 增长的速度。O(1) 表示只使用了固定数量的几个变量；O(n) 表示占用的空间与节点数量成正比（例如存储所有节点的数组）。
+
+*   **推荐解法：**
+
+    快慢指针。这是解决链表中间节点问题的经典且最优解法。利用两个指针，一个每次走一步（慢指针 `slow`），一个每次走两步（快指针 `fast`）。当快指针到达链表末尾时，慢指针正好位于链表的中间位置。这种方法只需要一次遍历，且只使用常数额外空间（两个指针变量），满足时间和空间复杂度的最优要求（O(n) 时间，O(1) 空间），非常适合面试。
+
+**Python 代码实现：**
+
+首先需要定义链表节点的结构（在 LeetCode 环境中通常已提供）：
+
+```python
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+```
+
+*   **版本一：包含详细注释 (快慢指针)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional # 导入 Optional 用于类型提示，表示节点可能为 None
+
+def middleNode(head: Optional[ListNode]) -> Optional[ListNode]:
+    """
+    使用快慢指针找到链表的中间结点。
+
+    Args:
+        head: 链表的头节点。
+
+    Returns:
+        链表的中间结点，如果节点数为偶数返回第二个中间结点。
+    """
+    # 初始化慢指针和快指针，都指向链表的头节点
+    # slow 每次移动一步
+    slow = head
+    # fast 每次移动两步
+    fast = head
+
+    # 当快指针 fast 及其下一个节点 fast.next 都不为 None 时，继续循环
+    # fast is not None 确保 fast 本身不是 None
+    # fast.next is not None 确保 fast 后面至少还有一个节点，这样 fast.next.next 的操作才是安全的
+    # 这个循环条件巧妙地处理了链表长度为奇数和偶数的情况：
+    # 如果链表长度是奇数 (例如 5)，fast 会依次指向 1, 3, 5。循环在 fast 指向 5 时终止 (fast.next 是 None)。
+    # 如果链表长度是偶数 (例如 6)，fast 会依次指向 1, 3, 5。然后 fast 再移动两步，指向 None。循环在 fast 变成 None 时终止。
+    # 在这两种情况下，当循环终止时，slow 指针恰好停在中间或第二个中间节点。
+    while fast is not None and fast.next is not None:
+        # 慢指针向前移动一步
+        slow = slow.next
+        # 快指针向前移动两步
+        fast = fast.next.next
+
+    # 循环结束后，慢指针 slow 就指向了链表的中间结点
+    # 如果链表长度是奇数，fast 停在最后一个节点，slow 停在正中间。
+    # 如果链表长度是偶数，fast 停在 None (经过了最后一个节点)，slow 停在第二个中间节点。
+    # 返回 slow 指针指向的节点
+    return slow
+
+# # Helper function to create a linked list from a list
+# def create_linked_list(arr):
+#     if not arr:
+#         return None
+#     head = ListNode(arr[0])
+#     current = head
+#     for val in arr[1:]:
+#         current.next = ListNode(val)
+#         current = current.next
+#     return head
+#
+# # Helper function to print a linked list from a node
+# def print_linked_list_from_node(node):
+#     current = node
+#     nodes = []
+#     while current:
+#         nodes.append(current.val)
+#         current = current.next
+#     print(nodes)
+#
+# # ## 测试用例
+# head1 = create_linked_list([1, 2, 3, 4, 5])
+# middle_node1 = middleNode(head1)
+# print("Input: [1, 2, 3, 4, 5], Output:", end=" ")
+# print_linked_list_from_node(middle_node1) # 预期: [3, 4, 5]
+#
+# head2 = create_linked_list([1, 2, 3, 4, 5, 6])
+# middle_node2 = middleNode(head2)
+# print("Input: [1, 2, 3, 4, 5, 6], Output:", end=" ")
+# print_linked_list_from_node(middle_node2) # 预期: [4, 5, 6]
+#
+# head3 = create_linked_list([1])
+# middle_node3 = middleNode(head3)
+# print("Input: [1], Output:", end=" ")
+# print_linked_list_from_node(middle_node3) # 预期: [1]
+#
+# head4 = create_linked_list([1, 2])
+# middle_node4 = middleNode(head4)
+# print("Input: [1, 2], Output:", end=" ")
+# print_linked_list_from_node(middle_node4) # 预期: [2]
+#
+# head5 = create_linked_list([10, 20, 30, 40])
+# middle_node5 = middleNode(head5)
+# print("Input: [10, 20, 30, 40], Output:", end=" ")
+# print_linked_list_from_node(middle_node5) # 预期: [30, 40]
+#
+# head6 = create_linked_list([50, 60, 70])
+# middle_node6 = middleNode(head6)
+# print("Input: [50, 60, 70], Output:", end=" ")
+# print_linked_list_from_node(middle_node6) # 预期: [60, 70]
+```
+
+*   **版本二：去除所有注释 (快慢指针)**
+
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+from typing import Optional
+
+def middleNode(head: Optional[ListNode]) -> Optional[ListNode]:
+    slow = head
+    fast = head
+    while fast is not None and fast.next is not None:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+```
+
+**代码运行过程详细描述 (快慢指针解法)：**
+
+以输入 `head = [1, 2, 3, 4, 5]` (奇数长度) 为例：
+
+1.  初始化：`slow` 指向节点 1, `fast` 指向节点 1. 链表： `1 -> 2 -> 3 -> 4 -> 5 -> None`.
+2.  进入 `while fast is not None and fast.next is not None` 循环：
+    *   `fast` 是节点 1 (不为 None)，`fast.next` 是节点 2 (不为 None)。条件满足。
+    *   `slow = slow.next` (慢指针从节点 1 移到节点 2)。
+    *   `fast = fast.next.next` (快指针从节点 1 移到节点 3)。
+    *   当前状态：`slow` 指向节点 2 (`val=2`), `fast` 指向节点 3 (`val=3`).
+3.  循环继续：
+    *   `fast` 是节点 3 (不为 None)，`fast.next` 是节点 4 (不为 None)。条件满足.
+    *   `slow = slow.next` (慢指针从节点 2 移到节点 3)。
+    *   `fast = fast.next.next` (快指针从节点 3 移到节点 5)。
+    *   当前状态：`slow` 指向节点 3 (`val=3`), `fast` 指向节点 5 (`val=5`).
+4.  循环继续：
+    *   `fast` 是节点 5 (不为 None)，`fast.next` 是 `None`. 条件 `fast.next is not None` 不满足。
+    *   退出循环。
+5.  返回 `slow`。`slow` 当前指向节点 3。从节点 3 开始的链表是 `[3, 4, 5]`。这是链表的正中间节点，符合奇数长度的要求。
+
+以输入 `head = [1, 2, 3, 4, 5, 6]` (偶数长度) 为例：
+
+1.  初始化：`slow` 指向节点 1, `fast` 指向节点 1. 链表： `1 -> 2 -> 3 -> 4 -> 5 -> 6 -> None`.
+2.  进入 `while fast is not None and fast.next is not None` 循环：
+    *   `fast` 是节点 1, `fast.next` 是节点 2. 条件满足。
+    *   `slow = slow.next` (慢指针移到节点 2)。
+    *   `fast = fast.next.next` (快指针移到节点 3)。
+    *   当前状态：`slow` 指向节点 2, `fast` 指向节点 3.
+3.  循环继续：
+    *   `fast` 是节点 3, `fast.next` 是节点 4. 条件满足.
+    *   `slow = slow.next` (慢指针移到节点 3).
+    *   `fast = fast.next.next` (快指针移到节点 5).
+    *   当前状态：`slow` 指向节点 3, `fast` 指向节点 5.
+4.  循环继续：
+    *   `fast` 是节点 5, `fast.next` 是节点 6. 条件满足.
+    *   `slow = slow.next` (慢指针移到节点 4).
+    *   `fast = fast.next.next` (快指针从节点 5 移到 `None`).
+    *   当前状态：`slow` 指向节点 4, `fast` 指向 `None`.
+5.  循环继续：
+    *   `fast` 是 `None`. 条件 `fast is not None` 不满足。
+    *   退出循环。
+6.  返回 `slow`。`slow` 当前指向节点 4。从节点 4 开始的链表是 `[4, 5, 6]`。这是第二个中间节点，符合偶数长度的要求。
